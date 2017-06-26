@@ -10,7 +10,7 @@ import appMiddleware from './middleware.js';
 import initMiddlewareEvents from './middleware_events/index.js';
 import { updateUser, updateState } from './actions';
 import io from 'socket.io-client';
-import ENV from './env.js';
+import ENV from './constants/env.js';
 
 const socket = io(`${ENV.location}:${ENV.port}`);
 const middleware = routerMiddleware(hashHistory);
