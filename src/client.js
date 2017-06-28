@@ -12,7 +12,7 @@ import { updateUser, updateState } from './actions';
 import io from 'socket.io-client';
 import ENV from './constants/env.js';
 
-const socket = io(`${ENV.location}:${ENV.port}`);
+const socket = io(`${ENV.ws.location}:${ENV.ws.port}`);
 const middleware = routerMiddleware(hashHistory);
 const store = createStore(
   reducers,
