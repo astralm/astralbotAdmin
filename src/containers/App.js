@@ -58,7 +58,10 @@ class App extends Component {
             {
               this.props.userStatus ? 
                 this.props.children : 
-                this.props.children.props.location.pathname != '/forgot-password' && this.props.children.props.location.pathname != '/confirm-email' ? 
+                this.props.children.props.location.pathname != '/forgot-password' && 
+                this.props.children.props.location.pathname != '/confirm-email' &&
+                this.props.children.props.location.pathname != '/404' && 
+                this.props.children.props.location.pathname != '/500' ? 
                   <Login/> : 
                   this.props.children
             }
