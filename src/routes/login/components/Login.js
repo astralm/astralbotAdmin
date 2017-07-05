@@ -69,8 +69,6 @@ class Login extends React.Component {
         </div>
 
         <div className="additional-info">
-          <a href="#/sign-up">Sign up</a>
-          <span className="divider-h" />
           <a href="#/forgot-password">Forgot your password?</a>
         </div>
 
