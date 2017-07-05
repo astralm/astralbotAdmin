@@ -46,7 +46,6 @@ const rootRoute = {
       require('./routes/confirmEmail'),
       require('./routes/forgotPassword'),
       require('./routes/login'),
-      require('./routes/fullscreen'),
       {
         path: '*',
         indexRoute: { onEnter: (nextState, replace) => replace('/404') },
