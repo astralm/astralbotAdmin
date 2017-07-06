@@ -21,10 +21,12 @@ class Header extends React.Component {
 
   render() {
     const { isFixedHeader, colorOption } = this.props;
-
+    const tac = {
+        textAlign:'center'
+    }
     return (
       <section className="app-header">
-        <div
+        <div style={tac}
           className={classnames('app-header-inner', {
             'bg-color-light': ['11', '12', '13', '14', '15', '16', '21'].indexOf(colorOption) >= 0,
             'bg-color-dark': colorOption === '31',

@@ -21,12 +21,22 @@ class NavLeftList extends React.Component {
   }
 
   render() {
-    return (
-      <ul className="list-unstyled list-inline">
-        <li className="list-inline-item">
-          
-        </li>
-      </ul>
+      const style = {
+          fontSize: '35px',
+          lineHeight:'1.6'
+      };
+      return (
+        <div>
+          <ul className="">
+            <span style={style}>Сессии</span>
+          </ul>
+          <ul className="list-unstyled list-inline">
+            <li className="list-inline-item">
+
+            </li>
+          </ul>
+        </div>
+
     );
   }
 }
