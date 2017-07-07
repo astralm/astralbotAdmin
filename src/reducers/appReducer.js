@@ -7,19 +7,6 @@ const AppReducer = (state = Map(), action) => {
 			return state.merge(fromJS(typeof action.state == "string" ? 
 				JSON.parse(action.state) : 
 				action.state));
-		case types.LOGIN : 
-			return action.email && action.password ? 
-				(state.set('user', state.get('user') ? 
-					state.get('user').merge(fromJS({
-						email: action.email,
-						password: action.password
-					})) : 
-					fromJS({
-						email: action.email,
-						password: action.password
-					}))
-				) : 
-				state;
 		case types.LOGOUT :
 			return state.set('user', state.get('user') ? 
 				state.get('user').set('status', false) : 
@@ -29,6 +16,12 @@ const AppReducer = (state = Map(), action) => {
 				state.set('user', state.get('user') ? 
 					state.get('user').merge(fromJS(action.user)) :
 					fromJS(action.user)
+				) : state;
+		case types.SET_HASH :
+			return action.hash ?
+				state.set('session', state.get('session') ?
+					state.get('session').merge(fromJS({hash: action.hash})) :
+					fromJS({hash: action.hash})
 				) : state;
 		default: 
 			return state;
