@@ -36,3 +36,12 @@ export function updateUser(user){
 export function updateState(state) {
 	return { type: types.UPDATE_STATE, state };
 }
+export function setHash(hash){
+  return { type: types.SET_HASH, hash };
+}
+export function getHash(){
+  return { type: types.GET_HASH };
+}
+export function setStatus(status){
+  return { type: types.SET_STATUS, status };
+}
