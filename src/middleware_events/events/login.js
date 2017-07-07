@@ -1,8 +1,7 @@
 import { updateUser, logout } from '../../actions/index.js';
 export default (store, data) => {
 	if(data != null){
-		data[0].status = true;
-		store.dispatch(updateUser(data[0]));
+		store.dispatch(updateUser({status: "online"}));
 	} else {
 		store.dispatch(logout());
 	}
