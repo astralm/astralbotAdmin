@@ -102,7 +102,32 @@ class SidebarContent extends React.Component {
 
     return (
         <ul className="nav" ref={(c) => { this.nav = c; }}>
-          
+          <li className="open">
+            <FlatButton href="/">
+              <div style={FlatStyle}>
+                <span className="nav-text">Сессии</span>
+              </div>
+            </FlatButton>
+            <ul style={DisplayBlock}>
+                <li><FlatButton  href="#/app"><span>Все сессии</span></FlatButton></li>
+                <li><FlatButton href="#/app/dialog"><span>Последняя</span></FlatButton></li>
+            </ul>
+          </li>
+          <li>
+            <FlatButton href="#/app/administrators" >
+              <div style={FlatStyle}>
+                <span className="nav-text">Администраторы</span>
+              </div>
+            </FlatButton>
+          </li>
+          <li>
+            <FlatButton href="#/app/profile">
+              <div style={FlatStyle}>
+
+                <span className="nav-text">Профиль</span>
+              </div>
+            </FlatButton>
+          </li>
         </ul>
     );
   }

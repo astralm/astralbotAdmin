@@ -15,18 +15,30 @@ const listItemStyle = {
 };
 
 class NavLeftList extends React.Component {
-
+    constructor(props) {
+        super(props)
+    }
   handleChange = (event, value) => {
     hashHistory.push(value);
   }
 
   render() {
-    return (
-      <ul className="list-unstyled list-inline">
-        <li className="list-inline-item">
-          
-        </li>
-      </ul>
+      const style = {
+          fontSize: '35px',
+          lineHeight:'1.6'
+      };
+      return (
+        <div>
+          <ul className="">
+            <span style={style}></span>
+          </ul>
+          <ul className="list-unstyled list-inline">
+            <li className="list-inline-item">
+
+            </li>
+          </ul>
+        </div>
+
     );
   }
 }
