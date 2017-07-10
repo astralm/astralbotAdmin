@@ -47,7 +47,7 @@ const ResponsiveTable = () => (
             <td className="numeric">Активный</td>
             <td className="numeric">Николай</td>
             <td className="numeric">
-              <RaisedButton label="Просмотр" secondary />
+              <RaisedButton label="Просмотр" href="#/app/dialog" secondary />
             </td>
             <td>
               <RaisedButton  label="Взять" primary />
