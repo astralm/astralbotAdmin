@@ -56,7 +56,7 @@ class App extends Component {
               'sidebar-lg': sidebarWidth === 'large'})
                     }>
             {
-              this.props.userStatus ? 
+              this.props.userStatus == "online" || this.props.userStatus === true ? 
                 this.props.children : 
                 this.props.children.props.location.pathname != '/forgot-password' && 
                 this.props.children.props.location.pathname != '/confirm-email' &&
