@@ -5,6 +5,10 @@ module.exports = {
       cb(null, [
         require('./routes/dialog'),
         require('./routes/tableSession'),
+        require('./routes/administrators'),
+        require('./routes/newuser'),
+        require('./routes/edituser'),
+        require('./routes/profile'),
       ]);
     });
   },

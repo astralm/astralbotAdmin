@@ -103,28 +103,27 @@ class SidebarContent extends React.Component {
     return (
         <ul className="nav" ref={(c) => { this.nav = c; }}>
           <li className="open">
-            <FlatButton href="#/app/menu">
+            <FlatButton href="/">
               <div style={FlatStyle}>
                 <span className="nav-text">Сессии</span>
               </div>
             </FlatButton>
             <ul style={DisplayBlock}>
-                <li><FlatButton href="javascript:;"><span>Ваши сессии</span></FlatButton></li>
-                <li><FlatButton href="javascript:;"><span>Просмотренные</span></FlatButton></li>
-                <li><FlatButton href="javascript:;"><span>Последняя</span></FlatButton></li>
+                <li><FlatButton  href="#/app"><span>Все сессии</span></FlatButton></li>
+                <li><FlatButton href="#/app/dialog"><span>Последняя</span></FlatButton></li>
             </ul>
           </li>
           <li>
-            <FlatButton href="#/app/menu">
+            <FlatButton href="#/app/administrators" >
               <div style={FlatStyle}>
                 <span className="nav-text">Администраторы</span>
               </div>
             </FlatButton>
           </li>
           <li>
-            <FlatButton href="#/app/menu">
+            <FlatButton href="#/app/profile">
               <div style={FlatStyle}>
-                {/*<i className="nav-icon material-icons">sort</i>*/}
+
                 <span className="nav-text">Профиль</span>
               </div>
             </FlatButton>

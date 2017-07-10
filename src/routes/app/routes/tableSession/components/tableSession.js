@@ -62,7 +62,7 @@ class TableBody extends React.Component {
                                 <td className="numeric">Активный</td>
                                 <td className="numeric">Николай</td>
                                 <td className="numeric">
-                                    <RaisedButton label="Просмотр" secondary />
+                                    <RaisedButton label="Просмотр" href="#/app/dialog"  secondary />
                                 </td>
                                 <td>
                                     <RaisedButton  label="Взять" primary />
@@ -78,7 +78,7 @@ class TableBody extends React.Component {
                                 <td className="numeric">Активный</td>
                                 <td className="numeric">Николай</td>
                                 <td className="numeric">
-                                    <RaisedButton label="Просмотр" to="/dialog" secondary />
+                                    <RaisedButton label="Просмотр" href="#/app/dialog"   secondary />
                                 </td>
                                 <td>
                                     <RaisedButton  label="Взять" primary />
