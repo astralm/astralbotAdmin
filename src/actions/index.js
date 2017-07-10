@@ -24,6 +24,9 @@ export function changeTheme(themeOption) {
 export function login(email, password) {
 	return { type: types.LOGIN, email, password };
 }
+export function status(status) {
+  return { type: types.STATUS, status };
+}
 export function logout(){
   return { type: types.LOGOUT };
 }
@@ -36,11 +39,8 @@ export function updateUser(user){
 export function updateState(state) {
 	return { type: types.UPDATE_STATE, state };
 }
-export function setHash(hash){
-  return { type: types.SET_HASH, hash };
-}
-export function getHash(){
-  return { type: types.GET_HASH };
+export function Hash(hash){
+  return { type: types.HASH, hash };
 }
 export function setStatus(status){
   return { type: types.SET_STATUS, status };
