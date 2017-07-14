@@ -23,11 +23,16 @@ const AppReducer = (state = Map(), action) => {
 					fromJS({status: "offline"})
 				);
 		case types.HASH :
-			console.log(action.hash);
 			return action.hash ?
 				state.set('session', state.get('session') ?
 					state.get('session').merge(fromJS({hash: action.hash})) :
 					fromJS({hash: action.hash})
+				) : state;
+		case types.LOGIN :
+			return action.email && action.password ?
+				state.set('user', state.get('user') ?
+					state.get('user').merge(fromJS({email: action.email, password: action.password})) :
+					fromJS({email: action.email, password: action.password})
 				) : state;
 		default: 
 			return state;

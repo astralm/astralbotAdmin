@@ -1,6 +1,6 @@
 import { status } from '../../actions/index.js';
 export default (store, data) => {
-	if (data) {
-		store.dispatch(status(data));
-	}
+	data ?
+		store.dispatch(status(data)) :
+		store.dispatch(status(false));
 }
