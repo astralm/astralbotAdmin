@@ -8,6 +8,9 @@ export default socket => store => next => action => {
 				password: action.password
 			});
 			break;
+		case types.LOGOUT :
+			socket.emit(types.LOGOUT);
+			break;
 	}
 	return next(action);
 }
