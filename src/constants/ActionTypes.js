@@ -5,13 +5,7 @@ export const TOGGLE_FIXED_HEADER = 'TOGGLE_FIXED_HEADER';
 export const CHANGE_SIDEBAR_WIDTH = 'CHANGE_SIDEBAR_WIDTH';
 export const CHANGE_COLOR_OPTION = 'CHANGE_COLOR_OPTION';
 export const CHANGE_THEME = 'CHANGE_THEME';
+//------------
 export const UPDATE_STATE = 'UPDATE_STATE';
 export const LOGIN = 'LOGIN';
-export const STATUS = 'STATUS';
-export const LOGOUT = 'LOGOUT';
-export const UPDATE_USER = 'UPDATE_USER';
-export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
-export const CONNECT = 'connect';
-export const HASH = 'HASH';
 export const SET_STATUS = 'SET_STATUS';
-export const DISCONNECT = 'disconnect';
