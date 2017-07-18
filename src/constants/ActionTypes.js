@@ -8,4 +8,5 @@ export const CHANGE_THEME = 'CHANGE_THEME';
 //------------
 export const UPDATE_STATE = 'UPDATE_STATE';
 export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
 export const SET_STATUS = 'SET_STATUS';
