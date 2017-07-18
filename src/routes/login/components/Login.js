@@ -4,8 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import QueueAnim from 'rc-queue-anim';
 import { connect } from 'react-redux';
-import { login } from '../../../actions';
-
+import { login } from '../../../actions/index.js';
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -14,14 +13,11 @@ class Login extends React.Component {
       email: props.email || "",
       password: props.password || ""
     };
-    this.login = this.login.bind(this);
     this.inputEmail = this.inputEmail.bind(this);
     this.inputPassword = this.inputPassword.bind(this);
+    this.click = this.click.bind(this);
     if(window.location.hash != "#/login")
       window.location.hash = "#/login";
-  }
-  login(){
-    this.props.login(this.state.email, this.state.password);
   }
   inputEmail(event){
     this.setState({
@@ -32,6 +28,9 @@ class Login extends React.Component {
     this.setState({
       password: event.target.value
     });
+  }
+  click(event){
+    this.props.login(this.state.email, this.state.password);
   }
   render() {
     return (
@@ -64,7 +63,7 @@ class Login extends React.Component {
             </form>
           </div>
           <div className="card-action no-border text-right">
-            <a href="#/" className="color-primary" onClick = { this.login }>Login</a>
+            <a href="#/" className="color-primary" onClick = {this.click}>Login</a>
           </div>
         </div>
 

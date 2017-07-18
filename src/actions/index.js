@@ -21,27 +21,14 @@ export function changeColorOption(colorOption) {
 export function changeTheme(themeOption) {
   return { type: types.CHANGE_THEME, theme: themeOption };
 }
-export function login(email, password) {
-	return { type: types.LOGIN, email, password };
-}
-export function status(status) {
-  return { type: types.STATUS, status };
-}
-export function logout(){
-  return { type: types.LOGOUT };
-}
-export function forgotPassword(email){
-  return { type: types.FORGOT_PASSWORD, email };
-}
-export function updateUser(user){
-	return { type: types.UPDATE_USER, user };
-}
-export function updateState(state) {
-	return { type: types.UPDATE_STATE, state };
-}
-export function Hash(hash){
-  return { type: types.HASH, hash };
-}
-export function setStatus(status){
-  return { type: types.SET_STATUS, status };
-}
+
+//--------------------
+
+export const updateState = state => ({ type: types.UPDATE_STATE, state });
+export const login = (email, password) => ({
+	type: types.LOGIN,
+	email: email,
+	password: password
+});
+export const setStatus = status => ({ type: types.SET_STATUS, status });
+export const logout = () => ({ type: types.LOGOUT });

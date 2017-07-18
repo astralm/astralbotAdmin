@@ -1,6 +1,5 @@
-import { status } from '../../actions/index.js';
-export default (store, data) => {
-	data == 1 ?
-		store.dispatch(status(true)) :
-		store.dispatch(status(false));
+import * as Types from '../../constants/ActionTypes.js';
+import { setStatus } from '../../actions/index.js';
+export default store => data => {
+	store.dispatch(setStatus(data));
 }

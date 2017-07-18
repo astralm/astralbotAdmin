@@ -34,11 +34,11 @@ class NavRightList extends React.Component {
                 menuStyle={{minWidth: '150px'}}
                         >
                 <MenuItem
-                  onClick = {this.props.logout}
                   primaryText="Log Out"
                   innerDivStyle={listItemStyle}
                   style={{fontSize: '14px', lineHeight: '48px'}}
                   leftIcon={<i className="material-icons">forward</i>}
+                  onClick={this.props.logout}
                             />
               </IconMenu>
             </li>
@@ -48,8 +48,6 @@ class NavRightList extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+module.exports = connect(state => ({
   status : state.app.getIn(['user', 'status']) || false
-});
-
-module.exports = connect(mapStateToProps, Object({logout}))(NavRightList);
+}), {logout})(NavRightList);
