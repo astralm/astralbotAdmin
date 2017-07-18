@@ -4,6 +4,7 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton/IconButton';
 import { hashHistory } from 'react-router';
 import { connect } from 'react-redux';
+import { logout } from '../../actions/index.js';
 
 const ImgIconButtonStyle = {
   width: '60px',
@@ -37,6 +38,7 @@ class NavRightList extends React.Component {
                   innerDivStyle={listItemStyle}
                   style={{fontSize: '14px', lineHeight: '48px'}}
                   leftIcon={<i className="material-icons">forward</i>}
+                  onClick={this.props.logout}
                             />
               </IconMenu>
             </li>
@@ -48,4 +50,4 @@ class NavRightList extends React.Component {
 
 module.exports = connect(state => ({
   status : state.app.getIn(['user', 'status']) || false
-}))(NavRightList);
+}), {logout})(NavRightList);
