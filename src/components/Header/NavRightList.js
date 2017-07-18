@@ -4,7 +4,6 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton/IconButton';
 import { hashHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { logout } from '../../actions/index.js';
 
 const ImgIconButtonStyle = {
   width: '60px',
@@ -34,7 +33,6 @@ class NavRightList extends React.Component {
                 menuStyle={{minWidth: '150px'}}
                         >
                 <MenuItem
-                  onClick = {this.props.logout}
                   primaryText="Log Out"
                   innerDivStyle={listItemStyle}
                   style={{fontSize: '14px', lineHeight: '48px'}}
@@ -48,8 +46,6 @@ class NavRightList extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+module.exports = connect(state => ({
   status : state.app.getIn(['user', 'status']) || false
-});
-
-module.exports = connect(mapStateToProps, Object({logout}))(NavRightList);
+}))(NavRightList);
