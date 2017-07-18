@@ -31,3 +31,4 @@ export const login = (email, password) => ({
 	password: password
 });
 export const setStatus = status => ({ type: types.SET_STATUS, status });
+export const logout = () => ({ type: types.LOGOUT });
