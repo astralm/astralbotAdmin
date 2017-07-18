@@ -10,7 +10,14 @@ const AppReducer = (state = Map(), action) => {
 				user: {
 					status: action.status
 				}
-			}));	
+			}));
+		case Types.LOGIN : 
+			return state.mergeDeep(fromJS({
+				user: {
+					email: action.email,
+					password: action.password
+				}
+			}))	
 		default: 
 			return state;
 	}
