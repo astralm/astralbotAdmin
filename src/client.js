@@ -8,7 +8,7 @@ import reducers from './reducers';
 import { fromJS, Map } from 'immutable';
 import appMiddleware from './middleware.js';
 import initMiddlewareEvents from './middleware_events/index.js';
-import { updateUser, updateState } from './actions';
+import { updateState, login, logout } from './actions';
 import io from 'socket.io-client';
 import ENV from './constants/env.js';
 
@@ -23,8 +23,9 @@ store.subscribe(() => {
   localStorage.setItem('state', JSON.stringify(store.getState().app.toJS()));
 });
 
-if(localStorage.state)
+if(localStorage.state){
   store.dispatch(updateState(localStorage.state));
+}
 
 initMiddlewareEvents(socket, store);
 
@@ -33,7 +34,14 @@ const history = syncHistoryWithStore(hashHistory, store);
 function scrollToTop() {
   window.scrollTo(0, 0);
 }
-
+{
+  let state = store.getState().app;
+  let user = state.get('user') ? state.get('user').toJS() : false;
+  console.log(user);
+  if(user)
+    if(user.email && user.password)
+      store.dispatch(login(user.email, user.password));
+}
 const rootRoute = {
   childRoutes: [{
     path: '/',
