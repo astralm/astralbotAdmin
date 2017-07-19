@@ -11,6 +11,9 @@ export default socket => store => next => action => {
 		case types.LOGOUT :
 			socket.emit(types.LOGOUT);
 			break;
+        case types.GET_USERS :
+            socket.emit(types.GET_USERS);
+            break;
 	}
 	return next(action);
 }

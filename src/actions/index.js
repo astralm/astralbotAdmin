@@ -25,10 +25,8 @@ export function changeTheme(themeOption) {
 //--------------------
 
 export const updateState = state => ({ type: types.UPDATE_STATE, state });
-export const login = (email, password) => ({
-	type: types.LOGIN,
-	email: email,
-	password: password
-});
+export const login = (email, password) => ({ type: types.LOGIN, email, password });
 export const setStatus = status => ({ type: types.SET_STATUS, status });
 export const logout = () => ({ type: types.LOGOUT });
+export const getUsers = () => ({ type: types.GET_USERS });
+export const setUsers = users => ({ type: types.SET_USERS, users });

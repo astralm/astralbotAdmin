@@ -10,3 +10,5 @@ export const UPDATE_STATE = 'UPDATE_STATE';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const SET_STATUS = 'SET_STATUS';
+export const GET_USERS = 'GET_USERS';
+export const SET_USERS = 'SET_USERS';
