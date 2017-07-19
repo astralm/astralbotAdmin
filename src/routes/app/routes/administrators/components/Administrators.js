@@ -80,7 +80,7 @@ class Administrators extends React.Component {
     }
 }
 module.exports = connect(state => ({
-    users : state.app.get('users').toJS() ? state.app.get('users').toJS() : []
+    users : state.app.get('users') ? state.app.get('users').toJS() : []
 }), {getUsers})(Administrators);
 
 
