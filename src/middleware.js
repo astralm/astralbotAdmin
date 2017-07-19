@@ -14,9 +14,6 @@ export default socket => store => next => action => {
         case types.GET_USERS :
             socket.emit(types.GET_USERS);
             break;
-        case types.SET_USERS :
-            socket.emit(types.SET_USERS);
-            break;
 	}
 	return next(action);
 }
