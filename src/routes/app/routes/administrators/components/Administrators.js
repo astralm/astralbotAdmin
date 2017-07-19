@@ -15,7 +15,7 @@ class Administrators extends React.Component {
 
         this.state = {
             h1_zag : 'Администраторы',
-            users : props.users
+            users : this.props.users
         }
     }
     componentWillMount(){
@@ -80,7 +80,7 @@ class Administrators extends React.Component {
     }
 }
 module.exports = connect(state => ({
-    users : state.app.get('users').toJS()
+    users : state.app.get('users').toJS() ? state.app.get('users').toJS() : []
 }), {getUsers})(Administrators);
 
 
