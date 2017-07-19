@@ -10,30 +10,36 @@ import { connect } from 'react-redux';
 import { getUsers } from '../../../../../actions/index.js';
 class Administrators extends React.Component {
     constructor(props) {
-        super(props)
-
-
+        super(props);
         this.state = {
-            h1_zag : 'Администраторы',
-            users : this.props.users
-        }
+            users : props.users,
+            onlineUsers: props.users.filter(user => { return user.user_status == 1 }),
+            offlineUsers: props.users.filter(user => { return user.user_status == 0 })
+        };
     }
     componentWillMount(){
-        this.props.getUsers()
+        this.props.getUsers();
+    }
+    online(){
+        this.setState({
+            users: this.state.onlineUsers
+        });
+    }
+    offline(){
+        this.setState({
+            users: this.state.offlineUsers
+        })
     }
     render() {
-        const style = {
-            paddingTop: '20px;',
-            paddingBottom: '20px;'
-        }
+        this.online = this.online.bind(this);
+        this.offline = this.offline.bind(this);
         return (
             <div>
-
                 <section className="box box-default">
                     <div className="box-body">
                         <List>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Онлайн" leftIcon={<ContentInbox />} /></div>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Оффлайн" leftIcon={<ActionGrade />} /></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Онлайн" leftIcon={<ContentInbox />} onClick = {this.online}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Оффлайн" leftIcon={<ActionGrade />} onClick = {this.offline}/></div>
                             <div style={{display:'inline-block'}}><RaisedButton label="Добавить нового" href="#/app/newuser" secondary /></div>
                         </List>
                     </div>
@@ -50,26 +56,16 @@ class Administrators extends React.Component {
                             </thead>
                             <tbody>
                             {
-                                this.state.users.map(item => (
-                                    <tr>
+                                this.state.users.map((item, itemKey) => (
+                                    <tr key={itemKey}>
                                         {
-                                            Object.keys(item).map(key => (
-                                                <td className = "numeric">{item[key]}</td>
+                                            Object.keys(item).map((key, optionKey) => (
+                                                <td className = "numeric" key={optionKey}>{key == 'user_status' ? item[key] == 1 ? "online" : "offline" : item[key]}</td>
                                             ))
                                         }
                                     </tr>
                                 ))
                             }
-                            {/*<tr>*/}
-                                {/*<td className="numeric">Sergey</td>*/}
-                                {/*<td className="numeric">psv@astralnalog.ru</td>*/}
-                                {/*<td className="numeric">Online</td>*/}
-                            {/*</tr>*/}
-                            {/*<tr>*/}
-                                {/*<td className="numeric">Vlad</td>*/}
-                                {/*<td className="numeric">vlad@astralnalog.ru</td>*/}
-                                {/*<td className="numeric">Offline</td>*/}
-                            {/*</tr>*/}
                             </tbody>
                         </table>
                     </div>
