@@ -11,13 +11,20 @@ const AppReducer = (state = Map(), action) => {
 					status: action.status
 				}
 			}));
+        case Types.SET_USERS :
+            return state.mergeDeep(fromJS({
+                user: {
+                    status: action.users
+                }
+            }));
 		case Types.LOGIN : 
 			return state.mergeDeep(fromJS({
 				user: {
 					email: action.email,
 					password: action.password
 				}
-			}))	
+			}))
+
 		default: 
 			return state;
 	}

@@ -6,12 +6,20 @@ import ContentInbox from 'material-ui/svg-icons/content/inbox';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
 import ContentSend from 'material-ui/svg-icons/content/send';
 import ContentDrafts from 'material-ui/svg-icons/content/drafts';
+import { connect } from 'react-redux';
+import { getUsers } from '../../../../../actions/index.js';
 class Administrators extends React.Component {
     constructor(props) {
         super(props)
+
+
         this.state = {
-            h1_zag : 'Администраторы'
+            h1_zag : 'Администраторы',
+            users : props.users
         }
+    }
+    componentWillMount(){
+        this.props.getUsers()
     }
     render() {
         const style = {
@@ -41,16 +49,27 @@ class Administrators extends React.Component {
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td className="numeric">Sergey</td>
-                                <td className="numeric">psv@astralnalog.ru</td>
-                                <td className="numeric">Online</td>
-                            </tr>
-                            <tr>
-                                <td className="numeric">Vlad</td>
-                                <td className="numeric">vlad@astralnalog.ru</td>
-                                <td className="numeric">Offline</td>
-                            </tr>
+                            {
+                                this.state.users.map(item => (
+                                    <tr>
+                                        {
+                                            Object.keys(item).map(key => (
+                                                <td className = "numeric">{item[key]}</td>
+                                            ))
+                                        }
+                                    </tr>
+                                ))
+                            }
+                            {/*<tr>*/}
+                                {/*<td className="numeric">Sergey</td>*/}
+                                {/*<td className="numeric">psv@astralnalog.ru</td>*/}
+                                {/*<td className="numeric">Online</td>*/}
+                            {/*</tr>*/}
+                            {/*<tr>*/}
+                                {/*<td className="numeric">Vlad</td>*/}
+                                {/*<td className="numeric">vlad@astralnalog.ru</td>*/}
+                                {/*<td className="numeric">Offline</td>*/}
+                            {/*</tr>*/}
                             </tbody>
                         </table>
                     </div>
@@ -60,5 +79,8 @@ class Administrators extends React.Component {
         );
     }
 }
-module.exports = Administrators;
+module.exports = connect(state => ({
+    users : state.app.get('users').toJS()
+}), {getUsers})(Administrators);
+
 

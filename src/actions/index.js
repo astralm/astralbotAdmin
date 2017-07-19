@@ -21,7 +21,12 @@ export function changeColorOption(colorOption) {
 export function changeTheme(themeOption) {
   return { type: types.CHANGE_THEME, theme: themeOption };
 }
-
+export function getUsers(getUsers) {
+    return { type: types.GET_USERS, theme: getUsers };
+}
+export function setUsers(setUsers) {
+    return { type: types.SET_USERS, theme: setUsers };
+}
 //--------------------
 
 export const updateState = state => ({ type: types.UPDATE_STATE, state });
