@@ -14,6 +14,15 @@ export default socket => store => next => action => {
         case types.GET_USERS :
             socket.emit(types.GET_USERS);
             break;
+        case types.SET_USER :
+            socket.emit(types.SET_USER,
+				{
+                    email: action.email,
+                    password: action.password,
+                    name: action.name
+				}
+			);
+            break;
 	}
 	return next(action);
 }
