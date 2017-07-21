@@ -24,7 +24,7 @@ class NewUser extends React.Component {
         let state = this.state,
             [email, password, name] = [state.email, state.password, state.name];
         if(/[aA-zZ]*@[aA-zZ]*\.[aA-zZ]/.test(email) && password && /[aA-zZаА-яЯ]*/.test(name))
-            this.props.setUser(this.state.email,this.state.password,this.state.name)
+            this.props.setUser(email, password, name);
     }
     render() {
         this.email = this.email.bind(this);
