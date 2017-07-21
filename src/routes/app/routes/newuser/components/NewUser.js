@@ -4,14 +4,12 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import QueueAnim from 'rc-queue-anim';
 import { connect } from 'react-redux';
-import { setUsers } from '../../../../../actions/index.js';
+import { setUser } from '../../../../../actions/index.js';
 
 class NewUser extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            h1_zag : 'Добавить нового пользователя'
-        }
+    constructor(props){
+        super(props);
+        this.state = {};
     }
     email(e){
         this.setState({email: e.target.value});
@@ -23,14 +21,16 @@ class NewUser extends React.Component {
         this.setState({name: e.target.value});
     }
     setUser () {
-       this.props.getUsers(this.state.email,this.state.password,this.state.name)
+        let state = this.state,
+            [email, password, name] = [state.email, state.password, state.name];
+        if(/[aA-zZ]*@[aA-zZ]*\.[aA-zZ]/.test(email) && password && /[aA-zZаА-яЯ]*/.test(name))
+            this.props.setUser(this.state.email,this.state.password,this.state.name)
     }
-
     render() {
         this.email = this.email.bind(this);
         this.password = this.password.bind(this);
         this.name = this.name.bind(this);
-        this.click = this.click.bind(this);
+        this.setUser = this.setUser.bind(this);
         return (
             <div>
                 <div className="body-inner">
@@ -42,7 +42,7 @@ class NewUser extends React.Component {
                                         <TextField
                                             floatingLabelText="Email"
                                             fullWidth
-                                            onInput = {this.email()}
+                                            onInput = {this.email}
                                         />
                                     </div>
                                     <div className="form-group">
@@ -50,7 +50,7 @@ class NewUser extends React.Component {
                                             floatingLabelText="Password"
                                             type="password"
                                             fullWidth
-                                            onInput = {this.password()}
+                                            onInput = {this.password}
                                         />
                                     </div>
                                     <div className="form-group">
@@ -58,7 +58,7 @@ class NewUser extends React.Component {
                                             floatingLabelText="Name"
                                             type="text"
                                             fullWidth
-                                            onInput = {this.name()}
+                                            onInput = {this.name}
                                         />
                                     </div>
                                 </fieldset>
@@ -76,6 +76,6 @@ class NewUser extends React.Component {
         );
     }
 }
-module.exports = connect(state => (null), {setUsers})(NewUser);
+module.exports = connect(null, {setUser})(NewUser);
 
 
