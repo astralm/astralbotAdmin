@@ -30,4 +30,5 @@ export const setStatus = status => ({ type: types.SET_STATUS, status });
 export const logout = () => ({ type: types.LOGOUT });
 export const getUsers = () => ({ type: types.GET_USERS });
 export const setUsers = users => ({ type: types.SET_USERS, users });
-export const setUser = (email,password,name) => ({ type: types.SET_USER, email, password, name });
+export const setUser = (email, password, name) => ({ type: types.SET_USER, email, password, name });
+export const updateUser = (email, password, name, status, id) => ({ type: types.UPDATE_USER, email, password, name, status, id });
