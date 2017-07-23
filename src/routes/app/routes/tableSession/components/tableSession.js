@@ -6,11 +6,22 @@ import ContentInbox from 'material-ui/svg-icons/content/inbox';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
 import ContentSend from 'material-ui/svg-icons/content/send';
 import ContentDrafts from 'material-ui/svg-icons/content/drafts';
+import { connect } from 'react-redux';
+import { getSessions } from '../../../../../actions/index.js';
 class TableBody extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            sessions: props.sessions,
+            userId: props.userId
+        }
+    }
+    componentWillMount(){
+        this.props.getSessions()
+    }
     render() {
         return (
             <div>
-
                 <section className="box box-default">
                     <div className="box-body">
                         <List>
@@ -28,65 +39,34 @@ class TableBody extends React.Component {
                     <div className="box box-default table-box table-responsive mdl-shadow--2dp">
                         <table className="mdl-data-table">
                             <thead>
-                            <tr>
-                                <th className="numeric">SESSION ID</th>
-                                <th className="numeric">USER QUESTION</th>
-                                <th className="numeric">BOT ANSWER</th>
-                                <th className="numeric">STATUS</th>
-                                <th className="numeric">ADMINISTRATOR</th>
-                                <th className="numeric">VIEW</th>
-                                <th className="numeric"></th>
-                            </tr>
+                                <tr>
+                                    <th className="numeric">SESSION ID</th>
+                                    <th className="numeric">USER QUESTION</th>
+                                    <th className="numeric">BOT ANSWER</th>
+                                    <th className="numeric">STATUS</th>
+                                    <th className="numeric">ADMINISTRATOR</th>
+                                    <th className="numeric">VIEW</th>
+                                    <th className="numeric"></th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td className="numeric">1</td>
-                                <td className="numeric">Привет</td>
-                                <td className="numeric">Здравствуйте</td>
-                                <td className="numeric">Активный</td>
-                                <td className="numeric">Николай</td>
-                                <td className="numeric">
-                                    <RaisedButton label="Просмотр" href="#/app/dialog" secondary />
-                                </td>
-                                <td>
-                                    <RaisedButton  label="Взять" primary />
-                                </td>
-                                <td>
-                                    <RaisedButton  label="Отказаться" primary />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="numeric">1</td>
-                                <td className="numeric">Привет</td>
-                                <td className="numeric">Здравствуйте</td>
-                                <td className="numeric">Активный</td>
-                                <td className="numeric">Николай</td>
-                                <td className="numeric">
-                                    <RaisedButton label="Просмотр" href="#/app/dialog"  secondary />
-                                </td>
-                                <td>
-                                    <RaisedButton  label="Взять" primary />
-                                </td>
-                                <td>
-                                    <RaisedButton  label="Отказаться" primary />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="numeric">1</td>
-                                <td className="numeric">Привет</td>
-                                <td className="numeric">Здравствуйте</td>
-                                <td className="numeric">Активный</td>
-                                <td className="numeric">Николай</td>
-                                <td className="numeric">
-                                    <RaisedButton label="Просмотр" href="#/app/dialog"   secondary />
-                                </td>
-                                <td>
-                                    <RaisedButton  label="Взять" primary />
-                                </td>
-                                <td>
-                                    <RaisedButton  label="Отказаться" primary />
-                                </td>
-                            </tr>
+                                {
+                                    this.state.sessions.map((session, sessionKey) => (
+                                        <tr>
+                                            {
+                                                [session.session_id, 
+                                                session.questions[sessions.questions.length - 1], 
+                                                session.answers[session.answers.length - 1], 
+                                                session.session_status, 
+                                                session.user_name,
+                                                <RaisedButton label="Просмотр" href="#/app/dialog" secondary />,
+                                                <RaisedButton  label={session.user_id == this.state.userId ? "отказаться" : "Взять"} primary />].map((option, optionKey) => (
+                                                    <td className="numeric">{ optionKey == 3 ? option == 0 ? "false" : "true" : option }</td>
+                                                ))
+                                            }
+                                        </tr>
+                                    ))
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -96,4 +76,7 @@ class TableBody extends React.Component {
         );
     }
 }
-module.exports = TableBody;
+module.exports = connect(state => {
+    sessions: state.app.get('sessions') ? state.app.get('sessions').toJS() : [],
+    userId: state.app.getIn(['user', 'user_id'])
+}, {getSessions})(TableBody);
