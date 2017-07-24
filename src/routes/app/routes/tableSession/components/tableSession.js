@@ -12,9 +12,40 @@ class TableBody extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            allSessions: props.sessions,
             sessions: props.sessions,
-            userId: props.userId
+            userId: props.userId,
+            freeSessions: props.sessions.filter(session => (!session.user_name)),
+            busySessions: props.sessions.filter(session => (session.user_name)),
+            userSessions: props.sessions.filter(session => (session.user_id == props.userId)),
+            activeSessions: props.sessions.filter(session => (session.session_status)),
+            inactiveSessions: props.sessions.filter(session => (!session.session_status))
         }
+    }
+    freeSessions(){
+        this.setState({
+            sessions: this.state.freeSessions
+        })
+    }
+    busySessions(){
+        this.setState({
+            sessions: this.state.busySessions
+        })
+    }
+    userSessions(){
+        this.setState({
+            sessions: this.state.userSessions
+        })
+    }
+    activeSessions(){
+        this.setState({
+            sessions: this.state.activeSessions
+        });
+    }
+    inactiveSessions(){
+        this.setState({
+            sessions: this.state.inactiveSessions
+        })
     }
     componentWillMount(){
         this.props.getSessions()
@@ -25,13 +56,13 @@ class TableBody extends React.Component {
                 <section className="box box-default">
                     <div className="box-body">
                         <List>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Активные" leftIcon={<ContentInbox />} /></div>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Неактивные" leftIcon={<ActionGrade />} /></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Активные" leftIcon={<ContentInbox />} onClick = {this.activeSessions.bind(this)}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Неактивные" leftIcon={<ActionGrade />} onClick = {this.inactiveSessions.bind(this)}/></div>
                             <div style={{display:'inline-block'}}><ListItem  primaryText="Ошибки" leftIcon={<ContentSend />} /></div>
                             <div style={{display:'inline-block'}}><ListItem  primaryText="Без ошибок" leftIcon={<ContentDrafts />} /></div>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Сводные" leftIcon={<ContentInbox />} /></div>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Занятые" leftIcon={<ContentInbox />} /></div>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Ваши" leftIcon={<ContentInbox />} /></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Сводные" leftIcon={<ContentInbox />} onClick = {this.freeSessions.bind(this)}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Занятые" leftIcon={<ContentInbox />} onClick = {this.busySessions.bind(this)}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Ваши" leftIcon={<ContentInbox />} onClick = {this.userSessions.bind(this)}/></div>
                         </List>
                     </div>
                 </section>
@@ -52,16 +83,16 @@ class TableBody extends React.Component {
                             <tbody>
                                 {
                                     this.state.sessions.map((session, sessionKey) => (
-                                        <tr>
+                                        <tr key = {sessionKey}>
                                             {
                                                 [session.session_id, 
-                                                session.questions[sessions.questions.length - 1], 
-                                                session.answers[session.answers.length - 1], 
+                                                session.question, 
+                                                session.answer, 
                                                 session.session_status, 
-                                                session.user_name,
+                                                session.user_name || "-",
                                                 <RaisedButton label="Просмотр" href="#/app/dialog" secondary />,
                                                 <RaisedButton  label={session.user_id == this.state.userId ? "отказаться" : "Взять"} primary />].map((option, optionKey) => (
-                                                    <td className="numeric">{ optionKey == 3 ? option == 0 ? "false" : "true" : option }</td>
+                                                    <td className="numeric" key = {optionKey}>{ optionKey == 3 ? option == 0 ? "false" : "true" : option }</td>
                                                 ))
                                             }
                                         </tr>
@@ -76,7 +107,7 @@ class TableBody extends React.Component {
         );
     }
 }
-module.exports = connect(state => {
+module.exports = connect(state => ({
     sessions: state.app.get('sessions') ? state.app.get('sessions').toJS() : [],
-    userId: state.app.getIn(['user', 'user_id'])
-}, {getSessions})(TableBody);
+    userId: state.app.getIn(['user', 'id'])
+}), {getSessions})(TableBody);
