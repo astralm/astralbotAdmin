@@ -91,7 +91,7 @@ class TableBody extends React.Component {
                                                 session.session_status, 
                                                 session.user_name || "-",
                                                 <RaisedButton label="Просмотр" href="#/app/dialog" secondary />,
-                                                <RaisedButton  label={session.user_id == this.state.userId ? "отказаться" : "Взять"} primary />].map((option, optionKey) => (
+                                                session.user_id == this.state.userId || session.user_id == 0 ? <RaisedButton label={session.user_id == this.state.userId ? "отказаться" : "Взять"} primary /> : null].map((option, optionKey) => (
                                                     <td className="numeric" key = {optionKey}>{ optionKey == 3 ? option == 0 ? "false" : "true" : option }</td>
                                                 ))
                                             }
