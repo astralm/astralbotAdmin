@@ -22,6 +22,16 @@ const AppReducer = (state = Map(), action) => {
 					password: action.password
 				}
 			}))
+		case Types.UPDATE_USER : 
+			return state.set('user', fromJS({
+				email: action.email,
+				password: action.password,
+				name: action.name,
+				status: action.status == 0 ? false : true,
+				id: action.id
+			}))
+		case Types.SET_SESSIONS :
+			return state.set('sessions', fromJS(action.sessions));
 		default: 
 			return state;
 	}
