@@ -23,6 +23,9 @@ export default socket => store => next => action => {
 				}
 			);
             break;
+        case types.GET_SESSIONS :
+        	socket.emit(types.GET_SESSIONS);
+        	break;
 	}
 	return next(action);
 }
