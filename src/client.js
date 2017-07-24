@@ -37,7 +37,6 @@ function scrollToTop() {
 {
   let state = store.getState().app;
   let user = state.get('user') ? state.get('user').toJS() : false;
-  console.log(user);
   if(user)
     if(user.email && user.password)
       store.dispatch(login(user.email, user.password));
