@@ -7,50 +7,80 @@ import ActionGrade from 'material-ui/svg-icons/action/grade';
 import ContentSend from 'material-ui/svg-icons/content/send';
 import ContentDrafts from 'material-ui/svg-icons/content/drafts';
 import { connect } from 'react-redux';
-import { getSessions } from '../../../../../actions/index.js';
+import { getSessions, getUserSessions, 
+         getFreeSessions, getBusySessions, 
+         getErrorSessions, getSuccessSessions,
+         getActiveSessions, getInactiveSessions, setSwitch } from '../../../../../actions/index.js';
 class TableBody extends React.Component {
     constructor(props){
         super(props);
-        this.state = {
-            allSessions: props.sessions,
-            sessions: props.sessions,
-            userId: props.userId,
-            freeSessions: props.sessions.filter(session => (!session.user_name)),
-            busySessions: props.sessions.filter(session => (session.user_name)),
-            userSessions: props.sessions.filter(session => (session.user_id == props.userId)),
-            activeSessions: props.sessions.filter(session => (session.session_status)),
-            inactiveSessions: props.sessions.filter(session => (!session.session_status))
-        }
+    }
+    allSessions(){
+        this.props.getSessions(this.state.switch == "all" ? this.state.offset : 0);
+        this.props.setSwitch("all");
     }
     freeSessions(){
-        this.setState({
-            sessions: this.state.freeSessions
-        })
+        this.props.getFreeSessions(this.state.switch == "free" ? this.state.offset : 0);
+        this.props.setSwitch("free");
     }
     busySessions(){
-        this.setState({
-            sessions: this.state.busySessions
-        })
+        this.props.getBusySessions(this.state.switch == "busy" ? this.state.offset : 0);
+        this.props.setSwitch("busy");
     }
     userSessions(){
-        this.setState({
-            sessions: this.state.userSessions
-        })
+        this.props.getUserSessions(this.state.switch == "user" ? this.state.offset : 0, this.state.userId);
+        this.props.setSwitch("user");
     }
     activeSessions(){
-        this.setState({
-            sessions: this.state.activeSessions
-        });
+        this.props.getActiveSessions(this.state.switch == "active" ? this.state.offset : 0);
+        this.props.setSwitch("active");
     }
     inactiveSessions(){
-        this.setState({
-            sessions: this.state.inactiveSessions
-        })
+        this.props.getInactiveSessions(this.state.switch == "inactive" ? this.state.offset : 0);
+        this.props.setSwitch("inactive");
+    }
+    errorSessions(){
+        this.props.getErrorSessions(this.state.switch == "error" ? this.state.offset : 0);
+        this.props.setSwitch("error");
+    }
+    successSessions(){
+        this.props.getSuccessSessions(this.state.switch == "success" ? this.state.offset : 0);
+        this.props.setSwitch("success");
     }
     componentWillMount(){
-        this.props.getSessions()
+        switch(this.props.switch){
+            case "all" :
+                this.props.getSessions(this.props.offset);
+                break;
+            case "free" :
+                this.props.getFreeSessions(this.props.offset);
+                break;
+            case "busy" :
+                this.props.getBusySessions(this.props.offset);
+                break;
+            case "user" :
+                this.props.getUserSessions(this.props.offset);
+                break;
+            case "active" :
+                this.props.getActiveSessions(this.props.offset);
+                break;
+            case "inactive" :
+                this.props.getInactiveSessions(this.props.offset);
+                break;
+            case "error" :
+                this.props.getErrorSessions(this.props.offset);
+                break;
+            case "success" :
+                this.props.getSuccessSessions(this.props.offset);
+        }
     }
     render() {
+        this.state = {
+            sessions: this.props.sessions,
+            userId: this.props.userId,
+            switch: this.props.switch,
+            offset: this.props.offset
+        };
         return (
             <div>
                 <section className="box box-default">
@@ -58,11 +88,12 @@ class TableBody extends React.Component {
                         <List>
                             <div style={{display:'inline-block'}}><ListItem  primaryText="Активные" leftIcon={<ContentInbox />} onClick = {this.activeSessions.bind(this)}/></div>
                             <div style={{display:'inline-block'}}><ListItem  primaryText="Неактивные" leftIcon={<ActionGrade />} onClick = {this.inactiveSessions.bind(this)}/></div>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Ошибки" leftIcon={<ContentSend />} /></div>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Без ошибок" leftIcon={<ContentDrafts />} /></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Ошибки" leftIcon={<ContentSend />} onClick = {this.errorSessions.bind(this)}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Без ошибок" leftIcon={<ContentDrafts />} onClick = {this.successSessions.bind(this)}/></div>
                             <div style={{display:'inline-block'}}><ListItem  primaryText="Сводные" leftIcon={<ContentInbox />} onClick = {this.freeSessions.bind(this)}/></div>
                             <div style={{display:'inline-block'}}><ListItem  primaryText="Занятые" leftIcon={<ContentInbox />} onClick = {this.busySessions.bind(this)}/></div>
                             <div style={{display:'inline-block'}}><ListItem  primaryText="Ваши" leftIcon={<ContentInbox />} onClick = {this.userSessions.bind(this)}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Все" leftIcon={<ContentInbox />} onClick = {this.allSessions.bind(this)}/></div>
                         </List>
                     </div>
                 </section>
@@ -76,6 +107,7 @@ class TableBody extends React.Component {
                                     <th className="numeric">BOT ANSWER</th>
                                     <th className="numeric">STATUS</th>
                                     <th className="numeric">ADMINISTRATOR</th>
+                                    <th className="numeric">ERROR</th>
                                     <th className="numeric">VIEW</th>
                                     <th className="numeric"></th>
                                 </tr>
@@ -90,6 +122,7 @@ class TableBody extends React.Component {
                                                 session.answer, 
                                                 session.session_status, 
                                                 session.user_name || "-",
+                                                session.session_error ? "true" : "false",
                                                 <RaisedButton label="Просмотр" href="#/app/dialog" secondary />,
                                                 session.user_id == this.state.userId || session.user_id == 0 ? <RaisedButton label={session.user_id == this.state.userId ? "отказаться" : "Взять"} primary /> : null].map((option, optionKey) => (
                                                     <td className="numeric" key = {optionKey}>{ optionKey == 3 ? option == 0 ? "false" : "true" : option }</td>
@@ -102,12 +135,16 @@ class TableBody extends React.Component {
                         </table>
                     </div>
                 </article>
-
             </div>
         );
     }
 }
 module.exports = connect(state => ({
     sessions: state.app.get('sessions') ? state.app.get('sessions').toJS() : [],
-    userId: state.app.getIn(['user', 'id'])
-}), {getSessions})(TableBody);
+    userId: state.app.getIn(['user', 'id']),
+    offset: state.app.get('offset') ? state.app.get('offset') : 0,
+    switch: state.app.get('switch') ? state.app.get('switch') : "all"
+}), { getSessions, getUserSessions,
+      getFreeSessions, getBusySessions,
+      getErrorSessions, getSuccessSessions,
+      getActiveSessions, getInactiveSessions, setSwitch })(TableBody);
