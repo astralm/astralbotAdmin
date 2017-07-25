@@ -30,6 +30,19 @@ const AppReducer = (state = Map(), action) => {
 				status: action.status == 0 ? false : true,
 				id: action.id
 			}))
+		case Types.SET_SESSIONS :
+		case Types.SET_USER_SESSIONS:
+		case Types.SET_FREE_SESSIONS:
+		case Types.SET_BUSY_SESSIONS:
+		case Types.SET_SUCCESS_SESSIONS:
+		case Types.SET_ERROR_SESSIONS:
+		case Types.SET_ACTIVE_SESSIONS:
+		case Types.SET_INACTIVE_SESSIONS:
+			return state.set('sessions', fromJS(action.sessions));
+		case Types.SET_OFFSET :
+			return state.set('offset', action.offset);
+		case Types.SET_SWITCH :
+			return state.set('switch', action.switch);
 		default: 
 			return state;
 	}

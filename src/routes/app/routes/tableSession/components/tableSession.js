@@ -6,21 +6,95 @@ import ContentInbox from 'material-ui/svg-icons/content/inbox';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
 import ContentSend from 'material-ui/svg-icons/content/send';
 import ContentDrafts from 'material-ui/svg-icons/content/drafts';
+import { connect } from 'react-redux';
+import { getSessions, getUserSessions, 
+         getFreeSessions, getBusySessions, 
+         getErrorSessions, getSuccessSessions,
+         getActiveSessions, getInactiveSessions, 
+         setSwitch, setOffset } from '../../../../../actions/index.js';
 class TableBody extends React.Component {
+    allSessions(){
+        this.props.getSessions(this.state.switch == "all" ? this.state.offset : 0);
+        this.props.setSwitch("all");
+    }
+    freeSessions(){
+        this.props.getFreeSessions(this.state.switch == "free" ? this.state.offset : 0);
+        this.props.setSwitch("free");
+    }
+    busySessions(){
+        this.props.getBusySessions(this.state.switch == "busy" ? this.state.offset : 0);
+        this.props.setSwitch("busy");
+    }
+    userSessions(){
+        this.props.getUserSessions(this.state.switch == "user" ? this.state.offset : 0, this.state.userId);
+        this.props.setSwitch("user");
+    }
+    activeSessions(){
+        this.props.getActiveSessions(this.state.switch == "active" ? this.state.offset : 0);
+        this.props.setSwitch("active");
+    }
+    inactiveSessions(){
+        this.props.getInactiveSessions(this.state.switch == "inactive" ? this.state.offset : 0);
+        this.props.setSwitch("inactive");
+    }
+    errorSessions(){
+        this.props.getErrorSessions(this.state.switch == "error" ? this.state.offset : 0);
+        this.props.setSwitch("error");
+    }
+    successSessions(){
+        this.props.getSuccessSessions(this.state.switch == "success" ? this.state.offset : 0);
+        this.props.setSwitch("success");
+    }
+    offset(e){
+        this.props.setOffset(e.target.getAttribute('data-offset'));
+    }
+    componentWillMount(){
+        switch(this.props.switch){
+            case "all" :
+                this.props.getSessions(this.props.offset);
+                break;
+            case "free" :
+                this.props.getFreeSessions(this.props.offset);
+                break;
+            case "busy" :
+                this.props.getBusySessions(this.props.offset);
+                break;
+            case "user" :
+                this.props.getUserSessions(this.props.offset);
+                break;
+            case "active" :
+                this.props.getActiveSessions(this.props.offset);
+                break;
+            case "inactive" :
+                this.props.getInactiveSessions(this.props.offset);
+                break;
+            case "error" :
+                this.props.getErrorSessions(this.props.offset);
+                break;
+            case "success" :
+                this.props.getSuccessSessions(this.props.offset);
+        }
+    }
     render() {
+        this.state = {
+            sessions: this.props.sessions,
+            userId: this.props.userId,
+            switch: this.props.switch,
+            offset: this.props.offset
+        };
         return (
             <div>
-
                 <section className="box box-default">
                     <div className="box-body">
                         <List>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Активные" leftIcon={<ContentInbox />} /></div>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Неактивные" leftIcon={<ActionGrade />} /></div>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Ошибки" leftIcon={<ContentSend />} /></div>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Без ошибок" leftIcon={<ContentDrafts />} /></div>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Сводные" leftIcon={<ContentInbox />} /></div>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Занятые" leftIcon={<ContentInbox />} /></div>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Ваши" leftIcon={<ContentInbox />} /></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Активные" leftIcon={<ContentInbox />} onClick = {this.activeSessions.bind(this)}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Неактивные" leftIcon={<ActionGrade />} onClick = {this.inactiveSessions.bind(this)}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Ошибки" leftIcon={<ContentSend />} onClick = {this.errorSessions.bind(this)}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Без ошибок" leftIcon={<ContentDrafts />} onClick = {this.successSessions.bind(this)}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Сводные" leftIcon={<ContentInbox />} onClick = {this.freeSessions.bind(this)}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Занятые" leftIcon={<ContentInbox />} onClick = {this.busySessions.bind(this)}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Ваши" leftIcon={<ContentInbox />} onClick = {this.userSessions.bind(this)}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Все" leftIcon={<ContentInbox />} onClick = {this.allSessions.bind(this)}/></div>
                         </List>
                     </div>
                 </section>
@@ -28,72 +102,50 @@ class TableBody extends React.Component {
                     <div className="box box-default table-box table-responsive mdl-shadow--2dp">
                         <table className="mdl-data-table">
                             <thead>
-                            <tr>
-                                <th className="numeric">SESSION ID</th>
-                                <th className="numeric">USER QUESTION</th>
-                                <th className="numeric">BOT ANSWER</th>
-                                <th className="numeric">STATUS</th>
-                                <th className="numeric">ADMINISTRATOR</th>
-                                <th className="numeric">VIEW</th>
-                                <th className="numeric"></th>
-                            </tr>
+                                <tr>
+                                    <th className="numeric">SESSION ID</th>
+                                    <th className="numeric">USER QUESTION</th>
+                                    <th className="numeric">BOT ANSWER</th>
+                                    <th className="numeric">STATUS</th>
+                                    <th className="numeric">ADMINISTRATOR</th>
+                                    <th className="numeric">ERROR</th>
+                                    <th className="numeric">VIEW</th>
+                                    <th className="numeric"></th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td className="numeric">1</td>
-                                <td className="numeric">Привет</td>
-                                <td className="numeric">Здравствуйте</td>
-                                <td className="numeric">Активный</td>
-                                <td className="numeric">Николай</td>
-                                <td className="numeric">
-                                    <RaisedButton label="Просмотр" href="#/app/dialog" secondary />
-                                </td>
-                                <td>
-                                    <RaisedButton  label="Взять" primary />
-                                </td>
-                                <td>
-                                    <RaisedButton  label="Отказаться" primary />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="numeric">1</td>
-                                <td className="numeric">Привет</td>
-                                <td className="numeric">Здравствуйте</td>
-                                <td className="numeric">Активный</td>
-                                <td className="numeric">Николай</td>
-                                <td className="numeric">
-                                    <RaisedButton label="Просмотр" href="#/app/dialog"  secondary />
-                                </td>
-                                <td>
-                                    <RaisedButton  label="Взять" primary />
-                                </td>
-                                <td>
-                                    <RaisedButton  label="Отказаться" primary />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="numeric">1</td>
-                                <td className="numeric">Привет</td>
-                                <td className="numeric">Здравствуйте</td>
-                                <td className="numeric">Активный</td>
-                                <td className="numeric">Николай</td>
-                                <td className="numeric">
-                                    <RaisedButton label="Просмотр" href="#/app/dialog"   secondary />
-                                </td>
-                                <td>
-                                    <RaisedButton  label="Взять" primary />
-                                </td>
-                                <td>
-                                    <RaisedButton  label="Отказаться" primary />
-                                </td>
-                            </tr>
+                                {
+                                    this.state.sessions.map((session, sessionKey) => (
+                                        <tr key = {sessionKey}>
+                                            {
+                                                [session.session_id, 
+                                                session.question, 
+                                                session.answer, 
+                                                session.session_status, 
+                                                session.user_name || "-",
+                                                session.session_error ? "true" : "false",
+                                                <RaisedButton label="Просмотр" href="#/app/dialog" secondary />,
+                                                session.user_id == this.state.userId || session.user_id == 0 ? <RaisedButton label={session.user_id == this.state.userId ? "отказаться" : "Взять"} primary /> : null].map((option, optionKey) => (
+                                                    <td className="numeric" key = {optionKey}>{ optionKey == 3 ? option == 0 ? "false" : "true" : option }</td>
+                                                ))
+                                            }
+                                        </tr>
+                                    ))
+                                }
                             </tbody>
                         </table>
                     </div>
                 </article>
-
             </div>
         );
     }
 }
-module.exports = TableBody;
+module.exports = connect(state => ({
+    sessions: state.app.get('sessions') ? state.app.get('sessions').toJS() : [],
+    userId: state.app.getIn(['user', 'id']),
+    offset: state.app.get('offset') ? state.app.get('offset') : 0,
+    switch: state.app.get('switch') ? state.app.get('switch') : "all"
+}), { getSessions, getUserSessions,
+      getFreeSessions, getBusySessions,
+      getErrorSessions, getSuccessSessions,
+      getActiveSessions, getInactiveSessions, setSwitch })(TableBody);
