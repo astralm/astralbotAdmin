@@ -10,11 +10,9 @@ import { connect } from 'react-redux';
 import { getSessions, getUserSessions, 
          getFreeSessions, getBusySessions, 
          getErrorSessions, getSuccessSessions,
-         getActiveSessions, getInactiveSessions, setSwitch } from '../../../../../actions/index.js';
+         getActiveSessions, getInactiveSessions, 
+         setSwitch, setOffset } from '../../../../../actions/index.js';
 class TableBody extends React.Component {
-    constructor(props){
-        super(props);
-    }
     allSessions(){
         this.props.getSessions(this.state.switch == "all" ? this.state.offset : 0);
         this.props.setSwitch("all");
@@ -46,6 +44,9 @@ class TableBody extends React.Component {
     successSessions(){
         this.props.getSuccessSessions(this.state.switch == "success" ? this.state.offset : 0);
         this.props.setSwitch("success");
+    }
+    offset(e){
+        this.props.setOffset(e.target.getAttribute('data-offset'));
     }
     componentWillMount(){
         switch(this.props.switch){
