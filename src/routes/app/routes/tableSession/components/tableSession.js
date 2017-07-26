@@ -11,8 +11,21 @@ import { getSessions, getUserSessions,
          getFreeSessions, getBusySessions, 
          getErrorSessions, getSuccessSessions,
          getActiveSessions, getInactiveSessions, 
-         setSwitch, setOffset } from '../../../../../actions/index.js';
+         setSwitch, setOffset,
+         bindSession, unbindSession } from '../../../../../actions/index.js';
 class TableBody extends React.Component {
+    bindSession(e){
+        let target = e.target,
+            session_id = target.parentNode.parentNode.parentNode.getAttribute("data-session_id"),
+            userId = this.state.userId;
+        this.props.bindSession(userId, session_id);
+    }
+    unbindSession(e){
+        let target = e.target,
+            session_id = target.parentNode.parentNode.parentNode.getAttribute("data-session_id"),
+            userId = this.state.userId;
+        this.props.unbindSession(userId, session_id);
+    }
     allSessions(){
         this.props.getSessions(this.state.switch == "all" ? this.state.offset : 0);
         this.props.setSwitch("all");
@@ -125,7 +138,7 @@ class TableBody extends React.Component {
                                                 session.user_name || "-",
                                                 session.session_error ? "true" : "false",
                                                 <RaisedButton label="Просмотр" href="#/app/dialog" secondary />,
-                                                session.user_id == this.state.userId || session.user_id == 0 ? <RaisedButton label={session.user_id == this.state.userId ? "отказаться" : "Взять"} primary /> : null].map((option, optionKey) => (
+                                                session.user_id == this.state.userId || session.user_id == 0 ? <RaisedButton label={session.user_id == this.state.userId ? "отказаться" : "Взять"} onClick = { session.user_id == this.state.userId ? this.unbindSession.bind(this) : this.bindSession.bind(this) } data-session_id = {session.session_id} primary /> : null].map((option, optionKey) => (
                                                     <td className="numeric" key = {optionKey}>{ optionKey == 3 ? option == 0 ? "false" : "true" : option }</td>
                                                 ))
                                             }
@@ -148,4 +161,6 @@ module.exports = connect(state => ({
 }), { getSessions, getUserSessions,
       getFreeSessions, getBusySessions,
       getErrorSessions, getSuccessSessions,
-      getActiveSessions, getInactiveSessions, setSwitch })(TableBody);
+      getActiveSessions, getInactiveSessions, 
+      setSwitch, setOffset,
+      bindSession, unbindSession })(TableBody);
