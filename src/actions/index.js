@@ -50,3 +50,5 @@ export const getBusySessions = offset => ({ type: types.GET_BUSY_SESSIONS, offse
 export const setBusySessions = sessions => ({ type: types.SET_BUSY_SESSIONS, sessions});
 export const setOffset = offset => ({ type: types.SET_OFFSET, offset });
 export const setSwitch = data => ({ type: types.SET_SWITCH, switch: data });
+export const bindSession = (user_id, session_id) => ({ type: types.BIND_SESSION, user_id, session_id });
+export const unbindSession = (user_id, session_id) => ({ type: types.UNBIND_SESSION, user_id, session_id });

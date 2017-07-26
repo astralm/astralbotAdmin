@@ -48,6 +48,18 @@ export default socket => store => next => action => {
         user_id: action.userId
       });
    		break;
+    case types.BIND_SESSION :
+      socket.emit(types.BIND_SESSION, {
+        user_id: action.user_id,
+        session_id: action.session_id
+      });
+      break;
+    case types.UNBIND_SESSION :
+      socket.emit(types.UNBIND_SESSION, {
+        user_id: action.user_id,
+        session_id: action.session_id
+      });
+      break;
 	}
 	return next(action);
 }
