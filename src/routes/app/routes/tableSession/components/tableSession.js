@@ -12,8 +12,11 @@ import { getSessions, getUserSessions,
          getErrorSessions, getSuccessSessions,
          getActiveSessions, getInactiveSessions, 
          setSwitch, setOffset,
-         bindSession, unbindSession } from '../../../../../actions/index.js';
+         bindSession, unbindSession, setViewSession } from '../../../../../actions/index.js';
 class TableBody extends React.Component {
+    setViewSession(e){
+        this.props.setViewSession(e.target.parentNode.parentNode.parentNode.getAttribute('data-session_id'));
+    }
     bindSession(e){
         let target = e.target,
             session_id = target.parentNode.parentNode.parentNode.getAttribute("data-session_id"),
@@ -137,7 +140,7 @@ class TableBody extends React.Component {
                                                 session.session_status, 
                                                 session.user_name || "-",
                                                 session.session_error ? "true" : "false",
-                                                <RaisedButton label="Просмотр" href="#/app/dialog" secondary />,
+                                                <RaisedButton label="Просмотр" href="#/app/dialog" data-session_id = { session.session_id } onClick = { this.setViewSession.bind(this) } secondary />,
                                                 session.user_id == this.state.userId || session.user_id == 0 ? <RaisedButton label={session.user_id == this.state.userId ? "отказаться" : "Взять"} onClick = { session.user_id == this.state.userId ? this.unbindSession.bind(this) : this.bindSession.bind(this) } data-session_id = {session.session_id} primary /> : null].map((option, optionKey) => (
                                                     <td className="numeric" key = {optionKey}>{ optionKey == 3 ? option == 0 ? "false" : "true" : option }</td>
                                                 ))
@@ -163,4 +166,4 @@ module.exports = connect(state => ({
       getErrorSessions, getSuccessSessions,
       getActiveSessions, getInactiveSessions, 
       setSwitch, setOffset,
-      bindSession, unbindSession })(TableBody);
+      bindSession, unbindSession, setViewSession })(TableBody);
