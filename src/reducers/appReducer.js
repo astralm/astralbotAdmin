@@ -12,6 +12,7 @@ const AppReducer = (state = Map(), action) => {
 				}
 			}));
         case Types.SET_USERS :
+        	console.log("set");
             return state.mergeDeep(fromJS({
                 users: action.users
             }));
@@ -31,18 +32,34 @@ const AppReducer = (state = Map(), action) => {
 				id: action.id
 			}))
 		case Types.SET_SESSIONS :
-		case Types.SET_USER_SESSIONS:
-		case Types.SET_FREE_SESSIONS:
-		case Types.SET_BUSY_SESSIONS:
-		case Types.SET_SUCCESS_SESSIONS:
-		case Types.SET_ERROR_SESSIONS:
-		case Types.SET_ACTIVE_SESSIONS:
-		case Types.SET_INACTIVE_SESSIONS:
+		case Types.SET_USER_SESSIONS :
+		case Types.SET_FREE_SESSIONS :
+		case Types.SET_BUSY_SESSIONS :
+		case Types.SET_SUCCESS_SESSIONS :
+		case Types.SET_ERROR_SESSIONS :
+		case Types.SET_ACTIVE_SESSIONS :
+		case Types.SET_INACTIVE_SESSIONS :
 			return state.set('sessions', fromJS(action.sessions));
 		case Types.SET_OFFSET :
 			return state.set('offset', action.offset);
 		case Types.SET_SWITCH :
 			return state.set('switch', action.switch);
+		case Types.SET_VIEW_SESSION :
+			return state.mergeDeep(fromJS({
+				session: {
+					session_id: action.session_id
+				}
+			}));
+		case Types.SET_SESSION_INFO :
+			return state.mergeDeep(fromJS({
+				session: action.session[0]
+			}));
+		case Types.SET_SESSION_DIALOG :
+			return state.mergeDeep(fromJS({
+				session: {
+					dialog: action.dialog
+				}
+			}));
 		default: 
 			return state;
 	}
