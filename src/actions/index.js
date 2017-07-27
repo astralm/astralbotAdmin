@@ -52,3 +52,8 @@ export const setOffset = offset => ({ type: types.SET_OFFSET, offset });
 export const setSwitch = data => ({ type: types.SET_SWITCH, switch: data });
 export const bindSession = (user_id, session_id) => ({ type: types.BIND_SESSION, user_id, session_id });
 export const unbindSession = (user_id, session_id) => ({ type: types.UNBIND_SESSION, user_id, session_id });
+export const setViewSession = session_id => ({ type: types.SET_VIEW_SESSION, session_id });
+export const getSessionInfo = session_id => ({ type: types.GET_SESSION_INFO, session_id });
+export const setSessionInfo = session => ({ type: types.SET_SESSION_INFO, session });
+export const getSessionDialog = session_id => ({ type: types.GET_SESSION_DIALOG, session_id });
+export const setSessionDialog = dialog => ({ type: types.SET_SESSION_DIALOG, dialog });
