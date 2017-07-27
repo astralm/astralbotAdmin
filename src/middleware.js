@@ -60,6 +60,12 @@ export default socket => store => next => action => {
         session_id: action.session_id
       });
       break;
+    case types.GET_SESSION_INFO :
+      socket.emit(types.GET_SESSION_INFO, action.session_id);
+      break;
+    case types.GET_SESSION_DIALOG :
+      socket.emit(types.GET_SESSION_DIALOG, action.session_id);
+      break;
 	}
 	return next(action);
 }
