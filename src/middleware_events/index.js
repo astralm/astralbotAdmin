@@ -11,6 +11,8 @@ import setSuccessSessions from './events/SET_SUCCESS_SESSIONS.js';
 import setActiveSessions from './events/SET_ACTIVE_SESSIONS.js';
 import setInactiveSessions from './events/SET_INACTIVE_SESSIONS.js';
 import setOffset from './events/SET_OFFSET.js';
+import setSessionInfo from './events/SET_SESSION_INFO.js';
+import setSessionDialog from './events/SET_SESSION_DIALOG.js';
 const initEventListeners = (socket, store) => {
 	socket.on(Types.LOGIN, setStatus(store));
 	socket.on(Types.LOGOUT, setStatus(store));
@@ -25,5 +27,7 @@ const initEventListeners = (socket, store) => {
 	socket.on(Types.GET_ACTIVE_SESSIONS, setActiveSessions(store));
 	socket.on(Types.GET_INACTIVE_SESSIONS, setInactiveSessions(store));
 	socket.on(Types.SET_OFFSET, setOffset(store));
+	socket.on(Types.GET_SESSION_INFO, setSessionInfo(store));
+	socket.on(Types.GET_SESSION_DIALOG, setSessionDialog(store));
 }
 module.exports = initEventListeners;
