@@ -9,15 +9,6 @@ import ContentDrafts from 'material-ui/svg-icons/content/drafts';
 import { connect } from 'react-redux';
 import { getUsers } from '../../../../../actions/index.js';
 class Administrators extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            users: props.users,
-            allUsers: props.users,
-            onlineUsers: props.users.filter(user => { return +user.user_status == 1 }),
-            offlineUsers: props.users.filter(user => { return +user.user_status == 0 })
-        };
-    }
     componentWillMount(){
         this.props.getUsers();
     }
@@ -37,6 +28,12 @@ class Administrators extends React.Component {
         })
     }
     render() {
+        this.state = {
+            users: this.props.users,
+            allUsers: this.props.users,
+            onlineUsers: this.props.users.filter(user => { return +user.user_status == 1 }),
+            offlineUsers: this.props.users.filter(user => { return +user.user_status == 0 })
+        };
         return (
             <div>
                 <section className="box box-default">
