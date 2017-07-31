@@ -12,9 +12,10 @@ const AppReducer = (state = Map(), action) => {
 				}
 			}));
         case Types.SET_USERS :
-        	console.log("set");
-            return state.mergeDeep(fromJS({
-                users: action.users
+            return state.merge(fromJS({
+                users: action.users,
+                onlineUsers: action.users.filter(user => { return +user.user_status == 1 }),
+                offlineUsers: action.users.filter(user => { return +user.user_status == 0 })
             }));
 		case Types.LOGIN : 
 			return state.mergeDeep(fromJS({

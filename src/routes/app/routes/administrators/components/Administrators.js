@@ -12,10 +12,7 @@ class Administrators extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            users: props.users,
-            allUsers: props.users,
-            onlineUsers: props.users.filter(user => { return +user.user_status == 1 }),
-            offlineUsers: props.users.filter(user => { return +user.user_status == 0 })
+            filter: "users"
         };
     }
     componentWillMount(){
@@ -23,28 +20,31 @@ class Administrators extends React.Component {
     }
     all(){
         this.setState({
-            users: this.state.allUsers
+            filter: "users"
         })
     }
     online(){
         this.setState({
-            users: this.state.onlineUsers
+            filter: "onlineUsers"
         });
     }
     offline(){
-        this.setState({
-            users: this.state.offlineUsers
-        })
+       this.setState({
+            filter: "offlineUsers"  
+       });
     }
     render() {
+        this.online = this.online.bind(this);
+        this.offline = this.offline.bind(this);
+        this.all = this.all.bind(this);
         return (
             <div>
                 <section className="box box-default">
                     <div className="box-body">
                         <List>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Онлайн" leftIcon={<ContentInbox />} onClick = {this.online.bind(this)}/></div>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Оффлайн" leftIcon={<ActionGrade />} onClick = {this.offline.bind(this)}/></div>
-                            <div style={{display:'inline-block'}}><ListItem  primaryText="Все" leftIcon={<ActionGrade />} onClick = {this.all.bind(this)}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Онлайн" leftIcon={<ContentInbox />} onClick = {this.online}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Оффлайн" leftIcon={<ActionGrade />} onClick = {this.offline}/></div>
+                            <div style={{display:'inline-block'}}><ListItem  primaryText="Все" leftIcon={<ActionGrade />} onClick = {this.all}/></div>
                             <div style={{display:'inline-block'}}><RaisedButton label="Добавить нового" href="#/app/newuser" secondary /></div>
                         </List>
                     </div>
@@ -61,7 +61,7 @@ class Administrators extends React.Component {
                             </thead>
                             <tbody>
                             {
-                                this.state.users.map((item, itemKey) => (
+                                this.props[this.state.filter].map((item, itemKey) => (
                                     <tr key={itemKey}>
                                         {
                                             Object.keys(item).map((key, optionKey) => (
@@ -81,7 +81,9 @@ class Administrators extends React.Component {
     }
 }
 module.exports = connect(state => ({
-    users : state.app.get('users') ? state.app.get('users').toJS() : []
+    users : state.app.get('users').toJS(),
+    onlineUsers : state.app.get('onlineUsers').toJS(),
+    offlineUsers : state.app.get('offlineUsers').toJS()
 }), {getUsers})(Administrators);
 
 
