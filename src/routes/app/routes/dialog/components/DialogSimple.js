@@ -24,6 +24,12 @@ class DialogSimple extends React.Component {
         this.props.getSessionInfo(this.props.session.session_id);
         this.props.getSessionDialog(this.props.session.session_id);
     }
+    componentDidMount(){
+        document.body.scrollTop = document.body.scrollHeight;
+    }
+    componentDidUpdate(){
+        document.body.scrollTop = document.body.scrollHeight;
+    }
     bindSession(e){
         this.props.bindSession(this.state.user_id, e.target.parentNode.parentNode.parentNode.getAttribute("data-session_id"));
     }
