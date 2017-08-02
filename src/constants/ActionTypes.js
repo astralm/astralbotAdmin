@@ -40,3 +40,5 @@ export const SET_SESSION_INFO = 'SET_SESSION_INFO';
 export const GET_SESSION_DIALOG = 'GET_SESSION_DIALOG';
 export const SET_SESSION_DIALOG = 'SET_SESSION_DIALOG';
 export const SET_ANSWER = 'SET_ANSWER';
+export const START_BOT = 'START_BOT';
+export const STOP_BOT = 'STOP_BOT';
