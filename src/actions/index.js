@@ -58,3 +58,5 @@ export const setSessionInfo = session => ({ type: types.SET_SESSION_INFO, sessio
 export const getSessionDialog = session_id => ({ type: types.GET_SESSION_DIALOG, session_id });
 export const setSessionDialog = dialog => ({ type: types.SET_SESSION_DIALOG, dialog });
 export const setAnswer = (hash, session_id, message) => ({ type: types.SET_ANSWER, hash, session_id, message });
+export const stopBot = session_id => ({ type: types.STOP_BOT, session_id });
+export const startBot = session_id => ({ type: types.START_BOT, session_id });
