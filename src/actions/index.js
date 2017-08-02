@@ -57,3 +57,4 @@ export const getSessionInfo = session_id => ({ type: types.GET_SESSION_INFO, ses
 export const setSessionInfo = session => ({ type: types.SET_SESSION_INFO, session });
 export const getSessionDialog = session_id => ({ type: types.GET_SESSION_DIALOG, session_id });
 export const setSessionDialog = dialog => ({ type: types.SET_SESSION_DIALOG, dialog });
+export const setAnswer = (hash, session_id, message) => ({ type: types.SET_ANSWER, hash, session_id, message });

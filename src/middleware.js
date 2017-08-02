@@ -66,6 +66,13 @@ export default socket => store => next => action => {
     case types.GET_SESSION_DIALOG :
       socket.emit(types.GET_SESSION_DIALOG, action.session_id);
       break;
+    case types.SET_ANSWER :
+      socket.emit(types.SET_ANSWER, {
+        hash: action.hash,
+        message: action.message,
+        session_id: action.session_id
+      });
+      break;
 	}
 	return next(action);
 }
