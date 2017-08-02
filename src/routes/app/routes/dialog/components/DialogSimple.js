@@ -1,7 +1,7 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
-import { getSessionDialog, getSessionInfo, bindSession, unbindSession, setAnswer } from '../../../../../actions/index.js';
+import { getSessionDialog, getSessionInfo, bindSession, unbindSession, setAnswer, startBot, stopBot } from '../../../../../actions/index.js';
 
 class DialogItem extends React.Component{
     render(){
@@ -30,14 +30,20 @@ class DialogSimple extends React.Component {
     componentDidUpdate(){
         document.body.scrollTop = document.body.scrollHeight;
     }
-    bindSession(e){
-        this.props.bindSession(this.state.user_id, e.target.parentNode.parentNode.parentNode.getAttribute("data-session_id"));
+    bindSession(){
+        this.props.bindSession(this.state.user_id, this.state.session.session_id);
     }
-    unbindSession(e){
-        this.props.unbindSession(this.state.user_id, e.target.parentNode.parentNode.parentNode.getAttribute("data-session_id"));
+    unbindSession(){
+        this.props.unbindSession(this.state.user_id, this.state.session.session_id);
     }
-    setAnswer(e){
-        this.props.setAnswer(e.target.parentNode.parentNode.parentNode.getAttribute("data-hash"), e.target.parentNode.parentNode.parentNode.getAttribute("data-id"), this.state.message);
+    setAnswer(){
+        this.props.setAnswer(this.state.session.session_hash, this.state.session.session_id, this.state.message);
+    }
+    startBot(){
+        this.props.startBot(this.state.session.session_id);
+    }
+    stopBot(){
+        this.props.stopBot(this.state.session.session_id);
     }
     render() {
         const style = {
@@ -48,9 +54,21 @@ class DialogSimple extends React.Component {
             session: this.props.session,
             user_id: this.props.user_id
         };
-        this.state.session.dialog ? this.state.session.dialog.map(item => (item.question_id)).filter((item, key, self) => (self.indexOf(item) != key)).filter((item, key, self) => (self.indexOf(item) == key)).forEach(item => {
-          this.state.session.dialog.filter(dialog => (dialog.question_id == item)).filter((item, key) => ( key > 0 )).map(item => (item.answer_id)).forEach(item => { this.state.session.dialog.filter(obj => (obj.answer_id == item)).forEach(item => { item.question_message = null }) })
-        }) : null;
+        this.state.session.dialog ? 
+            this.state.session.dialog.map(item => (item.question_id))
+            .filter((item, key, self) => (self.indexOf(item) != key))
+            .filter((item, key, self) => (self.indexOf(item) == key))
+            .forEach(item => {
+                this.state.session.dialog.filter(dialog => (dialog.question_id == item))
+                .filter((item, key) => ( key > 0 ))
+                .map(item => (item.answer_id))
+                .forEach(item => { 
+                    this.state.session.dialog.filter(obj => (obj.answer_id == item))
+                    .forEach(item => { 
+                        item.question_message = null }) 
+                    })
+                }) 
+            : null;
         return (
             <div>
                 <div className="box box-default table-box table-responsive mdl-shadow--2dp">
@@ -63,9 +81,9 @@ class DialogSimple extends React.Component {
                             <th className="numeric" style={{style}}>Статус : { this.state.session.session_status ? "true" : "false" } </th>
                             {
                                 this.state.session.user_id == 0 ?
-                                    <th className="numeric" style={{style}}><RaisedButton label="Взять" data-session_id = { this.state.session.session_id } onClick = { this.bindSession.bind(this) } secondary /></th> :
+                                    <th className="numeric" style={{style}}><RaisedButton label="Взять" onClick = { this.bindSession.bind(this) } secondary /></th> :
                                     this.state.session.user_id == this.state.user_id ?
-                                        <th className="numeric" style={{style}}><RaisedButton label="Отказаться" data-session_id = { this.state.session.session_id } onClick = { this.unbindSession.bind(this) } secondary /></th> :
+                                        <th className="numeric" style={{style}}><RaisedButton label="Отказаться" onClick = { this.unbindSession.bind(this) } secondary /></th> :
                                         null
                             }
                         </tr>
@@ -93,5 +111,5 @@ class DialogSimple extends React.Component {
 module.exports = connect(state => ({
     session: state.app.get('session') ? state.app.get('session').toJS() : {},
     user_id: state.app.getIn(['user', 'id'])
-}), {getSessionInfo, getSessionDialog, bindSession, unbindSession, setAnswer})(DialogSimple);
+}), {getSessionInfo, getSessionDialog, bindSession, unbindSession, setAnswer, startBot, stopBot})(DialogSimple);
 

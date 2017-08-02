@@ -73,6 +73,12 @@ export default socket => store => next => action => {
         session_id: action.session_id
       });
       break;
+    case types.START_BOT :
+      socket.emit(types.START_BOT, action.session_id);
+      break;
+    case types.STOP_BOT :
+      socket.emit(types.STOP_BOT, action.session_id);
+      break;
 	}
 	return next(action);
 }
