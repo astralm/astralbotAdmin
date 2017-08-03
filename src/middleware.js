@@ -79,6 +79,13 @@ export default socket => store => next => action => {
     case types.STOP_BOT :
       socket.emit(types.STOP_BOT, action.session_id);
       break;
+    case types.UPDATE_USER_INFORMATION:
+      socket.emit(types.UPDATE_USER_INFORMATION, {
+        email: action.email,
+        password: action.password,
+        name: action.name
+      });
+      break;
 	}
 	return next(action);
 }
