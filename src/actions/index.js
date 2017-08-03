@@ -60,3 +60,4 @@ export const setSessionDialog = dialog => ({ type: types.SET_SESSION_DIALOG, dia
 export const setAnswer = (hash, session_id, message) => ({ type: types.SET_ANSWER, hash, session_id, message });
 export const stopBot = session_id => ({ type: types.STOP_BOT, session_id });
 export const startBot = session_id => ({ type: types.START_BOT, session_id });
+export const updateUserInformation = (email, password, name) => ({ type: types.UPDATE_USER_INFORMATION, email, password, name });
