@@ -99,19 +99,22 @@ class DialogSimple extends React.Component {
                         }
                     </section>
                 </div>
-                <div className="box box-default table-box table-responsive mdl-shadow--2dp" style={{bottom: '0', padding: '10px 0', position: 'fixed', zIndex: '999'}}>
-                    <form role="form">
-                        <div className="form-group">
-                            <div className="col-md-12">
-                                <RaisedButton label="Включить бота" primary className="btn-w-md" onClick = {this.startBot.bind(this)}/> <RaisedButton label="Выключить бота" primary className="btn-w-md" onClick = {this.stopBot.bind(this)}/>
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <input type="text" className="form-control" id="exampleInputEmail1" placeholder="ваше сообщение" onInput = {this.saveAnswer.bind(this)} style={{margin: '0 14px', fontSize: '14px', display: 'inline-block', width: 'calc(100% - 360px)', varticalAlign: 'middle' }} />
-                            <i className="material-icons" style={{verticalAlign: 'top', cursor: 'pointer'}} onClick = {this.setAnswer.bind(this)}>send</i>
-                        </div>
-                    </form>
-                </div>
+                {
+                    this.state.session.user_id == this.state.user_id ?
+                        <div className="box box-default table-box table-responsive mdl-shadow--2dp" style={{bottom: '0', padding: '10px 0', position: 'fixed', zIndex: '999'}}>
+                            <form role="form">
+                                <div className="form-group">
+                                    <div className="col-md-12">
+                                        <RaisedButton label="Включить бота" primary className="btn-w-md" onClick = {this.startBot.bind(this)}/> <RaisedButton label="Выключить бота" primary className="btn-w-md" onClick = {this.stopBot.bind(this)}/>
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <input type="text" className="form-control" id="exampleInputEmail1" placeholder="ваше сообщение" onInput = {this.saveAnswer.bind(this)} style={{margin: '0 14px', fontSize: '14px', display: 'inline-block', width: 'calc(100% - 360px)', varticalAlign: 'middle' }} />
+                                    <i className="material-icons" style={{verticalAlign: 'top', cursor: 'pointer'}} onClick = {this.setAnswer.bind(this)}>send</i>
+                                </div>
+                            </form>
+                        </div> : null
+                }
             </div>
         );
     }
