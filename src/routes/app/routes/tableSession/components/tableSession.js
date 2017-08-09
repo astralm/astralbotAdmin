@@ -5,6 +5,7 @@ import {List, ListItem} from 'material-ui/List';
 import ContentInbox from 'material-ui/svg-icons/content/inbox';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
 import ContentSend from 'material-ui/svg-icons/content/send';
+import IconButton from 'material-ui/IconButton';
 import ContentDrafts from 'material-ui/svg-icons/content/drafts';
 import { connect } from 'react-redux';
 import { getSessions, getUserSessions, 
@@ -64,7 +65,9 @@ class TableBody extends React.Component {
         this.props.setSwitch("success");
     }
     offset(e){
-        this.props.setOffset(e.target.getAttribute('data-offset'));
+        this.props.setOffset(e.target.parentNode.parentNode.getAttribute('data-offset'));
+        this.state.offset = e.target.parentNode.parentNode.getAttribute('data-offset');
+        this[this.props.switch + "Sessions"]();
     }
     componentWillMount(){
         switch(this.props.switch){
@@ -152,6 +155,11 @@ class TableBody extends React.Component {
                                 }
                             </tbody>
                         </table>
+                        <div className="col-md-12">
+                            {this.state.offset >= 50 ? <IconButton data-offset={this.state.offset - 50} onClick={this.offset.bind(this)}><i className="material-icons">keyboard_arrow_left</i></IconButton> : null}
+                            <span style={{display: 'inline-block', height: '48px', lineHeight: '48px', verticalAlign: 'top'}}>записи с {this.state.offset} по {+this.state.offset+this.state.sessions.length}</span>
+                            {this.state.sessions.length < 50 ? null : <IconButton data-offset={+this.state.offset + 50} onClick={this.offset.bind(this)}><i className="material-icons">keyboard_arrow_right</i></IconButton>}
+                        </div>
                     </div>
                 </article>
             </div>
