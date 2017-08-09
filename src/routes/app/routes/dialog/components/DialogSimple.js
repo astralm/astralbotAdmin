@@ -7,7 +7,7 @@ class DialogItem extends React.Component{
         return (<article className={"tl-item" + (this.props.question ? " alt" : "")}>
             <div className="tl-body">
                 <div className="tl-entry">
-                    <div className="tl-time" style={{fontSize: '10px'}}>{ this.props.time.match(/(.*)T(.*):.*\./).filter((item, key) => ([1,2].indexOf(key) > -1)).join(" ") }</div>
+                    <div className="tl-time" style={{fontSize: '10px'}}>{ this.props.time.match(/(.*):/)[1] }</div>
                     <div className="tl-content">
                         <h4 className="tl-tile text-warning">{ this.props.question ? "Клиент" : "Система" }</h4>
                         <p>{ this.props.message }</p>
@@ -95,9 +95,9 @@ class DialogSimple extends React.Component {
                             this.state.session.dialog ? this.state.session.dialog.map((item, key) => {
                                 let result = [];
                                 if (item.question_message)
-                                    result.push(<DialogItem question = {true} time = {item.question_date} message = {item.question_message} />);
+                                    result.push(<DialogItem question = {true} time = {item.question_date_formated} message = {item.question_message} />);
                                 if (item.answer_message)
-                                    result.push(<DialogItem question = {false} time = {item.answer_date} message = {item.answer_message} />);
+                                    result.push(<DialogItem question = {false} time = {item.answer_date_formated} message = {item.answer_message} />);
                                 return result;
                             }) : null
                         }
