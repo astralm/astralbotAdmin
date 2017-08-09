@@ -21,7 +21,7 @@
   position: relative;
   border: $data-table-dividers;
   border-collapse: collapse;
-  white-space: nowrap;
+  white-space: normal;
   font-size: $data-table-font-size;
   background-color: unquote("rgb(#{$color-white})");
 
@@ -87,6 +87,7 @@
   color: $data-table-header-color;
   padding-bottom: 8px;
   box-sizing: border-box;
+  white-space: nowrap;
 
   &.mdl-data-table__header--sorted-ascending,
   &.mdl-data-table__header--sorted-descending {
