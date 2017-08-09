@@ -2,7 +2,7 @@ $TL_content_bg:     rgba(255,255,255,.9);
 $Theme_dark_TL_content_bg: rgba(255,255,255,.05);
 
 .ui-timline-container {
-  padding: 15px;
+  padding: 60px 15px 69px;
 }
 
 // 1 remove .alt of .tl-item, 2 add .ui-timline-left to .ui-timline-container
@@ -53,7 +53,7 @@ $Theme_dark_TL_content_bg: rgba(255,255,255,.05);
     position: absolute;
     left: 0;
     top: 30px;
-    width: 1px;
+    width: 0px;
     z-index: 0;
     @media (min-width: map-get($grid-breakpoints, md)) {
       left: 50%;
@@ -98,8 +98,7 @@ $Theme_dark_TL_content_bg: rgba(255,255,255,.05);
             margin: 0 35px 15px 0;
           }
           .tl-time {
-            right: -220px;
-            left: auto;
+            right: auto;
             text-align: left;
           }
           .tl-icon {
@@ -132,15 +131,16 @@ $Theme_dark_TL_content_bg: rgba(255,255,255,.05);
         z-index: 1;
         position: absolute;
         left: auto;
-        right: 15px;
+        right: 0;
         top: 0;
-        width: 150px;
+        width: 98px;
+        padding-left:10px;
+        padding-right:10px;
         color: $gray-light;
-        line-height: 35px;
+        line-height: 30px;
         text-align: right;
         @media (min-width: map-get($grid-breakpoints, md)) {
-          left: -220px;
-          right: auto;
+          left: auto;
           color: $body-color;
         }
       }
@@ -158,17 +158,6 @@ $Theme_dark_TL_content_bg: rgba(255,255,255,.05);
         padding: 15px;
         border-radius: $border-radius;
         background-color: $TL_content_bg;
-        &:after {
-          content: " ";
-          line-height: 0;
-          position: absolute;
-          left: -16px;
-          top: 0;
-          border: 8px solid transparent;
-          border-right: 8px solid $TL_content_bg;
-          border-top: 8px solid $TL_content_bg;
-        }
-
         h4 {
           font-size: 18px;
           line-height: $font-size-h4;
