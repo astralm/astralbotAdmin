@@ -43,6 +43,10 @@ class DialogSimple extends React.Component {
     saveAnswer(e){
         this.state.message = e.target.value;
     }
+    keyPress(e){
+        if(e.key == 'Enter')
+            this.setAnswer();
+    }
     render() {
 
         this.state = {
@@ -109,7 +113,7 @@ class DialogSimple extends React.Component {
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <input type="text" className="form-control" id="exampleInputEmail1" placeholder="ваше сообщение" onInput = {this.saveAnswer.bind(this)} style={{margin: '0 14px', fontSize: '14px', display: 'inline-block', width: 'calc(100% - 360px)', varticalAlign: 'middle' }} />
+                                    <input type="text" className="form-control" id="exampleInputEmail1" placeholder="ваше сообщение" onKeyPress = {this.keyPress.bind(this)} onInput = {this.saveAnswer.bind(this)} style={{margin: '0 14px', fontSize: '14px', display: 'inline-block', width: 'calc(100% - 360px)', varticalAlign: 'middle' }} />
                                     <i className="material-icons" style={{verticalAlign: 'top', cursor: 'pointer'}} onClick = {this.setAnswer.bind(this)}>send</i>
                                 </div>
                             </form>
