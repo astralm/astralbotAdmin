@@ -56,11 +56,14 @@ const AppReducer = (state = Map(), action) => {
 				session: action.session[0]
 			}));
 		case Types.SET_SESSION_DIALOG :
-			return state.mergeDeep(fromJS({
+			return state.set('session', state.get('session').merge(fromJS({
+				dialog: action.dialog
+			})));
+			/*return state.mergeDeep(fromJS({
 				session: {
 					dialog: action.dialog
 				}
-			}));
+			}));*/
 		default: 
 			return state;
 	}
