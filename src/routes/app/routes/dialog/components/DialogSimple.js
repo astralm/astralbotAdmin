@@ -33,6 +33,7 @@ class DialogSimple extends React.Component {
     }
     setAnswer(){
         this.props.setAnswer(this.state.session.session_hash, this.state.session.session_id, this.state.message);
+        document.getElementById("exampleInputEmail1").value = "";
     }
     startBot(){
         this.props.startBot(this.state.session.session_id);
@@ -48,7 +49,6 @@ class DialogSimple extends React.Component {
             this.setAnswer();
     }
     render() {
-
         this.state = {
             session: this.props.session,
             user_id: this.props.user_id
@@ -80,9 +80,9 @@ class DialogSimple extends React.Component {
                             <th className="numeric" style={{width:'20%'}}>Статус : { this.state.session.session_status ? "true" : "false" } </th>
                             {
                                 this.state.session.user_id == 0 ?
-                                    <th className="numeric" style={{width:'20%;'}}><RaisedButton label="Взять" onClick = { this.bindSession.bind(this) } secondary /></th> :
+                                    <th className="numeric" style={{width:'20%'}}><RaisedButton label="Взять" onClick = { this.bindSession.bind(this) } secondary /></th> :
                                     this.state.session.user_id == this.state.user_id ?
-                                        <th className="numeric" style={{width:'20%;'}}><RaisedButton label="Отказаться" onClick = { this.unbindSession.bind(this) } secondary /></th> :
+                                        <th className="numeric" style={{width:'20%'}}><RaisedButton label="Отказаться" onClick = { this.unbindSession.bind(this) } secondary /></th> :
                                         null
                             }
                         </tr>
