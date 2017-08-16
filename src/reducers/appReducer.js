@@ -59,11 +59,6 @@ const AppReducer = (state = Map(), action) => {
 			return state.set('session', state.get('session').merge(fromJS({
 				dialog: action.dialog
 			})));
-			/*return state.mergeDeep(fromJS({
-				session: {
-					dialog: action.dialog
-				}
-			}));*/
 		default: 
 			return state;
 	}
