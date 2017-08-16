@@ -33,6 +33,7 @@ class DialogSimple extends React.Component {
     }
     setAnswer(){
         this.props.setAnswer(this.state.session.session_hash, this.state.session.session_id, this.state.message);
+        document.getElementById("exampleInputEmail1").value = "";
     }
     startBot(){
         this.props.startBot(this.state.session.session_id);
@@ -48,7 +49,6 @@ class DialogSimple extends React.Component {
             this.setAnswer();
     }
     render() {
-
         this.state = {
             session: this.props.session,
             user_id: this.props.user_id
