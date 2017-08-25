@@ -31,20 +31,9 @@ const AppReducer = (state = Map(), action) => {
 				name: action.name,
 				status: action.status == 0 ? false : true,
 				id: action.id
-			}))
-		case Types.SET_SESSIONS :
-		case Types.SET_USER_SESSIONS :
-		case Types.SET_FREE_SESSIONS :
-		case Types.SET_BUSY_SESSIONS :
-		case Types.SET_SUCCESS_SESSIONS :
-		case Types.SET_ERROR_SESSIONS :
-		case Types.SET_ACTIVE_SESSIONS :
-		case Types.SET_INACTIVE_SESSIONS :
-			return state.set('sessions', fromJS(action.sessions));
+			}));
 		case Types.SET_OFFSET :
 			return state.set('offset', action.offset);
-		case Types.SET_SWITCH :
-			return state.set('switch', action.switch);
 		case Types.SET_VIEW_SESSION :
 			return state.mergeDeep(fromJS({
 				session: {
@@ -56,9 +45,96 @@ const AppReducer = (state = Map(), action) => {
 				session: action.session[0]
 			}));
 		case Types.SET_SESSION_DIALOG :
+			console.log(action);
 			return state.set('session', state.get('session').merge(fromJS({
 				dialog: action.dialog
 			})));
+		case Types.SET_FILTER: 
+			state = state.get('filters') ? state : state.set('filters', fromJS([]));
+			switch(action.filter){
+				case "all":
+					return state.set('filters', fromJS([]));
+				case "active": {
+					let index = state.get('filters').findIndex(item => (
+						item.get('type') == 'active'
+					));
+					return index > -1 ? state.set('filters', state.get('filters').delete(index)) :
+						state.set('filters', state.get('filters').push(fromJS({
+							name: 'session_status',
+							value: 1,
+							type: 'active'
+						})));
+				}
+				case "inactive": {
+					let index = state.get('filters').findIndex(item => (
+						item.get('type') == 'inactive'
+					)); 
+					return index > -1 ? state.set("filters", state.get('filters').delete(index)) :
+						state.set("filters", state.get('filters').push(fromJS({
+							name: 'session_status',
+							value: 0,
+							type: 'inactive'
+						})));
+				}
+				case "free": {
+					let index = state.get('filters').findIndex(item => (
+						item.get('type') == 'free'
+					)); 
+					return index > -1 ? state.set("filters", state.get('filters').delete(index)) :
+						state.set("filters", state.get('filters').push(fromJS({
+							name: 'user_id',
+							value: 0,
+							type: 'free'
+						})));
+				}
+				case "busy": {
+					let index = state.get('filters').findIndex(item => (
+						item.get('type') == 'busy'
+					)); 
+					return index > -1 ? state.set("filters", state.get('filters').delete(index)) :
+						state.set("filters", state.get('filters').push(fromJS({
+							name: 'user_id',
+							value: 0,
+							symbol: ">",
+							type: 'busy'
+						})));
+				}
+				case "error": {
+					let index = state.get('filters').findIndex(item => (
+						item.get('type') == 'error'
+					)); 
+					return index > -1 ? state.set("filters", state.get('filters').delete(index)) :
+						state.set("filters", state.get('filters').push(fromJS({
+							name: 'session_error',
+							value: 1,
+							type: 'error'
+						})));
+				}
+				case "success": {
+					let index = state.get('filters').findIndex(item => (
+						item.get('type') == 'success'
+					)); 
+					return index > -1 ? state.set("filters", state.get('filters').delete(index)) :
+						state.set("filters", state.get('filters').push(fromJS({
+							name: 'session_error',
+							value: 0,
+							type: 'success'
+						})));
+				}
+				case "user": {
+					let index = state.get('filters').findIndex(item => (
+						item.get('type') == 'user'
+					)); 
+					return index > -1 ? state.set("filters", state.get('filters').delete(index)) :
+						state.set("filters", state.get('filters').push(fromJS({
+							name: 'user_id',
+							value: action.user_id,
+							type: 'user'
+						})));
+				}
+				default:
+					return state;
+			}	
 		default: 
 			return state;
 	}
