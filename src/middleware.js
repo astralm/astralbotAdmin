@@ -21,33 +21,6 @@ export default socket => store => next => action => {
           name: action.name
 		    });
         break;
-    case types.GET_SESSIONS :
-    	socket.emit(types.GET_SESSIONS, action.offset);
-    	break;
-   	case types.GET_ACTIVE_SESSIONS :
-   		socket.emit(types.GET_ACTIVE_SESSIONS, action.offset);
-   		break;
-   	case types.GET_INACTIVE_SESSIONS :
-   		socket.emit(types.GET_INACTIVE_SESSIONS, action.offset);
-   		break;
-   	case types.GET_FREE_SESSIONS :
-   		socket.emit(types.GET_FREE_SESSIONS, action.offset);
-   		break;
-   	case types.GET_BUSY_SESSIONS :
-   		socket.emit(types.GET_BUSY_SESSIONS, action.offset);
-   		break;
-   	case types.GET_ERROR_SESSIONS :
-   		socket.emit(types.GET_ERROR_SESSIONS, action.offset);
-   		break;
-   	case types.GET_SUCCESS_SESSIONS :
-   		socket.emit(types.GET_SUCCESS_SESSIONS, action.offset);
-   		break;
-   	case types.GET_USER_SESSIONS :
-   		socket.emit(types.GET_USER_SESSIONS, {
-        offset: action.offset,
-        user_id: action.userId
-      });
-   		break;
     case types.BIND_SESSION :
       socket.emit(types.BIND_SESSION, {
         user_id: action.user_id,
@@ -85,6 +58,12 @@ export default socket => store => next => action => {
         password: action.password,
         name: action.name
       });
+    case types.GET_SESSIONS :
+      /*socket.emit(types.GET_SESSION, {
+        filters: action.filters,
+        order: action.order,
+        offset: action.offset
+      });*/
       break;
 	}
 	return next(action);
