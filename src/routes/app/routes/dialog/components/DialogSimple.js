@@ -19,7 +19,6 @@ class DialogItem extends React.Component{
 }
 class DialogSimple extends React.Component {
     componentWillMount(){
-        console.log(this.props.session);
         this.props.getSessionInfo(this.props.session.session_id);
         this.props.getSessionDialog(this.props.session.session_id);
     }
