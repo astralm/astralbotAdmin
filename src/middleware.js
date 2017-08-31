@@ -1,6 +1,6 @@
 import * as types from 'constants/ActionTypes.js';
 export default socket => store => next => action => {
-	const state = store.getState().app
+	const state = store.getState().app;
 	switch (action.type){
 		case types.LOGIN :
 			socket.emit(types.LOGIN, {
@@ -12,15 +12,15 @@ export default socket => store => next => action => {
 			socket.emit(types.LOGOUT);
 			break;
     case types.GET_USERS :
-        socket.emit(types.GET_USERS);
-        break;
+      socket.emit(types.GET_USERS);
+      break;
     case types.SET_USER :
-        socket.emit(types.SET_USER, {
-          email: action.email,
-          password: action.password,
-          name: action.name
-		    });
-        break;
+      socket.emit(types.SET_USER, {
+        email: action.email,
+        password: action.password,
+        name: action.name
+	    });
+      break;
     case types.BIND_SESSION :
       socket.emit(types.BIND_SESSION, {
         user_id: action.user_id,
@@ -58,12 +58,16 @@ export default socket => store => next => action => {
         password: action.password,
         name: action.name
       });
+      break;
     case types.GET_SESSIONS :
-      /*socket.emit(types.GET_SESSION, {
+      socket.emit(types.GET_SESSIONS, {
         filters: action.filters,
         order: action.order,
         offset: action.offset
-      });*/
+      });
+      break;
+    case types.SET_FILTER :
+      socket.emit(types.SET_FILTER, action);
       break;
 	}
 	return next(action);
