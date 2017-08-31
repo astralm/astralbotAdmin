@@ -27,6 +27,5 @@ export const START_BOT = 'START_BOT';
 export const STOP_BOT = 'STOP_BOT';
 export const UPDATE_USER_INFORMATION = 'UPDATE_USER_INFORMATION';
 export const SET_FILTER = 'SET_FILTER';
-export const SET_OFFSET = 'SET_OFFSET';
-export const SET_ORDER = 'SET_ORDER';
 export const GET_SESSIONS = 'GET_SESSIONS';
+export const SET_SESSIONS = 'SET_SESSIONS';
