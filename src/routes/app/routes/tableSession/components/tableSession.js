@@ -8,7 +8,7 @@ import ContentSend from 'material-ui/svg-icons/content/send';
 import IconButton from 'material-ui/IconButton';
 import ContentDrafts from 'material-ui/svg-icons/content/drafts';
 import { connect } from 'react-redux';
-import { getSessions, setFilter, setOffset, setOrder, setViewSession } from '../../../../../actions/index.js';
+import { getSessions, setFilter, setOffset, setOrder, setViewSession, bindSession, unbindSession } from '../../../../../actions/index.js';
 class TableBody extends React.Component {
     setViewSession(session_id){
         this.props.setViewSession(session_id);
@@ -18,49 +18,51 @@ class TableBody extends React.Component {
     bindSession(e){
         let target = e.target,
             session_id = target.parentNode.parentNode.parentNode.getAttribute("data-session_id"),
-            userId = this.state.userId;
+            userId = this.props.userId;
         this.props.bindSession(userId, session_id);
     }
     unbindSession(e){
         let target = e.target,
             session_id = target.parentNode.parentNode.parentNode.getAttribute("data-session_id"),
-            userId = this.state.userId;
+            userId = this.props.userId;
         this.props.unbindSession(userId, session_id);
     }
-    setFilter(type, user_id){
-        this.props.setFilter(type, user_id);
-    }
-    offset(e){
-        this.props.setOffset(e.target.parentNode.parentNode.getAttribute('data-offset'));
-        this.state.offset = e.target.parentNode.parentNode.getAttribute('data-offset');
-        this[this.props.switch + "Sessions"]();
-    }
-    setOffset(offset){
-        this.props.setOffset(offset);
-    }
-    setOrder(name, desc){
-        this.props.setOrder(name, desc);
+    setFilter(options){
+        this.props.setFilter(options.filter || false, options.hasOwnProperty("offset") ? options.offset : this.props.offset, options.order || this.props.order);
     }
     componentWillMount(){
-        this.props.getSessions(this.props.filters || null, this.props.order || null, this.props.offset || null);
-    }
-    componentDidUpdate(){
-        this.props.getSessions(this.props.filters || null, this.props.order || null, this.props.offset || null);
+        this.props.getSessions(this.props.filters || false, this.props.order || null, this.props.offset || 0);
     }
     render() {
+        var rows = this.props.sessions.map((session, sessionKey) => (
+            <tr key = {sessionKey}>
+                {
+                    [session.session_id, 
+                    session.question, 
+                    session.answer, 
+                    session.session_status, 
+                    session.user_name || "-",
+                    session.session_error ? "true" : "false",
+                    session.session_id ? <RaisedButton label="Просмотр" onClick = { this.setViewSession.bind(this, session.session_id) } secondary /> : '',
+                    (session.user_id == this.props.userId || session.user_id == 0) && session.session_id ? <RaisedButton label={session.user_id == this.props.userId ? "отказаться" : "Взять"} onClick = { session.user_id == this.props.userId ? this.unbindSession.bind(this) : this.bindSession.bind(this) } data-session_id = {session.session_id} primary /> : null].map((option, optionKey) => (
+                        <td className="numeric" key = {optionKey}>{ optionKey == 3 ? option == 0 ? "false" : "true" : option }</td>
+                    ))
+                }
+            </tr>
+        ));
         return (
             <div>
                 <section className="box box-default">
                     <div className="box-body">
                         <List>
-                            <RaisedButton style = {{marginRight: "5px"}} secondary = {this.props.filters.find(item => (item.type == "active")) ? true : false} label = "Активные" onClick = {this.setFilter.bind(this, "active")}/>
-                            <RaisedButton style = {{marginRight: "5px"}} secondary = {this.props.filters.find(item => (item.type == "inactive")) ? true : false} label = "Неактивные" onClick = {this.setFilter.bind(this, "inactive")}/>
-                            <RaisedButton style = {{marginRight: "5px"}} secondary = {this.props.filters.find(item => (item.type == "error")) ? true : false} label = "Ошибки" onClick = {this.setFilter.bind(this, "error")}/>
-                            <RaisedButton style = {{marginRight: "5px"}} secondary = {this.props.filters.find(item => (item.type == "success")) ? true : false} label = "Без ошибок" onClick = {this.setFilter.bind(this, "success")}/>
-                            <RaisedButton style = {{marginRight: "5px"}} secondary = {this.props.filters.find(item => (item.type == "free")) ? true : false} label = "Свободные" onClick = {this.setFilter.bind(this, "free")}/>
-                            <RaisedButton style = {{marginRight: "5px"}} secondary = {this.props.filters.find(item => (item.type == "busy")) ? true : false} label = "Занятые" onClick = {this.setFilter.bind(this, "busy")}/>
-                            <RaisedButton style = {{marginRight: "5px"}} secondary = {this.props.filters.find(item => (item.type == "user")) ? true : false} label = "Ваши" onClick = {this.setFilter.bind(this, "user", this.props.userId)}/>
-                            <RaisedButton secondary = {this.props.filters.length > 0 ? false : true} label = "Все" onClick = {this.setFilter.bind(this, "all")}/>
+                            <RaisedButton style = {{marginRight: "5px", marginBottom: "5px"}} secondary = {this.props.filters.indexOf("active") > -1 ? true : false} label = "Активные" onClick = {this.setFilter.bind(this, {offset: 0, filter:"active"})}/>
+                            <RaisedButton style = {{marginRight: "5px", marginBottom: "5px"}} secondary = {this.props.filters.indexOf("inactive") > -1 ? true : false} label = "Неактивные" onClick = {this.setFilter.bind(this, {offset: 0, filter:"inactive"})}/>
+                            <RaisedButton style = {{marginRight: "5px", marginBottom: "5px"}} secondary = {this.props.filters.indexOf("error") > -1 ? true : false} label = "Ошибки" onClick = {this.setFilter.bind(this, {offset: 0, filter:"error"})}/>
+                            <RaisedButton style = {{marginRight: "5px", marginBottom: "5px"}} secondary = {this.props.filters.indexOf("success") > -1 ? true : false} label = "Без ошибок" onClick = {this.setFilter.bind(this, {offset: 0, filter:"success"})}/>
+                            <RaisedButton style = {{marginRight: "5px", marginBottom: "5px"}} secondary = {this.props.filters.indexOf("free") > -1 ? true : false} label = "Свободные" onClick = {this.setFilter.bind(this, {offset: 0, filter:"free"})}/>
+                            <RaisedButton style = {{marginRight: "5px", marginBottom: "5px"}} secondary = {this.props.filters.indexOf("busy") > -1 ? true : false} label = "Занятые" onClick = {this.setFilter.bind(this, {offset: 0, filter:"busy"})}/>
+                            <RaisedButton style = {{marginRight: "5px", marginBottom: "5px"}} secondary = {this.props.filters.indexOf("user") > -1 ? true : false} label = "Ваши" onClick = {this.setFilter.bind(this, {offset: 0, filter:"user"})}/>
+                            <RaisedButton secondary = {this.props.filters.length > 0 || !this.props.filters ? false : true} label = "Все" onClick = {this.setFilter.bind(this, {filter:"all"})}/>
                         </List>
                     </div>
                 </section>
@@ -69,12 +71,66 @@ class TableBody extends React.Component {
                         <table className="mdl-data-table">
                             <thead>
                                 <tr>
-                                    <th className="numeric">SESSION ID</th>
-                                    <th className="numeric">USER QUESTION</th>
-                                    <th className="numeric">BOT ANSWER</th>
-                                    <th className="numeric">STATUS</th>
-                                    <th className="numeric">ADMINISTRATOR</th>
-                                    <th className="numeric">ERROR</th>
+                                    <th className="numeric" onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_id", desc: this.props.order.name == "session_id" ? !this.props.order.desc : true}})} style={{cursor: "pointer"}}>
+                                        SESSION ID 
+                                        {
+                                            this.props.order.name == "session_id" ? 
+                                                this.props.order.desc ? 
+                                                    <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
+                                                    <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>remove</i>
+                                        }
+                                    </th>
+                                    <th className="numeric" onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "question", desc: this.props.order.name == "question" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>
+                                        USER QUESTION
+                                        {
+                                            this.props.order.name == "question" ? 
+                                                this.props.order.desc ? 
+                                                    <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
+                                                    <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>remove</i>
+                                        }
+                                    </th>
+                                    <th className="numeric" onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "answer", desc: this.props.order.name == "answer" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>
+                                        BOT ANSWER
+                                        {
+                                            this.props.order.name == "answer" ? 
+                                                this.props.order.desc ? 
+                                                    <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
+                                                    <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>remove</i>
+                                        }
+                                    </th>
+                                    <th className="numeric" onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_status", desc: this.props.order.name == "session_status" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>
+                                        STATUS
+                                        {
+                                            this.props.order.name == "session_status" ? 
+                                                this.props.order.desc ? 
+                                                    <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
+                                                    <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>remove</i>
+                                        }
+                                    </th>
+                                    <th className="numeric" onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "user_name", desc: this.props.order.name == "user_name" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>
+                                        ADMINISTRATOR
+                                        {
+                                            this.props.order.name == "user_name" ? 
+                                                this.props.order.desc ? 
+                                                    <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
+                                                    <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>remove</i>
+                                        }
+                                    </th>
+                                    <th className="numeric" onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_error", desc: this.props.order.name == "session_error" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>
+                                        ERROR
+                                        {
+                                            this.props.order.name == "session_error" ? 
+                                                this.props.order.desc ? 
+                                                    <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
+                                                    <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>remove</i>  
+                                        }
+                                    </th>
                                     <th className="numeric">VIEW</th>
                                     <th className="numeric"></th>
                                 </tr>
@@ -101,9 +157,9 @@ class TableBody extends React.Component {
                             </tbody>
                         </table>
                         <div className="col-md-12">
-                            {this.props.offset >= 50 ? <IconButton onClick={this.setOffset.bind(this, this.props.offset - 50)}><i className="material-icons">keyboard_arrow_left</i></IconButton> : null}
+                            {this.props.offset >= 50 ? <IconButton onClick = {this.setFilter.bind(this, {offset: +this.props.offset - 50})}><i className="material-icons">keyboard_arrow_left</i></IconButton> : null}
                             <span style={{display: 'inline-block', height: '48px', lineHeight: '48px', verticalAlign: 'top'}}>записи с {this.props.offset} по {+this.props.offset+this.props.sessions.length}</span>
-                            {this.props.sessions.length < 50 ? null : <IconButton onClick={this.setOffset.bind(this, +this.props.offset + 50)}><i className="material-icons">keyboard_arrow_right</i></IconButton>}
+                            {this.props.sessions.length < 50 ? null : <IconButton onClick = {this.setFilter.bind(this, {offset: +this.props.offset + 50})}><i className="material-icons">keyboard_arrow_right</i></IconButton>}
                         </div>
                     </div>
                 </article>
@@ -120,4 +176,4 @@ module.exports = connect(state => ({
         name: "session_id",
         desc: true
     }
-}), { getSessions, setFilter, setOffset, setOrder, setViewSession })(TableBody);
+}), { getSessions, setFilter, setOffset, setOrder, setViewSession, bindSession, unbindSession })(TableBody);
