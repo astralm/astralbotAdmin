@@ -31,20 +31,7 @@ const AppReducer = (state = Map(), action) => {
 				name: action.name,
 				status: action.status == 0 ? false : true,
 				id: action.id
-			}))
-		case Types.SET_SESSIONS :
-		case Types.SET_USER_SESSIONS :
-		case Types.SET_FREE_SESSIONS :
-		case Types.SET_BUSY_SESSIONS :
-		case Types.SET_SUCCESS_SESSIONS :
-		case Types.SET_ERROR_SESSIONS :
-		case Types.SET_ACTIVE_SESSIONS :
-		case Types.SET_INACTIVE_SESSIONS :
-			return state.set('sessions', fromJS(action.sessions));
-		case Types.SET_OFFSET :
-			return state.set('offset', action.offset);
-		case Types.SET_SWITCH :
-			return state.set('switch', action.switch);
+			}));
 		case Types.SET_VIEW_SESSION :
 			return state.mergeDeep(fromJS({
 				session: {
@@ -59,6 +46,27 @@ const AppReducer = (state = Map(), action) => {
 			return state.set('session', state.get('session').merge(fromJS({
 				dialog: action.dialog
 			})));
+		case Types.SET_SESSIONS :
+			return state.set('sessions', fromJS(action.sessions));
+		case Types.SET_FILTER :
+			if(action.filter != "all"){
+				var filters = state.get('filters') || fromJS([]),
+					key = filters.indexOf(action.filter);
+				if(action.filter){
+					if(key > -1){
+						filters = filters.delete(key);
+					} else {
+						filters = filters.push(action.filter);
+					}
+				}
+			} else {
+				var filters = fromJS([]);
+			}
+			return state.merge(fromJS({
+				filters: filters,
+				offset: action.offset,
+				order: action.order
+			}));
 		default: 
 			return state;
 	}
