@@ -43,7 +43,7 @@ export const setAnswer = (hash, session_id, message) => ({ type: types.SET_ANSWE
 export const stopBot = session_id => ({ type: types.STOP_BOT, session_id });
 export const startBot = session_id => ({ type: types.START_BOT, session_id });
 export const updateUserInformation = (email, password, name) => ({ type: types.UPDATE_USER_INFORMATION, email, password, name });
-export const setFilter = (filter, user_id) => ({ type: types.SET_FILTER, filter, user_id });
+export const setFilter = (filter, offset, order) => ({ type: types.SET_FILTER, filter, offset, order });
 export const setOffset = offset => ({type: types.SET_OFFSET, offset});
 export const setOrder = (name, desc) => ({type: types.SET_ORDER, name, desc});
 export const getSessions = (filters, order, offset) => ({type: types.GET_SESSIONS, filters, order, offset});
