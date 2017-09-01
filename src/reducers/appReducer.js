@@ -67,6 +67,12 @@ const AppReducer = (state = Map(), action) => {
 				offset: action.offset,
 				order: action.order
 			}));
+		case Types.INIT_NOTIFICATION :
+			let notification = Notification || window.Notification;
+			if(notification){
+				notification.requestPermission();
+			}
+			return notification ? state.set("notification", true) : state.set("notification", false);
 		default: 
 			return state;
 	}
