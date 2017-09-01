@@ -34,22 +34,6 @@ class TableBody extends React.Component {
         this.props.getSessions(this.props.filters || false, this.props.order || null, this.props.offset || 0);
     }
     render() {
-        var rows = this.props.sessions.map((session, sessionKey) => (
-            <tr key = {sessionKey}>
-                {
-                    [session.session_id, 
-                    session.question, 
-                    session.answer, 
-                    session.session_status, 
-                    session.user_name || "-",
-                    session.session_error ? "true" : "false",
-                    session.session_id ? <RaisedButton label="Просмотр" onClick = { this.setViewSession.bind(this, session.session_id) } secondary /> : '',
-                    (session.user_id == this.props.userId || session.user_id == 0) && session.session_id ? <RaisedButton label={session.user_id == this.props.userId ? "отказаться" : "Взять"} onClick = { session.user_id == this.props.userId ? this.unbindSession.bind(this) : this.bindSession.bind(this) } data-session_id = {session.session_id} primary /> : null].map((option, optionKey) => (
-                        <td className="numeric" key = {optionKey}>{ optionKey == 3 ? option == 0 ? "false" : "true" : option }</td>
-                    ))
-                }
-            </tr>
-        ));
         return (
             <div>
                 <section className="box box-default">

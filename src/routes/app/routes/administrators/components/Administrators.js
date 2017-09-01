@@ -65,7 +65,7 @@ class Administrators extends React.Component {
                                     <tr key={itemKey}>
                                         {
                                             Object.keys(item).map((key, optionKey) => (
-                                                <td className = "numeric" key={optionKey}>{key == 'user_status' ? item[key] == 1 ? "online" : "offline" : item[key]}</td>
+                                                key != "user_id" ? <td className = "numeric" key={optionKey}>{key == 'user_status' ? item[key] == 1 ? "online" : "offline" : item[key]}</td> : null
                                             ))
                                         }
                                     </tr>

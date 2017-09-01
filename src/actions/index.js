@@ -48,3 +48,4 @@ export const setOffset = offset => ({type: types.SET_OFFSET, offset});
 export const setOrder = (name, desc) => ({type: types.SET_ORDER, name, desc});
 export const getSessions = (filters, order, offset) => ({type: types.GET_SESSIONS, filters, order, offset});
 export const setSessions = sessions => ({type: types.SET_SESSIONS, sessions});
+export const initNotification = () => ({type: types.INIT_NOTIFICATION});
