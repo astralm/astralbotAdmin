@@ -8,7 +8,7 @@ import reducers from './reducers';
 import { fromJS, Map } from 'immutable';
 import appMiddleware from './middleware.js';
 import initMiddlewareEvents from './middleware_events/index.js';
-import { updateState, login, logout } from './actions';
+import { updateState, login, logout, initNotification } from './actions';
 import io from 'socket.io-client';
 import ENV from './constants/env.js';
 
@@ -41,6 +41,7 @@ function scrollToTop() {
     if(user.email && user.password)
       store.dispatch(login(user.email, user.password));
 }
+store.dispatch(initNotification());
 const rootRoute = {
   childRoutes: [{
     path: '/',
