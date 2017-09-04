@@ -4,7 +4,8 @@ export default store => data => {
 	if(state.get('notification')){
 		let notification = Notification || window.Notification;
 		if(notification.permission == "granted"){
-			if(state.getIn(['session', 'dialog']).size != data.length && !data[data.length - 1].answer_message){
+			let size = state.getIn(['session', 'dialog']) ? state.getIn(['session', 'dialog']).size : 0;
+			if(size != data.length && !data[data.length - 1].answer_message){
 				let message = new notification("Новое сообщение в открытом диалоге: ", {
 					body: data[data.length - 1].question_message,
 					requireInteraction: true

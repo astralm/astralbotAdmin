@@ -6,7 +6,7 @@ export default store => data => {
 	if(state.get('notification')){
 		let notification = Notification || window.Notification;
 		if(notification.permission == "granted" && data.length > 0){
-			let sessions = state.get('sessions').toJS(),
+			let sessions = state.get('sessions') ? state.get('sessions').toJS() : [],
 				getSessionInData = session_id => {
 					for(let j = 0; j < data.length; j++){
 						let sessionInData = data[j];
@@ -22,9 +22,9 @@ export default store => data => {
 						case "question":
 							return "Новый вопрос";
 						case "session_error":
-							return !value ? "Бот не смог подобрать ответ" : "Ошибки больше нет";
+							return value ? "Бот не смог подобрать ответ" : "Ошибки больше нет";
 						case "session_status": 
-							return value ? "Сессия стала неактивной" : "Сессия стала активной";
+							return !value ? "Сессия стала неактивной" : "Сессия стала активной";
 						case "user_name":
 							return value ? ("Сессия занята пользователем '" + value + "'") : "Сессия стала свободна";
 						default :

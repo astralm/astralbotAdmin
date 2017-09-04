@@ -5,7 +5,7 @@ export default store => data => {
 	if(state.get('notification')){
 		let notification = Notification || window.Notification;
 		if(notification.permission == "granted" && data[0]){
-			let users = state.get('users').toJS(),
+			let users = state.get('users') ? state.get('users').toJS() : [],
 				getUserFromData = user_id => {
 					for(let j = 0; j < data.length; j++){
 						let userFromData = data[j];
