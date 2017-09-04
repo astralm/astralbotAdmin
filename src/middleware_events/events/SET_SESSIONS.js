@@ -22,9 +22,9 @@ export default store => data => {
 						case "question":
 							return "Новый вопрос";
 						case "session_error":
-							return !value ? "Бот не смог подобрать ответ" : "Ошибки больше нет";
+							return value ? "Бот не смог подобрать ответ" : "Ошибки больше нет";
 						case "session_status": 
-							return value ? "Сессия стала неактивной" : "Сессия стала активной";
+							return !value ? "Сессия стала неактивной" : "Сессия стала активной";
 						case "user_name":
 							return value ? ("Сессия занята пользователем '" + value + "'") : "Сессия стала свободна";
 						default :
