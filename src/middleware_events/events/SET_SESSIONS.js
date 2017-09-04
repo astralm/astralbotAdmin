@@ -6,7 +6,7 @@ export default store => data => {
 	if(state.get('notification')){
 		let notification = Notification || window.Notification;
 		if(notification.permission == "granted" && data.length > 0){
-			let sessions = state.get('sessions').toJS(),
+			let sessions = state.get('sessions') ? state.get('sessions').toJS() : [],
 				getSessionInData = session_id => {
 					for(let j = 0; j < data.length; j++){
 						let sessionInData = data[j];
