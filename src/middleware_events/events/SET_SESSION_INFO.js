@@ -4,7 +4,7 @@ export default store => data => {
 	if(state.get('notification')){
 		let notification = Notification || window.Notification;
 		if(notification.permission == "granted" && data[0]){
-			let session = state.get('session').toJS();
+			let session = state.get('session') ? state.get('session').toJS() : {};
 			if(data[0].session_error != session.session_error || data[0].session_status != session.session_status || data[0].user_id != session.user_id){
 				let error, status, user;
 				if(data[0].session_error != session.session_error){
