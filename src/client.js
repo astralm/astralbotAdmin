@@ -50,8 +50,6 @@ const rootRoute = {
     childRoutes: [
       require('./routes/app'),
       require('./routes/404'),
-      require('./routes/confirmEmail'),
-      require('./routes/forgotPassword'),
       require('./routes/login'),
       {
         path: '*',
