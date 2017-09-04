@@ -67,10 +67,6 @@ class Login extends React.Component {
           </div>
         </div>
 
-        <div className="additional-info">
-          <a href="#/forgot-password">Forgot your password?</a>
-        </div>
-
       </div>
     );
   }
