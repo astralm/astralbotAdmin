@@ -66,7 +66,10 @@ class Login extends React.Component {
             <a href="#/" className="color-primary" onClick = {this.click}>Login</a>
           </div>
         </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> a564c01898951ae50dc586027c73d3dfdb501b44
       </div>
     );
   }
