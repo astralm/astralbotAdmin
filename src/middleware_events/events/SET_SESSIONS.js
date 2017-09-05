@@ -14,43 +14,23 @@ export default store => data => {
 							return sessionInData;
 						}
 					}
-				},
-				getMessage = (key, value) => {
-					switch (key){
-						case "answer":
-							return "Новый ответ";
-						case "question":
-							return "Новый вопрос";
-						case "session_error":
-							return value ? "Бот не смог подобрать ответ" : "Ошибки больше нет";
-						case "session_status": 
-							return !value ? "Сессия стала неактивной" : "Сессия стала активной";
-						case "user_name":
-							return value ? ("Сессия занята пользователем '" + value + "'") : "Сессия стала свободна";
-						default :
-							return "";
-					}
 				};
 			for (let i = 0; i < sessions.length; i++){
 				let session = sessions[i],
 					sessionInData = getSessionInData(session.session_id);
-				if(session && sessionInData){	
-					for (let key in session){
-						let value = session[key],
-							text = getMessage(key, sessionInData[key]);
-						if(sessionInData[key] != value && text){
-							let message = new notification("Изменения в состоянии сессий: ", {
-								body: "сессия " + session.session_id + ": " + text,
+				if(session && sessionInData){
+					if(sessionInData.session_error && session.session_error != sessionInData.session_error){
+						let message = new notification("сессия " + session.session_id + " :", {
+								body: "Бот не смог подобрать ответ.",
 								requireInteraction: true
 							});
-							message.onclick = () => {
-								if(store.getState().routing.locationBeforeTransitions.pathname.split("/app/")[1] != "dialog"){
-									store.dispatch(setViewSession(session.session_id));
-									store.dispatch(push('app/dialog'));
-								}
-								window.alert("Изменения в состоянии сессий: сессия " + session.session_id + ": " + text);
+						message.onclick = () => {
+							if(store.getState().routing.locationBeforeTransitions.pathname.split("/app/")[1] != "dialog"){
+								store.dispatch(setViewSession(session.session_id));
+								store.dispatch(push('app/dialog'));
 							}
-						}
+							window.alert("сессия " + session.session_id + " : Бот не смог подобрать ответ.");
+						};
 					}
 				}
 			}
