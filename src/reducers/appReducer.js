@@ -53,6 +53,26 @@ const AppReducer = (state = Map(), action) => {
 				var filters = state.get('filters') || fromJS([]),
 					key = filters.indexOf(action.filter);
 				if(action.filter){
+					switch(action.filter){
+						case 'active':
+						case 'inactive': 
+							var filterKey = filters.indexOf(action.filter == 'active' ? 'inactive' : 'active');
+							break;
+						case 'error':
+						case 'success':
+							var filterKey = filters.indexOf(action.filter == 'error' ? 'success' : 'error');
+							break;
+						case 'free':
+						case 'busy':
+							var filterKey = filters.indexOf(action.filter == 'free' ? 'busy' : 'free');
+							break;
+						case 'user':
+							var filterKey = filters.indexOf('free');
+							break;
+					}
+					if(filterKey > -1){
+						filters = filters.delete(filterKey);
+					}
 					if(key > -1){
 						filters = filters.delete(key);
 					} else {
