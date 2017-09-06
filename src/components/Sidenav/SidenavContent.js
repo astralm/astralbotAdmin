@@ -99,22 +99,36 @@ class SidebarContent extends React.Component {
       const DisplayBlock = {
           display:'block'
       };
-
+      const  tac = {
+          textAlign:'center',
+          marginRight:0
+      };
     return (
         <ul className="nav" ref={(c) => { this.nav = c; }}>
           <li className="open">
-            <FlatButton href="/">
+            <FlatButton href="/" >
+              <div style={tac}>
+                <i style={tac} className="nav-icon material-icons">folder_open</i>
+
+              </div>
+
               <div style={FlatStyle}>
                 <span className="nav-text">Сессии</span>
               </div>
             </FlatButton>
             <ul style={DisplayBlock}>
-                <li><FlatButton  href="#/app"><span>Все сессии</span></FlatButton></li>
+                <li><FlatButton  href="#/app">
+
+                  <span>Все сессии</span></FlatButton></li>
                 <li><FlatButton href="#/app/dialog"><span>Последняя</span></FlatButton></li>
             </ul>
           </li>
           <li>
             <FlatButton href="#/app/administrators" >
+              <div style={tac}>
+                <i style={tac} className="nav-icon material-icons">face</i>
+
+              </div>
               <div style={FlatStyle}>
                 <span className="nav-text">Администраторы</span>
               </div>
@@ -122,6 +136,10 @@ class SidebarContent extends React.Component {
           </li>
           <li>
             <FlatButton href="#/app/profile">
+              <div style={tac}>
+                <i style={tac} className="nav-icon material-icons">settings applications</i>
+
+              </div>
               <div style={FlatStyle}>
 
                 <span className="nav-text">Профиль</span>
@@ -129,7 +147,8 @@ class SidebarContent extends React.Component {
             </FlatButton>
           </li>
         </ul>
-    );
+
+  );
   }
 }
 
