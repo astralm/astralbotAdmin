@@ -1,7 +1,7 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
-import { getSessionDialog, getSessionInfo, bindSession, unbindSession, setAnswer, startBot, stopBot } from '../../../../../actions/index.js';
+import { getSessionDialog, getSessionInfo, bindSession, unbindSession, setAnswer, startBot, stopBot, getBotStatus } from '../../../../../actions/index.js';
 class DialogItem extends React.Component{
     render(){
         return (<article className={"tl-item" + (this.props.question ? " alt" : "")}>
@@ -19,6 +19,7 @@ class DialogItem extends React.Component{
 }
 class DialogSimple extends React.Component {
     componentWillMount(){
+        this.props.getBotStatus(this.props.session.session_id);
         this.props.getSessionInfo(this.props.session.session_id);
         this.props.getSessionDialog(this.props.session.session_id);
     }
@@ -109,7 +110,7 @@ class DialogSimple extends React.Component {
                             <form role="form">
                                 <div className="form-group">
                                     <div className="col-md-12">
-                                        <RaisedButton label="Включить бота" primary className="btn-w-md" onClick = {this.startBot.bind(this)}/> <RaisedButton label="Выключить бота" primary className="btn-w-md" onClick = {this.stopBot.bind(this)}/>
+                                        <RaisedButton label="Включить бота" primary = {this.props.bot ? true : false} className="btn-w-md" onClick = {this.startBot.bind(this)}/><RaisedButton label="Выключить бота" primary = {this.props.bot ? false : true} className="btn-w-md" onClick = {this.stopBot.bind(this)}/>
                                     </div>
                                 </div>
                                 <div className="form-group">
@@ -125,6 +126,7 @@ class DialogSimple extends React.Component {
 }
 module.exports = connect(state => ({
     session: state.app.get('session') ? state.app.get('session').toJS() : {},
-    user_id: state.app.getIn(['user', 'id'])
-}), {getSessionInfo, getSessionDialog, bindSession, unbindSession, setAnswer, startBot, stopBot})(DialogSimple);
+    user_id: state.app.getIn(['user', 'id']),
+    bot: state.app.getIn(['session', 'bot'])
+}), {getSessionInfo, getSessionDialog, bindSession, unbindSession, setAnswer, startBot, stopBot, getBotStatus})(DialogSimple);
 

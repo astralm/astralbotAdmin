@@ -69,6 +69,12 @@ export default socket => store => next => action => {
     case types.SET_FILTER :
       socket.emit(types.SET_FILTER, action);
       break;
+    case types.GET_BOT_STATUS :
+      console.log(action);
+      socket.emit(types.GET_BOT_STATUS, {
+        session_id: action.id
+      });
+      break;
 	}
 	return next(action);
 }
