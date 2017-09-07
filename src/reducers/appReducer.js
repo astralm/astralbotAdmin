@@ -93,6 +93,8 @@ const AppReducer = (state = Map(), action) => {
 				notification.requestPermission();
 			}
 			return notification ? state.set("notification", true) : state.set("notification", false);
+		case Types.SET_BOT_STATUS :
+			return state.set('session', state.get('session') ? state.get('session').set('bot', action.status) : fromJS({}));
 		default: 
 			return state;
 	}
