@@ -30,3 +30,5 @@ export const SET_FILTER = 'SET_FILTER';
 export const GET_SESSIONS = 'GET_SESSIONS';
 export const SET_SESSIONS = 'SET_SESSIONS';
 export const INIT_NOTIFICATION = 'INIT_NOTIFICATION';
+export const SET_BOT_STATUS = 'SET_BOT_STATUS';
+export const GET_BOT_STATUS = 'GET_BOT_STATUS';
