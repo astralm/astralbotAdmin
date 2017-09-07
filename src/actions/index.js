@@ -49,3 +49,5 @@ export const setOrder = (name, desc) => ({type: types.SET_ORDER, name, desc});
 export const getSessions = (filters, order, offset) => ({type: types.GET_SESSIONS, filters, order, offset});
 export const setSessions = sessions => ({type: types.SET_SESSIONS, sessions});
 export const initNotification = () => ({type: types.INIT_NOTIFICATION});
+export const setBotStatus = status => ({type: types.SET_BOT_STATUS, status});
+export const getBotStatus = id => ({type: types.GET_BOT_STATUS, id});
