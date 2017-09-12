@@ -34,6 +34,24 @@ export default store => data => {
 					}
 				}
 			}
+			if(sessions.length <= 0 && data.length > 0){
+				for(let i = 0; i < data.length; i++){
+					let obj = data[i];
+					if(obj.session_error){
+						let message = new notification("сессия " + obj.session_id + " :", {
+								body: "Бот не смог подобрать ответ.",
+								requireInteraction: true
+							});
+						message.onclick = () => {
+							if(store.getState().routing.locationBeforeTransitions.pathname.split("/app/")[1] != "dialog"){
+								store.dispatch(setViewSession(obj.session_id));
+								store.dispatch(push('app/dialog'));
+							}
+							window.alert("сессия " + obj.session_id + " : Бот не смог подобрать ответ.");
+						};
+					}
+				}
+			}
 		}
 	}
 	store.dispatch(actions.setSessions(data));
