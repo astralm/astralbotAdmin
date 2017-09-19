@@ -114,8 +114,12 @@ class DialogSimple extends React.Component {
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <input type="text" className="form-control" id="exampleInputEmail1" placeholder="ваше сообщение" onKeyPress = {this.keyPress.bind(this)} onInput = {this.saveAnswer.bind(this)} style={{margin: '0 14px', fontSize: '14px', display: 'inline-block', width: 'calc(100% - 360px)', varticalAlign: 'middle' }} />
-                                    <i className="material-icons" style={{verticalAlign: 'top', cursor: 'pointer'}} onClick = {this.setAnswer.bind(this)}>send</i>
+                                    <input type="text" disabled={this.props.bot ? true : false} className="form-control" id="exampleInputEmail1" placeholder={this.props.bot ? "Выключите бота чтобы ввести сообщение" : "Введите ваше сообщение"} onKeyPress = {this.keyPress.bind(this)} onInput = {this.saveAnswer.bind(this)} style={{margin: '0 14px', fontSize: '14px', display: 'inline-block', width: 'calc(100% - 360px)', varticalAlign: 'middle' }} />
+                                    {
+                                        !this.props.bot ?
+                                           <i className="material-icons" style={{verticalAlign: 'top', cursor: 'pointer'}} onClick = {this.setAnswer.bind(this)}>send</i> :
+                                           null 
+                                    }
                                 </div>
                             </form>
                         </div> : null
