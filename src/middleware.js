@@ -74,6 +74,12 @@ export default socket => store => next => action => {
         session_id: action.id
       });
       break;
+    case types.REMOVE_ERROR_SESSION :
+      socket.emit(types.REMOVE_ERROR_SESSION, {
+        session_id: action.session_id,
+        session_hash: action.session_hash
+      });
+      break;
 	}
 	return next(action);
 }
