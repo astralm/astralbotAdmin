@@ -1,7 +1,7 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
-import { getSessionDialog, getSessionInfo, bindSession, unbindSession, setAnswer, startBot, stopBot, getBotStatus } from '../../../../../actions/index.js';
+import { getSessionDialog, getSessionInfo, bindSession, unbindSession, setAnswer, startBot, stopBot, getBotStatus, removeErrorSession } from '../../../../../actions/index.js';
 class DialogItem extends React.Component{
     render(){
         return (<article className={"tl-item" + (this.props.question ? " alt" : "")}>
@@ -48,6 +48,9 @@ class DialogSimple extends React.Component {
     keyPress(e){
         if(e.key == 'Enter')
             this.setAnswer();
+    }
+    removeErrorSession(){
+        this.props.removeErrorSession(this.props.session.session_id, this.props.session.session_hash);
     }
     render() {
         this.state = {
@@ -110,7 +113,13 @@ class DialogSimple extends React.Component {
                             <form role="form">
                                 <div className="form-group">
                                     <div className="col-md-12">
-                                        <RaisedButton label="Включить бота" primary = {this.props.bot ? true : false} className="btn-w-md" onClick = {this.startBot.bind(this)}/><RaisedButton label="Выключить бота" primary = {this.props.bot ? false : true} className="btn-w-md" onClick = {this.stopBot.bind(this)}/>
+                                        <RaisedButton label="Включить бота" primary = {this.props.bot ? true : false} className="btn-w-md" onClick = {this.startBot.bind(this)}/>
+                                        <RaisedButton label="Выключить бота" primary = {this.props.bot ? false : true} className="btn-w-md" onClick = {this.stopBot.bind(this)}/>
+                                        {
+                                            this.props.session.session_error ?
+                                                <RaisedButton label="Сессия больше не имеет ошибки" onClick={this.removeErrorSession.bind(this)} style={{marginLeft: "20px"}} className="btn-w-md"/> :
+                                                null
+                                        }
                                     </div>
                                 </div>
                                 <div className="form-group">
@@ -132,5 +141,5 @@ module.exports = connect(state => ({
     session: state.app.get('session') ? state.app.get('session').toJS() : {},
     user_id: state.app.getIn(['user', 'id']),
     bot: state.app.getIn(['session', 'bot'])
-}), {getSessionInfo, getSessionDialog, bindSession, unbindSession, setAnswer, startBot, stopBot, getBotStatus})(DialogSimple);
+}), {getSessionInfo, getSessionDialog, bindSession, unbindSession, setAnswer, startBot, stopBot, getBotStatus, removeErrorSession})(DialogSimple);
 
