@@ -37,13 +37,13 @@ class TableBody2 extends React.Component {
                             <TableHeader displaySelectAll={false} adjustForCheckbox={false} enableSelectAll={false} >
                                 <TableRow>
                                     <TableHeaderColumn colSpan = "7"> 
-                                        <RaisedButton label="активные" secondary = {this.props.filters.indexOf("active") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"active"})}/>
-                                        <RaisedButton label="не активные" secondary = {this.props.filters.indexOf("inactive") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"inactive"})}/>
-                                        <RaisedButton label="ошибки" secondary = {this.props.filters.indexOf("error") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"error"})}/>
-                                        <RaisedButton label="без ошибок" secondary = {this.props.filters.indexOf("success") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"success"})}/>
-                                        <RaisedButton label="свободные" disabled = {this.props.filters.indexOf('user') > -1 ? true : false} secondary = {this.props.filters.indexOf("free") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"free"})}/>
-                                        <RaisedButton label="занятые" secondary = {this.props.filters.indexOf("busy") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"busy"})}/>
-                                        <RaisedButton label="ваши" secondary = {this.props.filters.indexOf("user") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"user"})}/>
+                                        <RaisedButton label="активные" secondary = {this.props.filters.indexOf("active") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"active"})} style={{marginRight: "5px"}}/>
+                                        <RaisedButton label="не активные" secondary = {this.props.filters.indexOf("inactive") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"inactive"})} style={{marginRight: "5px"}}/>
+                                        <RaisedButton label="ошибки" secondary = {this.props.filters.indexOf("error") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"error"})} style={{marginRight: "5px"}}/>
+                                        <RaisedButton label="без ошибок" secondary = {this.props.filters.indexOf("success") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"success"})} style={{marginRight: "5px"}}/>
+                                        <RaisedButton label="свободные" disabled = {this.props.filters.indexOf('user') > -1 ? true : false} secondary = {this.props.filters.indexOf("free") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"free"})} style={{marginRight: "5px"}}/>
+                                        <RaisedButton label="занятые" secondary = {this.props.filters.indexOf("busy") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"busy"})} style={{marginRight: "5px"}}/>
+                                        <RaisedButton label="ваши" secondary = {this.props.filters.indexOf("user") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"user"})} style={{marginRight: "5px"}}/>
                                         <RaisedButton label="все" secondary = {this.props.filters.length > 0 || !this.props.filters ? false : true} onClick = {this.setFilter.bind(this, {offset: 0, filter:"all"})}/>
                                     </TableHeaderColumn>
                                 </TableRow>
