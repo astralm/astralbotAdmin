@@ -97,6 +97,8 @@ const AppReducer = (state = Map(), action) => {
 			return state.set('session', state.get('session') ? state.get('session').set('bot', action.status) : fromJS({}));
 		case Types.VALIDATE :
 			return state.set('validate', action.validate);
+		case Types.LOGOUT :
+			return Map();
 		default: 
 			return state;
 	}
