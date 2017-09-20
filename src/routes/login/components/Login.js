@@ -33,13 +33,19 @@ class Login extends React.Component {
     this.props.login(this.state.email, this.state.password);
   }
   render() {
+    console.log(this.props.validate);
     return (
       <div className="body-inner">
         <div className="card bg-white">
           <div className="card-content">
 
-            <section className="logo text-center">
+            <section className="logo text-center" style={{color: "#ca5555", fontSize: "15px"}}>
               <h1><a href="#/">{this.state.brand}</a></h1>
+              {
+                this.props.validate == false && this.props.validate != undefined ? 
+                  "Неверный email или пароль!" :
+                  null
+              }
             </section>
 
             <form className="form-horizontal">
@@ -71,7 +77,10 @@ class Login extends React.Component {
   }
 }
 
-const LoginContainer = connect(null, {login})(Login);
+
+const LoginContainer = connect(state => ({
+  validate: state.app.get('validate')
+}), {login})(Login);
 
 const Page = () => (
   <div className="page-login">
