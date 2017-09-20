@@ -95,6 +95,8 @@ const AppReducer = (state = Map(), action) => {
 			return notification ? state.set("notification", true) : state.set("notification", false);
 		case Types.SET_BOT_STATUS :
 			return state.set('session', state.get('session') ? state.get('session').set('bot', action.status) : fromJS({}));
+		case Types.VALIDATE :
+			return state.set('validate', action.validate);
 		default: 
 			return state;
 	}

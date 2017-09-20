@@ -52,3 +52,4 @@ export const initNotification = () => ({type: types.INIT_NOTIFICATION});
 export const setBotStatus = status => ({type: types.SET_BOT_STATUS, status});
 export const getBotStatus = id => ({type: types.GET_BOT_STATUS, id});
 export const removeErrorSession = (id, hash) => ({type: types.REMOVE_ERROR_SESSION, session_id: id, session_hash: hash});
+export const validate = validate => ({type: types.VALIDATE, validate});
