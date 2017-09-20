@@ -31,24 +31,32 @@ class TableBody2 extends React.Component {
     render() {
         return (
             <div>
-                <article className="article">
+                <article className="article" style={{marginBottom: "-44px"}}>
                     <div className="col-md-12">
-                        <Table height="500" fixedHeader={true} fixedFooter={true} selectable={false} multiSelectable={false}>
+                        <Table fixedHeader={true} fixedFooter={true} selectable={false} multiSelectable={false} height={(window.innerHeight - 260).toString()} style = {{tableLayout: "auto"}}>
                             <TableHeader displaySelectAll={false} adjustForCheckbox={false} enableSelectAll={false} >
                                 <TableRow>
-                                    <TableHeaderColumn colSpan = "7"> 
-                                        <RaisedButton label="активные" secondary = {this.props.filters.indexOf("active") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"active"})}/>
-                                        <RaisedButton label="не активные" secondary = {this.props.filters.indexOf("inactive") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"inactive"})} style={{marginRight: "10px"}}/>
-                                        <RaisedButton label="ошибки" secondary = {this.props.filters.indexOf("error") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"error"})}/>
-                                        <RaisedButton label="без ошибок" secondary = {this.props.filters.indexOf("success") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"success"})} style={{marginRight: "10px"}}/>
-                                        <RaisedButton label="свободные" disabled = {this.props.filters.indexOf('user') > -1 ? true : false} secondary = {this.props.filters.indexOf("free") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"free"})}/>
-                                        <RaisedButton label="занятые" secondary = {this.props.filters.indexOf("busy") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"busy"})} style={{marginRight: "10px"}}/>
-                                        <RaisedButton label="ваши" secondary = {this.props.filters.indexOf("user") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"user"})}/>
-                                        <RaisedButton label="все" secondary = {this.props.filters.length > 0 || !this.props.filters ? false : true} onClick = {this.setFilter.bind(this, {offset: 0, filter:"all"})}/>
+                                    <TableHeaderColumn colSpan = "7" style={{whiteSpace: "normal"}}>
+                                        <div style={{display: "inline-block", whiteSpace: "no-wrap", marginRight: "10px", marginBottom: "5px", marginTop: "5px"}}>
+                                            <RaisedButton label="активные" secondary = {this.props.filters.indexOf("active") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"active"})}/>
+                                            <RaisedButton label="не активные" secondary = {this.props.filters.indexOf("inactive") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"inactive"})}/>
+                                        </div>
+                                        <div style={{display: "inline-block", whiteSpace: "no-wrap", marginRight: "10px", marginBottom: "5px"}}>
+                                            <RaisedButton label="ошибки" secondary = {this.props.filters.indexOf("error") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"error"})}/>
+                                            <RaisedButton label="без ошибок" secondary = {this.props.filters.indexOf("success") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"success"})}/>
+                                        </div>
+                                        <div style={{display: "inline-block", whiteSpace: "no-wrap", marginRight: "10px", marginBottom: "5px"}}>
+                                            <RaisedButton label="свободные" disabled = {this.props.filters.indexOf('user') > -1 ? true : false} secondary = {this.props.filters.indexOf("free") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"free"})}/>
+                                            <RaisedButton label="занятые" secondary = {this.props.filters.indexOf("busy") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"busy"})}/>
+                                        </div>
+                                        <div style={{display: "inline-block", whiteSpace: "no-wrap", marginBottom: "5px"}}>
+                                            <RaisedButton label="ваши" secondary = {this.props.filters.indexOf("user") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"user"})}/>
+                                            <RaisedButton label="все" secondary = {this.props.filters.length > 0 || !this.props.filters ? false : true} onClick = {this.setFilter.bind(this, {offset: 0, filter:"all"})}/>
+                                        </div>
                                     </TableHeaderColumn>
                                 </TableRow>
                                 <TableRow>
-                                    <TableHeaderColumn style = {{textAlign: "center"}}>
+                                    <TableHeaderColumn style = {{textAlign: "center", width: "50px", padding: "0"}}>
                                         <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_id", desc: this.props.order.name == "session_id" ? !this.props.order.desc : true}})} style={{cursor: "pointer"}}>
                                             ID
                                             {
@@ -60,7 +68,7 @@ class TableBody2 extends React.Component {
                                             }
                                         </div>
                                     </TableHeaderColumn>
-                                    <TableHeaderColumn style = {{textAlign: "center"}}>
+                                    <TableHeaderColumn style = {{textAlign: "center"}} id = "question">
                                         <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "question", desc: this.props.order.name == "question" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
                                             ВОСПРОС
                                             {
@@ -72,7 +80,7 @@ class TableBody2 extends React.Component {
                                             }
                                         </div>
                                     </TableHeaderColumn>
-                                    <TableHeaderColumn style = {{textAlign: "center"}}>
+                                    <TableHeaderColumn style = {{textAlign: "center"}} id = "answer">
                                         <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "answer", desc: this.props.order.name == "answer" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
                                             ОТВЕТ
                                             {
@@ -84,7 +92,7 @@ class TableBody2 extends React.Component {
                                             }
                                         </div>
                                     </TableHeaderColumn>
-                                    <TableHeaderColumn style = {{textAlign: "center"}}>
+                                    <TableHeaderColumn style = {{textAlign: "center", width: "100px", padding: "0"}}>
                                         <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_status", desc: this.props.order.name == "session_status" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>
                                             СТАТУС
                                             {
@@ -96,7 +104,7 @@ class TableBody2 extends React.Component {
                                             }
                                         </div>
                                     </TableHeaderColumn>
-                                    <TableHeaderColumn style = {{textAlign: "center"}}>
+                                    <TableHeaderColumn style = {{textAlign: "center", width: "100px", padding: "0"}}>
                                         <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "user_name", desc: this.props.order.name == "user_name" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
                                             КОНСУЛЬТАНТ
                                             {
@@ -108,7 +116,7 @@ class TableBody2 extends React.Component {
                                             }
                                         </div>
                                     </TableHeaderColumn>
-                                    <TableHeaderColumn style = {{textAlign: "center"}}>
+                                    <TableHeaderColumn style = {{textAlign: "center", width: "100px", padding: "0"}}>
                                         <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_error", desc: this.props.order.name == "session_error" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
                                             ОШИБКА
                                             {
@@ -120,34 +128,46 @@ class TableBody2 extends React.Component {
                                             }
                                         </div>
                                     </TableHeaderColumn>
-                                    <TableHeaderColumn style = {{textAlign: "center"}}>VIEW</TableHeaderColumn>
+                                    <TableHeaderColumn style = {{textAlign: "center", width: "100px", padding: "0"}}>VIEW</TableHeaderColumn>
                                 </TableRow>
                             </TableHeader>
                             <TableBody displayRowCheckbox={false} deselectOnClickaway={false} showRowHover={false} stripedRows={false} showRowHover={true} preScanRows={true}>
                                 {
                                     this.props.sessions.map((session, sessionKey) => (
                                         <TableRow key = {sessionKey}>
-                                            <TableRowColumn className="numeric" style={{textAlign:"center"}}>{ session.session_id }</TableRowColumn>
-                                            <TableRowColumn className="numeric" title={session.question}>{ session.question }</TableRowColumn>
-                                            <TableRowColumn className="numeric" title={session.answer}>{ session.answer }</TableRowColumn>
-                                            <TableRowColumn className="numeric" style = {{textAlign: "center"}}>{ 
+                                            <TableRowColumn className="numeric" style={{textAlign:"center", width: "50px", padding: "0"}}>{ session.session_id }</TableRowColumn>
+                                            <TableRowColumn className="numeric question_td" style={{whiteSpace: "normal"}} title={session.question}> 
+                                                <div style={{height: "16px", overflow: "hidden"}}>
+                                                    {
+                                                        session.question
+                                                    }
+                                                </div>
+                                            </TableRowColumn>
+                                            <TableRowColumn className="numeric answer_td" style={{whiteSpace: "normal"}} title={session.answer}>
+                                                <div style={{height: "16px", overflow: "hidden"}}>
+                                                    {
+                                                        session.answer
+                                                    }
+                                                </div>
+                                            </TableRowColumn>
+                                            <TableRowColumn className="numeric" style = {{textAlign: "center", width: "100px", padding: "0"}}>{ 
                                                     session.session_status ? 
                                                         <i className="material-icons" style={{color: "#4CAF50"}}>brightness_1</i> : 
                                                         <i className="material-icons" style={{color: "#EF6C00"}}>brightness_1</i> 
                                             }</TableRowColumn>
-                                            <TableRowColumn className="numeric" style = {{textAlign: "center"}}>{ 
+                                            <TableRowColumn className="numeric" style = {{textAlign: "center", width: "100px", padding: "0"}}>{ 
                                                 session.user_name ?
                                                     session.user_name == this.props.user_name ?
                                                         <i className="material-icons" style = {{color: "#EF6C00", cursor: "pointer"}} onClick = {this.unbindSession.bind(this, session.session_id)}>remove_circle_outline</i> :
                                                         session.user_name :
                                                     <i className="material-icons" style = {{color: "#4CAF50", cursor: "pointer"}} onClick = {this.bindSession.bind(this, session.session_id)}>add_circle_outline</i>
                                             }</TableRowColumn>
-                                            <TableRowColumn className="numeric" style = {{textAlign: "center"}}>{ 
+                                            <TableRowColumn className="numeric" style = {{textAlign: "center", width: "100px", padding: "0"}}>{ 
                                                 session.session_error ? 
                                                     <i className="material-icons" style={{color: "#EF6C00"}}>info_outline</i> : 
                                                     <i className="material-icons" style={{color: "#9E9E9E"}}>close</i>
                                             }</TableRowColumn>
-                                            <TableRowColumn className="numeric" style = {{textAlign: "center"}}>
+                                            <TableRowColumn className="numeric" style = {{textAlign: "center", width: "100px", padding: "0"}}>
                                                 <i className="material-icons" onClick = { this.setViewSession.bind(this, session.session_id) } style={{color: session.session_id != this.props.session_id ? "#9E9E9E" : "#4CAF50", cursor: "pointer"}}>remove_red_eye</i>
                                             </TableRowColumn>
                                         </TableRow>
