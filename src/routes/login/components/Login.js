@@ -33,7 +33,6 @@ class Login extends React.Component {
     this.props.login(this.state.email, this.state.password);
   }
   render() {
-    console.log(this.props.validate);
     return (
       <div className="body-inner">
         <div className="card bg-white">
