@@ -80,6 +80,9 @@ export default socket => store => next => action => {
         session_hash: action.session_hash
       });
       break;
+    case types.SEND_EMAIL :
+      socket.emit(types.SEND_EMAIL, action.email);
+      break;
 	}
 	return next(action);
 }

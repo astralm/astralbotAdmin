@@ -34,3 +34,5 @@ export const SET_BOT_STATUS = 'SET_BOT_STATUS';
 export const GET_BOT_STATUS = 'GET_BOT_STATUS';
 export const REMOVE_ERROR_SESSION = 'REMOVE_ERROR_SESSION';
 export const VALIDATE = "VALIDATE";
+export const SEND_EMAIL = "SEND_EMAIL";
+export const MAIL_SENDED = "MAIL_SENDED";

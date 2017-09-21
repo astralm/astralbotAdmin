@@ -6,6 +6,7 @@ import setSessions from './events/SET_SESSIONS.js';
 import setSessionInfo from './events/SET_SESSION_INFO.js';
 import setSessionDialog from './events/SET_SESSION_DIALOG.js';
 import setBotStatus from './events/SET_BOT_STATUS.js';
+import sendEmail from './events/SEND_EMAIL.js';
 const initEventListeners = (socket, store) => {
 	socket.on(Types.LOGIN, setStatus(store));
 	socket.on(Types.LOGOUT, setStatus(store));
@@ -15,5 +16,6 @@ const initEventListeners = (socket, store) => {
 	socket.on(Types.GET_SESSION_INFO, setSessionInfo(store));
 	socket.on(Types.GET_SESSION_DIALOG, setSessionDialog(store));
 	socket.on(Types.GET_BOT_STATUS, setBotStatus(store));
+	socket.on(Types.SEND_EMAIL, sendEmail(store));
 }
 module.exports = initEventListeners;
