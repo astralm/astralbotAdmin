@@ -53,3 +53,5 @@ export const setBotStatus = status => ({type: types.SET_BOT_STATUS, status});
 export const getBotStatus = id => ({type: types.GET_BOT_STATUS, id});
 export const removeErrorSession = (id, hash) => ({type: types.REMOVE_ERROR_SESSION, session_id: id, session_hash: hash});
 export const validate = validate => ({type: types.VALIDATE, validate});
+export const sendEmail = email => ({type: types.SEND_EMAIL, email});
+export const mailSended = status => ({type: types.MAIL_SENDED, status});
