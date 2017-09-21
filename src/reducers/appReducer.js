@@ -99,6 +99,8 @@ const AppReducer = (state = Map(), action) => {
 			return state.set('validate', action.validate);
 		case Types.LOGOUT :
 			return Map();
+		case Types.MAIL_SENDED :
+			return state.set('mail', action.status);
 		default: 
 			return state;
 	}
