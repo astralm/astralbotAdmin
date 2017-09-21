@@ -58,7 +58,7 @@ class Login extends React.Component {
                 </div>
                 <div className="form-group">
                   <TextField
-                    floatingLabelText="Password"
+                    floatingLabelText="Пароль"
                     type="password"
                     fullWidth
                     onInput = {this.inputPassword}
@@ -68,8 +68,11 @@ class Login extends React.Component {
             </form>
           </div>
           <div className="card-action no-border text-right">
-            <a href="#/" className="color-primary" onClick = {this.click}>Login</a>
+            <a href="#/" className="color-primary" onClick = {this.click}>Войти</a>
           </div>
+        </div>
+        <div className="additional-info">
+          <a href="#/forgot-password">Восстановить пароль</a>
         </div>
       </div>
     );
