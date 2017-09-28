@@ -83,6 +83,19 @@ export default socket => store => next => action => {
     case types.SEND_EMAIL :
       socket.emit(types.SEND_EMAIL, action.email);
       break;
+    case types.DELETE_DISPATCH : 
+      socket.emit(types.DELETE_DISPATCH, action.dispatch_id);
+      break;
+    case types.NEW_DISPATCH :
+      socket.emit(types.NEW_DISPATCH, {
+        dispatch_widget: action.dispatch_widget,
+        dispatch_telegram: action.dispatch_telegram,
+        dispatch_message: action.dispatch_message,
+        user_id: state.getIn(['user', 'id'])})
+      break;
+    case types.GET_DISPATCHES :
+      socket.emit(types.GET_DISPATCHES);
+      break;
 	}
 	return next(action);
 }
