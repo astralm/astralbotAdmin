@@ -69,5 +69,5 @@ class Dispatch extends React.Component {
 }
 
 module.exports = connect(state => ({
-    dispatches: state.app.get('dispatches') ? state.app.get('dispatches').toJS() : [{user_name: "Влад", dispatch_id: "1", dispatch_widget: "1", dispatch_telegram: "0", dispatch_date: "12.42.12 42:43", dispatch_message: "hue"},{user_name: "Влад", dispatch_id: "2", dispatch_widget: "1", dispatch_telegram: "0", dispatch_date: "12.42.12 42:43", dispatch_message: "hue"}]
+    dispatches: state.app.get('dispatches') ? state.app.get('dispatches').toJS() : []
 }), {newDispatch, deleteDispatch, getDispatches})(Dispatch);
