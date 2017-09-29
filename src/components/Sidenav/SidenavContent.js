@@ -138,11 +138,19 @@ class SidebarContent extends React.Component {
             <FlatButton href="#/app/profile">
               <div style={tac}>
                 <i style={tac} className="nav-icon material-icons">settings applications</i>
-
               </div>
               <div style={FlatStyle}>
-
                 <span className="nav-text">Профиль</span>
+              </div>
+            </FlatButton>
+          </li>
+          <li>
+            <FlatButton href="#/app/dispatch">
+              <div style={tac}>
+                <i style={tac} className="nav-icon material-icons">volume_up</i>
+              </div>
+              <div style={FlatStyle}>
+                <span className="nav-text">Рассылка</span>
               </div>
             </FlatButton>
           </li>
