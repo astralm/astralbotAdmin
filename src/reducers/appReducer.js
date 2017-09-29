@@ -101,6 +101,8 @@ const AppReducer = (state = Map(), action) => {
 			return Map();
 		case Types.MAIL_SENDED :
 			return state.set('mail', action.status);
+		case Types.SET_DISPATCHES : 
+			return state.set('dispatches', fromJS(action.dispatches));
 		default: 
 			return state;
 	}
