@@ -41,6 +41,7 @@ class Dispatch extends React.Component {
         });
     }
     render(){
+        console.log(this.props.dispatches);
         return <Paper className="col-md-12" style={{paddingTop: "10px", paddingBottom: "10px"}}>
             <Card style={{marginBottom: "10px"}}>
                 <CardHeader title="Новое сообщение" actAsExpander={this.props.dispatches.length > 0 ? true : false} showExpandableButton={this.props.dispatches.length > 0 ? true : false}/>
@@ -54,7 +55,7 @@ class Dispatch extends React.Component {
             {
                 this.props.dispatches.map((item, key) => (
                     <Card key = {key}>
-                        <CardHeader title={item.user_name} subtitle={item.dispatch_date + " для " + [(+item.dispatch_telegram ? "Telegram" : false), (+item.dispatch_widget ? "Widget" : false)].filter(platform => {return typeof platform == "string"}).join(" и ")} actAsExpander={true} showExpandableButton={true} />
+                        <CardHeader title={item.user_name} subtitle={item.dispatch_date_formated + " для " + [(+item.dispatch_telegram ? "Telegram" : false), (+item.dispatch_widget ? "Widget" : false)].filter(platform => {return typeof platform == "string"}).join(" и ")} actAsExpander={true} showExpandableButton={true} />
                         <CardText expandable={true}>
                             { item.dispatch_message }
                         </CardText>
