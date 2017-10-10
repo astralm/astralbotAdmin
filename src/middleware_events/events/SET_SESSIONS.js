@@ -3,7 +3,7 @@ import {setViewSession} from '../../actions/index.js';
 import {push} from 'react-router-redux';
 export default store => data => {
 	let state = store.getState().app;
-	if(state.get('notification')){
+	if(state.get('notification') && data){
 		let notification = Notification || window.Notification;
 		if(notification.permission == "granted" && data.length > 0){
 			let sessions = state.get('sessions') ? state.get('sessions').toJS() : [],

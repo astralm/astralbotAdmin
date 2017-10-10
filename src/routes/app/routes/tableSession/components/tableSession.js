@@ -1,8 +1,6 @@
 import React from 'react';
 import QueueAnim from 'rc-queue-anim';
 import RaisedButton from 'material-ui/RaisedButton';
-import {List, ListItem} from 'material-ui/List';
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableFooter} from 'material-ui/Table';
 import ContentInbox from 'material-ui/svg-icons/content/inbox';
 import ActionGrade from 'material-ui/svg-icons/action/grade';
 import ContentSend from 'material-ui/svg-icons/content/send';
@@ -10,7 +8,13 @@ import IconButton from 'material-ui/IconButton';
 import ContentDrafts from 'material-ui/svg-icons/content/drafts';
 import { connect } from 'react-redux';
 import { getSessions, setFilter, setOffset, setOrder, setViewSession, bindSession, unbindSession } from '../../../../../actions/index.js';
-class TableBody2 extends React.Component {
+import DatePicker from 'material-ui/DatePicker';
+import Paper from 'material-ui/Paper';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import Checkbox from 'material-ui/Checkbox';
+import MenuItem from 'material-ui/MenuItem';
+import SelectField from 'material-ui/SelectField';
+class TableSession extends React.Component {
     setViewSession(session_id){
         this.props.setViewSession(session_id);
         if(session_id)
@@ -29,165 +33,234 @@ class TableBody2 extends React.Component {
         this.props.getSessions(this.props.filters || false, this.props.order || null, this.props.offset || 0);
     }
     render() {
-        return (
-            <div>
-                <article className="article" style={{marginBottom: "-44px"}}>
-                    <div className="col-md-12">
-                        <Table fixedHeader={true} fixedFooter={true} selectable={false} multiSelectable={false} height={(window.innerHeight - 260).toString()} style = {{tableLayout: "auto"}}>
-                            <TableHeader displaySelectAll={false} adjustForCheckbox={false} enableSelectAll={false} >
-                                <TableRow>
-                                    <TableHeaderColumn colSpan = "7" style={{whiteSpace: "normal"}}>
-                                        <div style={{display: "inline-block", whiteSpace: "no-wrap", marginRight: "10px", marginBottom: "5px", marginTop: "5px"}}>
-                                            <RaisedButton label="активные" secondary = {this.props.filters.indexOf("active") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"active"})}/>
-                                            <RaisedButton label="не активные" secondary = {this.props.filters.indexOf("inactive") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"inactive"})}/>
-                                        </div>
-                                        <div style={{display: "inline-block", whiteSpace: "no-wrap", marginRight: "10px", marginBottom: "5px"}}>
-                                            <RaisedButton label="ошибки" secondary = {this.props.filters.indexOf("error") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"error"})}/>
-                                            <RaisedButton label="без ошибок" secondary = {this.props.filters.indexOf("success") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"success"})}/>
-                                        </div>
-                                        <div style={{display: "inline-block", whiteSpace: "no-wrap", marginRight: "10px", marginBottom: "5px"}}>
-                                            <RaisedButton label="свободные" disabled = {this.props.filters.indexOf('user') > -1 ? true : false} secondary = {this.props.filters.indexOf("free") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"free"})}/>
-                                            <RaisedButton label="занятые" secondary = {this.props.filters.indexOf("busy") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"busy"})}/>
-                                        </div>
-                                        <div style={{display: "inline-block", whiteSpace: "no-wrap", marginBottom: "5px"}}>
-                                            <RaisedButton label="ваши" secondary = {this.props.filters.indexOf("user") > -1 ? true : false} onClick = {this.setFilter.bind(this, {offset: 0, filter:"user"})}/>
-                                            <RaisedButton label="все" secondary = {this.props.filters.length > 0 || !this.props.filters ? false : true} onClick = {this.setFilter.bind(this, {offset: 0, filter:"all"})}/>
-                                        </div>
-                                    </TableHeaderColumn>
-                                </TableRow>
-                                <TableRow>
-                                    <TableHeaderColumn style = {{textAlign: "center", width: "50px", padding: "0"}}>
-                                        <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_id", desc: this.props.order.name == "session_id" ? !this.props.order.desc : true}})} style={{cursor: "pointer"}}>
-                                            ID
-                                            {
-                                                this.props.order.name == "session_id" ? 
-                                                    this.props.order.desc ? 
-                                                        <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
-                                                        <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
-                                                    null
-                                            }
-                                        </div>
-                                    </TableHeaderColumn>
-                                    <TableHeaderColumn style = {{textAlign: "center"}} id = "question">
-                                        <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "question", desc: this.props.order.name == "question" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
-                                            ВОСПРОС
-                                            {
-                                                this.props.order.name == "question" ? 
-                                                    this.props.order.desc ? 
-                                                        <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
-                                                        <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
-                                                    null
-                                            }
-                                        </div>
-                                    </TableHeaderColumn>
-                                    <TableHeaderColumn style = {{textAlign: "center"}} id = "answer">
-                                        <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "answer", desc: this.props.order.name == "answer" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
-                                            ОТВЕТ
-                                            {
-                                                this.props.order.name == "answer" ? 
-                                                    this.props.order.desc ? 
-                                                        <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
-                                                        <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
-                                                    null
-                                            }
-                                        </div>
-                                    </TableHeaderColumn>
-                                    <TableHeaderColumn style = {{textAlign: "center", width: "100px", padding: "0"}}>
-                                        <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_status", desc: this.props.order.name == "session_status" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>
-                                            СТАТУС
-                                            {
-                                                this.props.order.name == "session_status" ? 
-                                                    this.props.order.desc ? 
-                                                        <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
-                                                        <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
-                                                    null
-                                            }
-                                        </div>
-                                    </TableHeaderColumn>
-                                    <TableHeaderColumn style = {{textAlign: "center", width: "100px", padding: "0"}}>
-                                        <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "user_name", desc: this.props.order.name == "user_name" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
-                                            КОНСУЛЬТАНТ
-                                            {
-                                                this.props.order.name == "user_name" ? 
-                                                    this.props.order.desc ? 
-                                                        <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
-                                                        <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
-                                                    null
-                                            }
-                                        </div>
-                                    </TableHeaderColumn>
-                                    <TableHeaderColumn style = {{textAlign: "center", width: "100px", padding: "0"}}>
-                                        <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_error", desc: this.props.order.name == "session_error" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
-                                            ОШИБКА
-                                            {
-                                                this.props.order.name == "session_error" ? 
-                                                    this.props.order.desc ? 
-                                                        <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
-                                                        <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
-                                                    null
-                                            }
-                                        </div>
-                                    </TableHeaderColumn>
-                                    <TableHeaderColumn style = {{textAlign: "center", width: "100px", padding: "0"}}>VIEW</TableHeaderColumn>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody displayRowCheckbox={false} deselectOnClickaway={false} showRowHover={false} stripedRows={false} showRowHover={true} preScanRows={true}>
-                                {
-                                    this.props.sessions.map((session, sessionKey) => (
-                                        <TableRow key = {sessionKey}>
-                                            <TableRowColumn className="numeric" style={{textAlign:"center", width: "50px", padding: "0"}}>{ session.session_id }</TableRowColumn>
-                                            <TableRowColumn className="numeric question_td" style={{whiteSpace: "normal"}} title={session.question}> 
-                                                <div style={{height: "16px", overflow: "hidden"}}>
-                                                    {
-                                                        session.question
-                                                    }
-                                                </div>
-                                            </TableRowColumn>
-                                            <TableRowColumn className="numeric answer_td" style={{whiteSpace: "normal"}} title={session.answer}>
-                                                <div style={{height: "16px", overflow: "hidden"}}>
-                                                    {
-                                                        session.answer
-                                                    }
-                                                </div>
-                                            </TableRowColumn>
-                                            <TableRowColumn className="numeric" style = {{textAlign: "center", width: "100px", padding: "0"}}>{ 
-                                                    session.session_status ? 
-                                                        <i className="material-icons" style={{color: "#4CAF50"}}>brightness_1</i> : 
-                                                        <i className="material-icons" style={{color: "#EF6C00"}}>brightness_1</i> 
-                                            }</TableRowColumn>
-                                            <TableRowColumn className="numeric" style = {{textAlign: "center", width: "100px", padding: "0"}}>{ 
-                                                session.user_name ?
-                                                    session.user_name == this.props.user_name ?
-                                                        <i className="material-icons" style = {{color: "#EF6C00", cursor: "pointer"}} onClick = {this.unbindSession.bind(this, session.session_id)}>remove_circle_outline</i> :
-                                                        session.user_name :
-                                                    <i className="material-icons" style = {{color: "#4CAF50", cursor: "pointer"}} onClick = {this.bindSession.bind(this, session.session_id)}>add_circle_outline</i>
-                                            }</TableRowColumn>
-                                            <TableRowColumn className="numeric" style = {{textAlign: "center", width: "100px", padding: "0"}}>{ 
-                                                session.session_error ? 
-                                                    <i className="material-icons" style={{color: "#EF6C00"}}>info_outline</i> : 
-                                                    <i className="material-icons" style={{color: "#9E9E9E"}}>close</i>
-                                            }</TableRowColumn>
-                                            <TableRowColumn className="numeric" style = {{textAlign: "center", width: "100px", padding: "0"}}>
-                                                <i className="material-icons" onClick = { this.setViewSession.bind(this, session.session_id) } style={{color: session.session_id != this.props.session_id ? "#9E9E9E" : "#4CAF50", cursor: "pointer"}}>remove_red_eye</i>
-                                            </TableRowColumn>
-                                        </TableRow>
-                                    ))
-                                }
-                            </TableBody>
-                            <TableFooter adjustForCheckbox={false}>
-                                <TableRow style={{verticalAlign:"middle"}}>
-                                    <TableRowColumn colSpan = "7">
-                                        {this.props.offset >= 50 ? <IconButton onClick = {this.setFilter.bind(this, {offset: +this.props.offset - 50})}><i className="material-icons">keyboard_arrow_left</i></IconButton> : null}
-                                        <span style={{display: 'inline-block', height: '48px', lineHeight: '48px', verticalAlign: 'top'}}>записи с {this.props.offset} по {+this.props.offset+this.props.sessions.length}</span>
-                                        {this.props.sessions.length < 50 ? null : <IconButton onClick = {this.setFilter.bind(this, {offset: +this.props.offset + 50})}><i className="material-icons">keyboard_arrow_right</i></IconButton>}
-                                    </TableRowColumn>
-                                </TableRow>
-                            </TableFooter>
-                        </Table>
+        return <Paper className="col-md-12" style={{paddingTop: "10px", paddingBottom: "10px"}}>
+            <Card style={{marginBottom: "10px"}}>
+                <CardHeader title="Фильтрация" actAsExpander={true} showExpandableButton={true}/>
+                <CardText expandable={true} style={{overflow: "auto"}}>
+                    <div style={{display: "inline-block", width: "20%", verticalAlign: "top"}}>
+                        <Checkbox label="Активные" 
+                            checked = {this.props.filters.indexOf("active") > -1 ? true : false}
+                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"active"})}/>
+                        <Checkbox label="Не активные" 
+                            checked = {this.props.filters.indexOf("inactive") > -1 ? true : false}
+                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"inactive"})}/>
                     </div>
-                </article>
+                    <div style={{display: "inline-block", width: "20%", verticalAlign: "top"}}>
+                        <Checkbox label="Свободные" 
+                            style={{display: "inline-block"}} 
+                            disabled = {this.props.filters.indexOf('user') > -1 ? true : false} 
+                            checked = {this.props.filters.indexOf("free") > -1 ? true : false} 
+                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"free"})}/>
+                        <Checkbox label="Занятые" 
+                            style={{display: "inline-block"}} 
+                            checked = {this.props.filters.indexOf("busy") > -1 ? true : false} 
+                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"busy"})}/>
+                    </div>
+                    <div style={{display: "inline-block", width: "20%", verticalAlign: "top"}}>
+                        <Checkbox label="Ошибки" 
+                            style={{display: "inline-block"}} 
+                            checked = {this.props.filters.indexOf("error") > -1 ? true : false} 
+                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"error"})}
+                        />
+                        <Checkbox label="Без ошибок" 
+                            style={{display: "inline-block"}} 
+                            checked = {this.props.filters.indexOf("success") > -1 ? true : false} 
+                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"success"})}
+                        />
+                    </div>
+                    <div style={{display: "inline-block", width: "20%", verticalAlign: "top"}}>
+                        <Checkbox label="Ваши" 
+                            style={{display: "inline-block"}}
+                            checked = {this.props.filters.indexOf("user") > -1 ? true : false}
+                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"user"})}
+                        />
+                        <Checkbox label="Все" 
+                            style={{display: "inline-block"}} 
+                            checked = {this.props.filters.length > 0 || !this.props.filters ? false : true}
+                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"all"})}
+                        />
+                    </div>
+                    <div style={{float: "right", width: "20%", verticalAlign: "top", overflowX: "hidden"}}>
+                        <Checkbox label="Сегодня" style={{display: "inline-block"}}/>
+                        <Checkbox label="Вчера" style={{display: "inline-block"}}/>
+                        <Checkbox label="Все даты" style={{display: "inline-block"}}/>
+                        <Checkbox label="Собственная дата" style={{display: "inline-block"}}/>
+                        <DatePicker hintText="Начальная дата"/>
+                        <DatePicker hintText="Конечная дата"/>
+                    </div>
+                    <div style={{display: "inline-block", width: "20%", verticalAlign: "top", marginTop: "20px"}}>
+                        <Checkbox label="Партнеры" 
+                            style={{display: "inline-block"}}
+                            checked = {this.props.filters.indexOf("partner") > -1 ? true : false}
+                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"partner"})}
+                        />
+                        <Checkbox label="Продажа" 
+                            style={{display: "inline-block"}} 
+                            checked = {this.props.filters.indexOf("sale") > -1 ? true : false}
+                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"sale"})}
+                        />
+                        <Checkbox label="Фак" 
+                            style={{display: "inline-block"}} 
+                            checked = {this.props.filters.indexOf("faq") > -1 ? true : false}
+                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"faq"})}
+                        />
+                    </div>
+                    <div style={{display: "inline-block", width: "20%", verticalAlign: "top", marginTop: "20px"}}>
+                        <Checkbox label="Виджет" 
+                            style={{display: "inline-block"}}
+                            checked = {this.props.filters.indexOf("widget") > -1 ? true : false}
+                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"widget"})}
+                        />
+                        <Checkbox label="Телеграм" 
+                            style={{display: "inline-block"}} 
+                            checked = {this.props.filters.indexOf("telegram") > -1 ? true : false}
+                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"telegram"})}
+                        />
+                    </div>
+                </CardText>
+            </Card>
+            <div className="box box-default table-box table-responsive mdl-shadow--2dp">
+                <table className="mdl-data-table table-bordered table-striped cf no-margin">
+                    <thead className="cf">
+                    <tr>
+                        <th>
+                            <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_id", desc: this.props.order.name == "session_id" ? !this.props.order.desc : true}})} style={{cursor: "pointer"}}>
+                                ID
+                                {
+                                    this.props.order.name == "session_id" ? 
+                                        this.props.order.desc ? 
+                                            <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
+                                            <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
+                                        null
+                                }
+                            </div>
+                        </th>
+                        <th>
+                            <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "question", desc: this.props.order.name == "question" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
+                                ВОСПРОС
+                                {
+                                this.props.order.name == "question" ? 
+                                    this.props.order.desc ? 
+                                        <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
+                                        <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
+                                    null
+                                }
+                            </div>
+                        </th>
+                        <th>
+                            <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "answer", desc: this.props.order.name == "answer" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
+                                ОТВЕТ
+                                {
+                                    this.props.order.name == "answer" ? 
+                                        this.props.order.desc ? 
+                                            <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
+                                            <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
+                                        null
+                                }
+                            </div>
+                        </th>
+                        <th>
+                            <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_status", desc: this.props.order.name == "session_status" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>
+                                СТАТУС
+                                {
+                                    this.props.order.name == "session_status" ? 
+                                        this.props.order.desc ? 
+                                            <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
+                                            <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
+                                        null
+                                }
+                            </div>
+                        </th>
+                        <th>
+                            <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "user_name", desc: this.props.order.name == "user_name" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
+                                КОНСУЛЬТАНТ
+                                {
+                                    this.props.order.name == "user_name" ? 
+                                        this.props.order.desc ? 
+                                            <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
+                                            <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
+                                        null
+                                }
+                            </div>
+                        </th>
+                            <th>
+                                <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_error", desc: this.props.order.name == "session_error" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
+                                    ОШИБКА
+                                    {
+                                        this.props.order.name == "session_error" ? 
+                                            this.props.order.desc ? 
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
+                                            null
+                                    }
+                                </div>
+                            </th>
+                            <th>VIEW</th> 
+                        </tr> 
+                    </thead>
+                    <tbody>
+                        {
+                            this.props.sessions.map((session, sessionKey) => (
+                                <tr key = {sessionKey}>
+                                    <td className="numeric">{ session.session_id }</td>
+                                    <td className="numeric" title={session.question} style={{textAlign: "left"}}> 
+                                        { session.question }
+                                    </td>
+                                    <td className="numeric" title={session.answer} style={{textAlign: "left"}}>
+                                        { session.answer }
+                                    </td>
+                                    <td className="numeric">
+                                        { 
+                                            session.session_status ? 
+                                                <i className="material-icons" style={{color: "#4CAF50"}}>brightness_1</i> : 
+                                                <i className="material-icons" style={{color: "#EF6C00"}}>brightness_1</i> 
+                                        }
+                                    </td>
+                                    <td className="numeric">
+                                        { 
+                                            session.user_name ?
+                                                session.user_name == this.props.user_name ?
+                                                    <i className="material-icons" style = {{color: "#EF6C00", cursor: "pointer"}} onClick = {this.unbindSession.bind(this, session.session_id)}>remove_circle_outline</i> :
+                                                    session.user_name :
+                                                <i className="material-icons" style = {{color: "#4CAF50", cursor: "pointer"}} onClick = {this.bindSession.bind(this, session.session_id)}>add_circle_outline</i>
+                                        }
+                                    </td>
+                                    <td className="numeric">
+                                        { 
+                                            session.session_error ? 
+                                                <i className="material-icons" style={{color: "#EF6C00"}}>info_outline</i> : 
+                                                <i className="material-icons" style={{color: "#9E9E9E"}}>close</i>
+                                        }
+                                    </td>
+                                    <td className="numeric">
+                                        <i className="material-icons" onClick = { this.setViewSession.bind(this, session.session_id) } style={{color: session.session_id != this.props.session_id ? "#9E9E9E" : "#4CAF50", cursor: "pointer"}}>remove_red_eye</i>
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                        <tr style={{verticalAlign:"middle"}}>
+                            <td colSpan = "7">
+                                {
+                                    this.props.offset >= 50 ? 
+                                        <IconButton onClick = {this.setFilter.bind(this, {offset: +this.props.offset - 50})}>
+                                            <i className="material-icons">keyboard_arrow_left</i>
+                                        </IconButton> : 
+                                        null
+                                }
+                                <span style={{display: 'inline-block', height: '48px', lineHeight: '48px', verticalAlign: 'top'}}>записи с {this.props.offset} по {+this.props.offset+this.props.sessions.length}</span>
+                                {
+                                    this.props.sessions.length < 50 ? 
+                                        null : 
+                                        <IconButton onClick = {this.setFilter.bind(this, {offset: +this.props.offset + 50})}>
+                                            <i className="material-icons">keyboard_arrow_right</i>
+                                        </IconButton>
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        );
+        </Paper>
     }
 }
 module.exports = connect(state => ({
@@ -201,4 +274,4 @@ module.exports = connect(state => ({
         desc: true
     },
     session_id: state.app.getIn(['session', 'session_id'])
-}), { getSessions, setFilter, setOffset, setOrder, setViewSession, bindSession, unbindSession })(TableBody2);
+}), { getSessions, setFilter, setOffset, setOrder, setViewSession, bindSession, unbindSession })(TableSession);

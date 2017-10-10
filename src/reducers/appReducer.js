@@ -69,9 +69,34 @@ const AppReducer = (state = Map(), action) => {
 						case 'user':
 							var filterKey = filters.indexOf('free');
 							break;
+						case 'faq':
+						case 'partner':
+						case 'sale':
+							var filterKey = [];
+							if(action.filter == "faq"){
+								filterKey.push(filters.indexOf("partner"));
+								filterKey.push(filters.indexOf("sale"));
+							} else if (action.filter == "partner"){
+								filterKey.push(filters.indexOf("faq"));
+								filterKey.push(filters.indexOf("sale"));
+							} else if (action.filter == "sale"){
+								filterKey.push(filters.indexOf("partner"));
+								filterKey.push(filters.indexOf("faq"));
+							}
+							break;
+						case 'telegram':
+						case 'widget':
+							var filterKey = filters.indexOf(action.filter == 'telegram' ? 'widget' : 'telegram');
+							break;
 					}
-					if(filterKey > -1){
+					if(typeof filterKey != "object" && filterKey > -1){
 						filters = filters.delete(filterKey);
+					} else if(typeof filterKey == "object" && filterKey.length > 0){
+						filterKey.forEach(obj => {
+							if(obj > -1){
+								filters = filters.delete(obj);
+							}
+						});
 					}
 					if(key > -1){
 						filters = filters.delete(key);
