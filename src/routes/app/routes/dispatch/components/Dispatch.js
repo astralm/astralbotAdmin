@@ -41,7 +41,6 @@ class Dispatch extends React.Component {
         });
     }
     render(){
-        console.log(this.props.dispatches);
         return <Paper className="col-md-12" style={{paddingTop: "10px", paddingBottom: "10px"}}>
             <Card style={{marginBottom: "10px"}}>
                 <CardHeader title="Новое сообщение" actAsExpander={this.props.dispatches.length > 0 ? true : false} showExpandableButton={this.props.dispatches.length > 0 ? true : false}/>
