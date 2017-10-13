@@ -43,10 +43,10 @@ export const setAnswer = (hash, session_id, message) => ({ type: types.SET_ANSWE
 export const stopBot = session_id => ({ type: types.STOP_BOT, session_id });
 export const startBot = session_id => ({ type: types.START_BOT, session_id });
 export const updateUserInformation = (email, password, name) => ({ type: types.UPDATE_USER_INFORMATION, email, password, name });
-export const setFilter = (filter, offset, order) => ({ type: types.SET_FILTER, filter, offset, order });
+export const setFilter = (filter, offset, order, firstDate, secondDate) => ({ type: types.SET_FILTER, filter, offset, order, firstDate, secondDate });
 export const setOffset = offset => ({type: types.SET_OFFSET, offset});
 export const setOrder = (name, desc) => ({type: types.SET_ORDER, name, desc});
-export const getSessions = (filters, order, offset) => ({type: types.GET_SESSIONS, filters, order, offset});
+export const getSessions = (filters, order, offset, firstDate, secondDate) => ({type: types.GET_SESSIONS, filters, order, offset, firstDate, secondDate});
 export const setSessions = sessions => ({type: types.SET_SESSIONS, sessions});
 export const initNotification = () => ({type: types.INIT_NOTIFICATION});
 export const setBotStatus = status => ({type: types.SET_BOT_STATUS, status});
@@ -59,3 +59,5 @@ export const deleteDispatch = dispatch_id => ({type: types.DELETE_DISPATCH, disp
 export const newDispatch = (dispatch_message, dispatch_telegram, dispatch_widget) => ({type: types.NEW_DISPATCH, dispatch_message, dispatch_telegram, dispatch_widget});
 export const getDispatches = () => ({type: types.GET_DISPATCHES});
 export const setDispatches = dispatches => ({type: types.SET_DISPATCHES, dispatches});
+export const setFirstDate = date => ({type: types.SET_FIRST_DATE, date});
+export const setSecondDate = date => ({type: types.SET_SECOND_DATE, date});

@@ -63,7 +63,9 @@ export default socket => store => next => action => {
       socket.emit(types.GET_SESSIONS, {
         filters: action.filters,
         order: action.order,
-        offset: action.offset
+        offset: action.offset,
+        firstDate: action.firstDate,
+        secondDate: action.secondDate
       });
       break;
     case types.SET_FILTER :
