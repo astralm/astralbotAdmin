@@ -88,6 +88,21 @@ const AppReducer = (state = Map(), action) => {
 						case 'widget':
 							var filterKey = filters.indexOf(action.filter == 'telegram' ? 'widget' : 'telegram');
 							break;
+						case 'today':
+						case 'yesterday':
+						case 'date':
+							var filterKey = [];
+							if(action.filter == "today"){
+								filterKey.push(filters.indexOf("yesterday"));
+								filterKey.push(filters.indexOf("date"));
+							} else if (action.filter == "yesterday"){
+								filterKey.push(filters.indexOf("today"));
+								filterKey.push(filters.indexOf("date"));
+							} else if (action.filter == "date"){
+								filterKey.push(filters.indexOf("yesterday"));
+								filterKey.push(filters.indexOf("today"));
+							}
+							break;
 					}
 					if(typeof filterKey != "object" && filterKey > -1){
 						filters = filters.delete(filterKey);
@@ -128,6 +143,10 @@ const AppReducer = (state = Map(), action) => {
 			return state.set('mail', action.status);
 		case Types.SET_DISPATCHES : 
 			return state.set('dispatches', fromJS(action.dispatches));
+		case Types.SET_FIRST_DATE :
+			return state.set('firstDate', fromJS(action.date));
+		case Types.SET_SECOND_DATE :
+			return state.set('secondDate', fromJS(action.date));
 		default: 
 			return state;
 	}
