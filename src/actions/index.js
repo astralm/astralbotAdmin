@@ -56,7 +56,7 @@ export const validate = validate => ({type: types.VALIDATE, validate});
 export const sendEmail = email => ({type: types.SEND_EMAIL, email});
 export const mailSended = status => ({type: types.MAIL_SENDED, status});
 export const deleteDispatch = dispatch_id => ({type: types.DELETE_DISPATCH, dispatch_id});
-export const newDispatch = (dispatch_message, dispatch_telegram, dispatch_widget) => ({type: types.NEW_DISPATCH, dispatch_message, dispatch_telegram, dispatch_widget});
+export const newDispatch = (dispatch_message, dispatch_telegram, dispatch_widget, dispatch_partner, dispatch_faq, dispatch_sale) => ({type: types.NEW_DISPATCH, dispatch_message, dispatch_telegram, dispatch_widget, dispatch_partner, dispatch_faq, dispatch_sale});
 export const getDispatches = () => ({type: types.GET_DISPATCHES});
 export const setDispatches = dispatches => ({type: types.SET_DISPATCHES, dispatches});
 export const setFirstDate = date => ({type: types.SET_FIRST_DATE, date});

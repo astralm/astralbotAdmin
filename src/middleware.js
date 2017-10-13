@@ -93,7 +93,11 @@ export default socket => store => next => action => {
         dispatch_widget: action.dispatch_widget,
         dispatch_telegram: action.dispatch_telegram,
         dispatch_message: action.dispatch_message,
-        user_id: state.getIn(['user', 'id'])})
+        user_id: state.getIn(['user', 'id']),
+        dispatch_partner: action.dispatch_partner,
+        dispatch_faq: action.dispatch_faq,
+        dispatch_sale: action.dispatch_sale
+      });
       break;
     case types.GET_DISPATCHES :
       socket.emit(types.GET_DISPATCHES);
