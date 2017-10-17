@@ -9,7 +9,8 @@ module.exports = {
         require('./routes/newuser'),
         require('./routes/edituser'),
         require('./routes/profile'),
-        require('./routes/dispatch/')
+        require('./routes/dispatch/'),
+        require('./routes/clients/')
       ]);
     });
   },
