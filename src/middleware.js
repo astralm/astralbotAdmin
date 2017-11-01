@@ -102,6 +102,15 @@ export default socket => store => next => action => {
     case types.GET_DISPATCHES :
       socket.emit(types.GET_DISPATCHES);
       break;
+    case types.GET_CLIENTS :
+      socket.emit(types.GET_CLIENTS);
+      break;
+    case types.GET_CLIENT :
+      socket.emit(types.GET_CLIENT, action.client_id);
+      break;
+    case types.UPDATE_CLIENT_INFORMATION:
+      socket.emit(types.UPDATE_CLIENT_INFORMATION, action.result);
+      break;
 	}
 	return next(action);
 }

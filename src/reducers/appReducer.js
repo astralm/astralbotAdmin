@@ -147,6 +147,18 @@ const AppReducer = (state = Map(), action) => {
 			return state.set('firstDate', fromJS(action.date));
 		case Types.SET_SECOND_DATE :
 			return state.set('secondDate', fromJS(action.date));
+		case Types.SET_CLIENTS :
+			return state.set('clients', fromJS(action.clients));
+		case Types.SET_VIEW_CLIENT :
+			return state.mergeDeep(fromJS({
+				client: {
+					client_id: action.client_id
+				}
+			}));
+		case Types.SET_CLIENT :
+			return state.mergeDeep(fromJS({
+				client: action.client[0]
+			}));
 		default: 
 			return state;
 	}

@@ -109,18 +109,30 @@ class SidebarContent extends React.Component {
             <FlatButton href="/" >
               <div style={tac}>
                 <i style={tac} className="nav-icon material-icons">folder_open</i>
-
               </div>
-
               <div style={FlatStyle}>
                 <span className="nav-text">Сессии</span>
               </div>
             </FlatButton>
             <ul style={DisplayBlock}>
                 <li><FlatButton  href="#/app">
-
                   <span>Все сессии</span></FlatButton></li>
                 <li><FlatButton href="#/app/dialog"><span>Последняя</span></FlatButton></li>
+            </ul>
+          </li>
+          <li >
+            <FlatButton href="#/app/clients" >
+              <div style={tac}>
+                <i style={tac} className="nav-icon material-icons">people</i>
+              </div>
+              <div style={FlatStyle}>
+                <span className="nav-text">Клиенты</span>
+              </div>
+            </FlatButton>
+            <ul style={DisplayBlock}>
+                <li><FlatButton  href="#/app/clients">
+                  <span>Все клиенты</span></FlatButton></li>
+                <li><FlatButton href="#/app/client"><span>Последний</span></FlatButton></li>
             </ul>
           </li>
           <li>

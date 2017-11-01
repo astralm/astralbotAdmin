@@ -16,7 +16,8 @@ import {
     bindSession, 
     unbindSession,
     setFirstDate,
-    setSecondDate
+    setSecondDate,
+    setViewClient
 } from '../../../../../actions/index.js';
 import DatePicker from 'material-ui/DatePicker';
 import Paper from 'material-ui/Paper';
@@ -24,11 +25,17 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import Checkbox from 'material-ui/Checkbox';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
+import {push} from 'react-router-redux';
 class TableSession extends React.Component {    
     setViewSession(session_id){
         this.props.setViewSession(session_id);
         if(session_id)
-            this.props.router.push("app/dialog");
+            this.props.push("app/dialog");
+    }
+    setViewClient(client_id){
+        this.props.setViewClient(client_id);
+        if(client_id)
+            this.props.push('app/client');
     }
     bindSession(session_id){
         this.props.bindSession(this.props.userId, session_id);
@@ -292,7 +299,8 @@ class TableSession extends React.Component {
                                     }
                                 </div>
                             </th>
-                            <th>VIEW</th> 
+                            <th>ДИАЛОГ</th>
+                            <th>КЛИЕНТ</th>
                         </tr> 
                     </thead>
                     <tbody>
@@ -333,11 +341,18 @@ class TableSession extends React.Component {
                                     <td className="numeric">
                                         <i className="material-icons" onClick = { this.setViewSession.bind(this, session.session_id) } style={{color: session.session_id != this.props.session_id ? "#9E9E9E" : "#4CAF50", cursor: "pointer"}}>remove_red_eye</i>
                                     </td>
+                                    <td className="numeric">
+                                        {
+                                            session.client_id ?
+                                                <i className="material-icons" onClick = { this.setViewClient.bind(this, session.client_id) } style={{color: session.client_id != this.props.client_id ? "#9E9E9E" : "#4CAF50", cursor: "pointer", width: "24px"}}>persona</i> :
+                                                ""
+                                        }
+                                    </td>
                                 </tr>
                             ))
                         }
                         <tr style={{verticalAlign:"middle"}}>
-                            <td colSpan = "8">
+                            <td colSpan = "9">
                                 {
                                     this.props.offset >= 50 ? 
                                         <IconButton onClick = {this.setFilter.bind(this, {offset: +this.props.offset - 50})}>
@@ -373,7 +388,8 @@ module.exports = connect(state => ({
     },
     session_id: state.app.getIn(['session', 'session_id']),
     firstDate: state.app.get('firstDate'),
-    secondDate: state.app.get('secondDate')
+    secondDate: state.app.get('secondDate'),
+    client_id: state.app.getIn(['client', 'client_id'])
 }), { 
     getSessions, 
     setFilter, 
@@ -383,5 +399,7 @@ module.exports = connect(state => ({
     bindSession, 
     unbindSession,
     setFirstDate,
-    setSecondDate 
+    setSecondDate,
+    push,
+    setViewClient 
 })(TableSession);
