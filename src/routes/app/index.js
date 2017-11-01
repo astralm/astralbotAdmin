@@ -10,7 +10,9 @@ module.exports = {
         require('./routes/edituser'),
         require('./routes/profile'),
         require('./routes/dispatch/'),
-        require('./routes/clients/')
+        require('./routes/clients/'),
+        require('./routes/client/'),
+        require('./routes/editclient/')
       ]);
     });
   },
