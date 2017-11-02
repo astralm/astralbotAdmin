@@ -12,7 +12,8 @@ class EditClient extends React.Component {
         this.state = {
             email: this.props.client.client_email || "",
             phone: this.props.client.client_phone || "",
-            name: this.props.client.client_name || ""
+            name: this.props.client.client_name || "",
+            username: this.props.client.client_username || ""
         };
     }
     componentWillMount(){
@@ -41,8 +42,13 @@ class EditClient extends React.Component {
             name: e.target.value
         });
     }
+    inputUsername(e){
+        this.setState({
+            username: e.target.value
+        });
+    }
     send(){
-        let [email, phone, name] = [this.state.email, this.state.phone, this.state.name];
+        let [email, phone, name, username] = [this.state.email, this.state.phone, this.state.name, this.state.username];
         let result = {
             session_id: this.props.client.session_id,
             client_id: this.props.client.client_id
@@ -55,6 +61,9 @@ class EditClient extends React.Component {
         }
         if(name && name != this.props.client.client_name){
             result.client_name = name;
+        }
+        if(username && username != this.props.client.client_username){
+            result.client_username = username;
         }
         if(Object.keys(result).length > 2 && (phone.length == 11 || !phone) && (/.*@.*\..*/.test(email) || !email)){
             this.props.updateClientInformation(result);
@@ -89,7 +98,7 @@ class EditClient extends React.Component {
                                 <fieldset>
                                     <div className="form-group">
                                         <TextField
-                                            floatingLabelText="Email"
+                                            floatingLabelText="Почта"
                                             type="email"
                                             fullWidth
                                             defaultValue = {this.props.client.client_email || ""}
@@ -99,7 +108,7 @@ class EditClient extends React.Component {
                                     </div>
                                     <div className="form-group">
                                         <TextField
-                                            floatingLabelText="Phone"
+                                            floatingLabelText="Телефон"
                                             type="tel"
                                             fullWidth
                                             errorText = {this.state.phoneError ? "Номер телефона должен содержать 11 символов" : ""}
@@ -109,11 +118,20 @@ class EditClient extends React.Component {
                                     </div>
                                     <div className="form-group">
                                         <TextField
-                                            floatingLabelText="Name"
+                                            floatingLabelText="Имя"
                                             type="text"
                                             fullWidth
                                             defaultValue={this.props.client.client_name || ""}
                                             onInput = {this.inputName.bind(this)}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <TextField
+                                            floatingLabelText="Username"
+                                            type="text"
+                                            fullWidth
+                                            defaultValue={this.props.client.client_username || ""}
+                                            onInput = {this.inputUsername.bind(this)}
                                         />
                                     </div>
                                 </fieldset>
