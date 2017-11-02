@@ -1,7 +1,19 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
-import { getSessionDialog, getSessionInfo, bindSession, unbindSession, setAnswer, startBot, stopBot, getBotStatus, removeErrorSession } from '../../../../../actions/index.js';
+import { 
+    getSessionDialog, 
+    getSessionInfo, 
+    bindSession, 
+    unbindSession, 
+    setAnswer, 
+    startBot, 
+    stopBot, 
+    getBotStatus, 
+    removeErrorSession,
+    setViewClient 
+} from '../../../../../actions/index.js';
+import {push} from 'react-router-redux';
 class DialogItem extends React.Component{
     render(){
         return (<article className={"tl-item" + (this.props.question ? " alt" : "")}>
@@ -9,7 +21,11 @@ class DialogItem extends React.Component{
                 <div className="tl-entry">
                     <div className="tl-time" style={{fontSize: '10px'}}>{ this.props.time.match(/(.*):/)[1] }</div>
                     <div className="tl-content">
-                        <h4 className="tl-tile text-warning">{ this.props.question ? "Клиент" : "Система" }</h4>
+                        <h4 className="tl-tile text-warning">{ 
+                            this.props.question ?
+                                this.props.client_name || "Клиент" : 
+                                "Система" 
+                        }</h4>
                         <p>{ this.props.message }</p>
                     </div>
                 </div>
@@ -55,6 +71,10 @@ class DialogSimple extends React.Component {
     removeErrorSession(){
         this.props.removeErrorSession(this.props.session.session_id, this.props.session.session_hash);
     }
+    client(client_id){
+        this.props.setViewClient(client_id);
+        this.props.push('app/client');
+    }
     render() {
         this.state = {
             session: this.props.session,
@@ -85,6 +105,16 @@ class DialogSimple extends React.Component {
                             <th className="numeric" style={{width:'20%'}}>Администратор : { !this.state.session.user_name ? "-" : this.state.session.user_name }</th>
                             <th className="numeric" style={{width:'20%'}}>Ошибка : { this.state.session.session_error ? "true" : "false" }</th>
                             <th className="numeric" style={{width:'20%'}}>Статус : { this.state.session.session_status ? "true" : "false" } </th>
+                            <th className="numeric" style={{width:'20%'}}>Тип : {
+                                this.state.session.session_partner ?
+                                    "Партнеры" :
+                                    this.state.session.session_sale ?
+                                        "Продажа" :
+                                        this.state.session.session_faq ?
+                                            "Фак" :
+                                            ""
+                            }</th>
+                            <th className="numeric" style={{width:'20%'}}>Клиент : <span onClick = {this.client.bind(this, this.state.session.client_id)} style={{borderBottom: "1px solid #000", cursor: "pointer"}}>{ this.state.session.client_id }</span></th>
                             {
                                 this.state.session.user_id == 0 ?
                                     <th className="numeric" style={{width:'20%'}}><RaisedButton label="Взять" onClick = { this.bindSession.bind(this) } secondary /></th> :
@@ -102,7 +132,7 @@ class DialogSimple extends React.Component {
                             this.state.session.dialog ? this.state.session.dialog.map((item, key) => {
                                 let result = [];
                                 if (item.question_message)
-                                    result.push(<DialogItem question = {true} time = {item.question_date_formated} message = {item.question_message} />);
+                                    result.push(<DialogItem question = {true} time = {item.question_date_formated} message = {item.question_message} client_name = {this.props.session.client_name} />);
                                 if (item.answer_message)
                                     result.push(<DialogItem question = {false} time = {item.answer_date_formated} message = {item.answer_message} />);
                                 return result;
@@ -144,5 +174,17 @@ module.exports = connect(state => ({
     session: state.app.get('session') ? state.app.get('session').toJS() : {},
     user_id: state.app.getIn(['user', 'id']),
     bot: state.app.getIn(['session', 'bot'])
-}), {getSessionInfo, getSessionDialog, bindSession, unbindSession, setAnswer, startBot, stopBot, getBotStatus, removeErrorSession})(DialogSimple);
+}), {
+    getSessionInfo, 
+    getSessionDialog, 
+    bindSession, 
+    unbindSession, 
+    setAnswer, 
+    startBot, 
+    stopBot, 
+    getBotStatus, 
+    removeErrorSession,
+    setViewClient,
+    push
+})(DialogSimple);
 
