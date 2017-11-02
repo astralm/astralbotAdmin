@@ -44,6 +44,9 @@ class TableSession extends React.Component {
                                 ТЕЛЕФОН
                             </th>
                             <th>
+                                USERNAME
+                            </th>
+                            <th>
                                 СЕССИЯ
                             </th>
                             <th>
@@ -59,6 +62,7 @@ class TableSession extends React.Component {
                                     <td>{client.client_name}</td>
                                     <td>{client.client_email}</td>
                                     <td>{client.client_phone}</td>
+                                    <td>{client.client_username}</td>
                                     <td>
                                         <i className="material-icons" 
                                             style={{
