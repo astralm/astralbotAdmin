@@ -39,6 +39,7 @@ class TableSession extends React.Component {
                                         <strong>ID: </strong> {this.props.client.client_id} <br/>
                                         <strong>Имя: </strong> {this.props.client.client_name} <br/>
                                         <strong>Email: </strong> {this.props.client.client_email} <br/>
+                                        <strong>Username: </strong> {this.props.client.client_username} <br/>
                                         <strong>Телефон: </strong> {this.props.client.client_phone} <br/>
                                         <strong>Сессия: </strong> <span 
                                             onClick={this.session.bind(this)}
