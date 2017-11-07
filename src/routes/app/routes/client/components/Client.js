@@ -48,6 +48,17 @@ class TableSession extends React.Component {
                                                 cursor: "pointer"
                                             }}
                                         >{this.props.client.session_id}</span><br/>
+                                        <strong>URL: {this.props.client.client_url}</strong><br/>
+                                        <strong>IP: {this.props.client.client_ip}</strong><br/>
+                                        <strong>Браузер: {this.props.client.client_browser_name + " " + this.props.client.client_browser_version}</strong><br/>
+                                        <strong>Движок браузера: {this.props.client.client_engine_name + " " + this.props.client.client_engine_version}</strong><br/>
+                                        <strong>Операционная система: {this.props.client.client_os_name + " " + this.props.client.client_os_version}</strong><br/>
+                                        <strong>Устройство: {
+                                            this.props.client.client_device_vendor && this.props.client.client_device_model ?
+                                                (this.props.client.client_device_vendor + " " + this.props.client.client_device_model) :
+                                                "Не определено"
+                                        }</strong><br/>
+                                        <strong>Тип устройства: {this.props.client.client_device_type || "Не определено"}</strong><br/>
                                     </p>
                                     <RaisedButton label="Редактировать" onClick = {this.edit.bind(this)}  secondary />
                                 </div>
