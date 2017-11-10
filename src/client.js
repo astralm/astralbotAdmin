@@ -38,11 +38,15 @@ function scrollToTop() {
   let state = store.getState().app;
   let user = state.get('user') ? state.get('user').toJS() : false;
   let valid = state.get('validate');
-  if(user)
-    if(user.email && user.password && valid)
+  if(user){
+    if(user.email && user.password){
       store.dispatch(login(user.email, user.password));
-    else
+    } else {
       store.dispatch(validate(undefined));
+    }
+  } else{
+    store.dispatch(validate(undefined));
+  }
 }
 store.dispatch(initNotification());
 store.dispatch(validate(true));

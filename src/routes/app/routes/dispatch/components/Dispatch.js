@@ -12,7 +12,7 @@ class Dispatch extends React.Component {
         super(props);
         this.state = {
             telegram: false,
-            widget: false,
+            widget: !props.organization_root ? true : false,
             parnter: false,
             faq: false,
             sale: false,
@@ -70,20 +70,28 @@ class Dispatch extends React.Component {
             <Card style={{marginBottom: "10px"}}>
                 <CardHeader title="Новое сообщение" actAsExpander={this.props.dispatches.length > 0 ? true : false} showExpandableButton={this.props.dispatches.length > 0 ? true : false}/>
                 <CardText expandable={this.props.dispatches.length > 0 ? true : false}>
-                    <RaisedButton label="Telegram" 
-                        secondary={this.state.telegram} 
-                        onClick={this.telegram.bind(this)} 
-                        disabled={!this.state.widget && this.state.telegram ? true : false} 
-                        disabledBackgroundColor="#4CAF50" 
-                        disabledLabelColor="#fff"
-                    />
-                    <RaisedButton label="Widget" 
-                        secondary={this.state.widget} 
-                        onClick={this.widget.bind(this)} 
-                        disabled={!this.state.telegram && this.state.widget ? true : false} 
-                        disabledBackgroundColor="#4CAF50" 
-                        disabledLabelColor="#fff"
-                    />
+                    {
+                        this.props.organization_root ?
+                            <RaisedButton label="Telegram" 
+                                secondary={this.state.telegram} 
+                                onClick={this.telegram.bind(this)} 
+                                disabled={!this.state.widget && this.state.telegram ? true : false} 
+                                disabledBackgroundColor="#4CAF50" 
+                                disabledLabelColor="#fff"
+                            /> :
+                            ""
+                    }
+                    {
+                        this.props.organization_root ?
+                            <RaisedButton label="Widget" 
+                                secondary={this.state.widget} 
+                                onClick={this.widget.bind(this)} 
+                                disabled={!this.state.telegram && this.state.widget ? true : false} 
+                                disabledBackgroundColor="#4CAF50" 
+                                disabledLabelColor="#fff"
+                            /> :
+                            ""
+                    }
                     <RaisedButton label="Партнеры" 
                         style={{marginLeft: "10px"}} 
                         secondary={this.state.partner} 
@@ -156,5 +164,6 @@ class Dispatch extends React.Component {
 }
 
 module.exports = connect(state => ({
-    dispatches: state.app.get('dispatches') ? state.app.get('dispatches').toJS() : []
+    dispatches: state.app.get('dispatches') ? state.app.get('dispatches').toJS() : [],
+    organization_root: state.app.getIn(["userOrganization", 'organization_root'])
 }), {newDispatch, deleteDispatch, getDispatches})(Dispatch);

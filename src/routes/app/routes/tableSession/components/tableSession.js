@@ -197,16 +197,31 @@ class TableSession extends React.Component {
                             onClick = {this.setFilter.bind(this, {offset: 0, filter:"faq"})}
                         />
                     </div>
+                        {   this.props.organization_root ?
+                                <div style={{display: "inline-block", width: "20%", verticalAlign: "top", marginTop: "20px"}}>
+                                    <Checkbox label="Виджет" 
+                                        style={{display: "inline-block"}}
+                                        checked = {this.props.filters.indexOf("widget") > -1 ? true : false}
+                                        onClick = {this.setFilter.bind(this, {offset: 0, filter:"widget"})}
+                                    />
+                                    <Checkbox label="Телеграм" 
+                                        style={{display: "inline-block"}} 
+                                        checked = {this.props.filters.indexOf("telegram") > -1 ? true : false}
+                                        onClick = {this.setFilter.bind(this, {offset: 0, filter:"telegram"})}
+                                    />
+                                </div> :
+                                ""
+                        }
                     <div style={{display: "inline-block", width: "20%", verticalAlign: "top", marginTop: "20px"}}>
-                        <Checkbox label="Виджет" 
+                        <Checkbox label="Нет диалога" 
                             style={{display: "inline-block"}}
-                            checked = {this.props.filters.indexOf("widget") > -1 ? true : false}
-                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"widget"})}
+                            checked = {this.props.filters.indexOf("empty") > -1 ? true : false}
+                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"empty"})}
                         />
-                        <Checkbox label="Телеграм" 
+                        <Checkbox label="Есть диалог" 
                             style={{display: "inline-block"}} 
-                            checked = {this.props.filters.indexOf("telegram") > -1 ? true : false}
-                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"telegram"})}
+                            checked = {this.props.filters.indexOf("employed") > -1 ? true : false}
+                            onClick = {this.setFilter.bind(this, {offset: 0, filter:"employed"})}
                         />
                     </div>
                 </CardText>
@@ -217,7 +232,7 @@ class TableSession extends React.Component {
                     <tr>
                         <th>
                             <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_id", desc: this.props.order.name == "session_id" ? !this.props.order.desc : true}})} style={{cursor: "pointer"}}>
-                                ID
+                                <span style={{borderBottom: "1px dashed"}}>ID</span>
                                 {
                                     this.props.order.name == "session_id" ? 
                                         this.props.order.desc ? 
@@ -229,7 +244,7 @@ class TableSession extends React.Component {
                         </th>
                         <th>
                             <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_dialog_update_date", desc: this.props.order.name == "session_dialog_update_date" ? !this.props.order.desc : true}})} style={{cursor: "pointer"}}>
-                                DATE
+                                <span style={{borderBottom: "1px dashed"}}>ДАТА</span>
                                 {
                                     this.props.order.name == "session_dialog_update_date" ? 
                                         this.props.order.desc ? 
@@ -241,7 +256,7 @@ class TableSession extends React.Component {
                         </th>
                         <th>
                             <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "question", desc: this.props.order.name == "question" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
-                                ВОСПРОС
+                                <span style={{borderBottom: "1px dashed"}}>ВОСПРОС</span>
                                 {
                                 this.props.order.name == "question" ? 
                                     this.props.order.desc ? 
@@ -253,7 +268,7 @@ class TableSession extends React.Component {
                         </th>
                         <th>
                             <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "answer", desc: this.props.order.name == "answer" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
-                                ОТВЕТ
+                                <span style={{borderBottom: "1px dashed"}}>ОТВЕТ</span>
                                 {
                                     this.props.order.name == "answer" ? 
                                         this.props.order.desc ? 
@@ -264,8 +279,25 @@ class TableSession extends React.Component {
                             </div>
                         </th>
                         <th>
+                            <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "client_url", desc: this.props.order.name == "client_url" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
+                                <span style={{borderBottom: "1px dashed"}}>СТРАНИЦА</span>
+                                {
+                                    this.props.order.name == "client_url" ? 
+                                        this.props.order.desc ? 
+                                            <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
+                                            <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
+                                        null
+                                }
+                            </div>
+                        </th>
+                        <th>
+                            <div>    
+                                ТИП СЕССИИ
+                            </div>
+                        </th>
+                        <th>
                             <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_status", desc: this.props.order.name == "session_status" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>
-                                СТАТУС
+                                <span style={{borderBottom: "1px dashed"}}>СТАТУС</span>
                                 {
                                     this.props.order.name == "session_status" ? 
                                         this.props.order.desc ? 
@@ -277,7 +309,7 @@ class TableSession extends React.Component {
                         </th>
                         <th>
                             <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "user_name", desc: this.props.order.name == "user_name" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
-                                КОНСУЛЬТАНТ
+                                <span style={{borderBottom: "1px dashed"}}>КОНСУЛЬТАНТ</span>
                                 {
                                     this.props.order.name == "user_name" ? 
                                         this.props.order.desc ? 
@@ -289,7 +321,7 @@ class TableSession extends React.Component {
                         </th>
                             <th>
                                 <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "session_error", desc: this.props.order.name == "session_error" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
-                                    ОШИБКА
+                                    <span style={{borderBottom: "1px dashed"}}>ОШИБКА</span>
                                     {
                                         this.props.order.name == "session_error" ? 
                                             this.props.order.desc ? 
@@ -300,7 +332,18 @@ class TableSession extends React.Component {
                                 </div>
                             </th>
                             <th>ДИАЛОГ</th>
-                            <th>КЛИЕНТ</th>
+                            <th>
+                                <div onClick = {this.setFilter.bind(this, {offset: 0, order: {name: "client_id", desc: this.props.order.name == "client_id" ? !this.props.order.desc : false}})} style={{cursor: "pointer"}}>    
+                                    <span style={{borderBottom: "1px dashed"}}>КЛИЕНТ</span>
+                                    {
+                                        this.props.order.name == "client_id" ? 
+                                            this.props.order.desc ? 
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> : 
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> : 
+                                            null
+                                    }
+                                </div>
+                            </th>
                         </tr> 
                     </thead>
                     <tbody>
@@ -314,6 +357,20 @@ class TableSession extends React.Component {
                                     </td>
                                     <td className="numeric" title={session.answer} style={{textAlign: "left"}}>
                                         { session.answer }
+                                    </td>
+                                    <td className="numeric" title={session.client_url} style={{textAlign: "left"}}>
+                                        <a href={ session.client_url }>{ session.client_url }</a>
+                                    </td>
+                                    <td className="numeric" title="Тип сессии" style={{textAlign: "left"}}>
+                                        { 
+                                            session.session_partner ?
+                                                "Партнеры" :
+                                                session.session_faq ?
+                                                    "Фак" :
+                                                    session.session_sale ?
+                                                    "Продажа" :
+                                                    ""
+                                        }
                                     </td>
                                     <td className="numeric">
                                         { 
@@ -352,7 +409,7 @@ class TableSession extends React.Component {
                             ))
                         }
                         <tr style={{verticalAlign:"middle"}}>
-                            <td colSpan = "9">
+                            <td colSpan = "11">
                                 {
                                     this.props.offset >= 50 ? 
                                         <IconButton onClick = {this.setFilter.bind(this, {offset: +this.props.offset - 50})}>
@@ -389,7 +446,8 @@ module.exports = connect(state => ({
     session_id: state.app.getIn(['session', 'session_id']),
     firstDate: state.app.get('firstDate'),
     secondDate: state.app.get('secondDate'),
-    client_id: state.app.getIn(['client', 'client_id'])
+    client_id: state.app.getIn(['client', 'client_id']),
+    organization_root: state.app.getIn(['userOrganization', 'organization_root'])
 }), { 
     getSessions, 
     setFilter, 

@@ -3,7 +3,13 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import QueueAnim from 'rc-queue-anim';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
+import {setViewOrganization} from './../../../../../actions/index.js';
 class MainProfile extends React.Component {
+    organizationLink(){
+        this.props.setViewOrganization(this.props.organization.organization_id);
+        this.props.push('app/organization');
+    }
     render() {
         this.state = {
             user: this.props.user
@@ -18,9 +24,17 @@ class MainProfile extends React.Component {
                                     <div className="box-body padding-lg-h">
                                         <h4>Ваш профиль</h4>
                                         <p>
-                                            <strong>Email:</strong> {this.state.user.email}
+                                            <strong>Почта:</strong> {this.state.user.email}
                                             <br />
-                                            <strong>Name:</strong> {this.state.user.name}
+                                            <strong>Имя:</strong> {this.state.user.name}
+                                            <br />
+                                            <strong>Организация:</strong> {
+                                                this.props.organization.organization_root ?
+                                                    <span onClick={this.organizationLink.bind(this)} style={{borderBottom: "1px dashed #000", cursor: "pointer"}}>{this.props.organization.organization_name}</span>
+                                                    : this.props.organization.organization_name
+                                            }
+                                            <br />
+                                            <strong>Сайт организации:</strong> <a href={this.props.organization.organization_site} target="_blank">{this.props.organization.organization_site}</a>
                                         </p>
                                         <RaisedButton label="Редактировать" href='#/app/edituser'  secondary />
                                     </div>
@@ -34,6 +48,7 @@ class MainProfile extends React.Component {
     }
 }
 module.exports = connect(state => ({
-    user: state.app.get('user').toJS()
-}))(MainProfile);
+    user: state.app.get('user').toJS(),
+    organization: state.app.get('userOrganization').toJS()
+}), {push, setViewOrganization})(MainProfile);
 

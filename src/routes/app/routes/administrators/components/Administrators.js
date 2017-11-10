@@ -81,9 +81,15 @@ class Administrators extends React.Component {
     }
 }
 module.exports = connect(state => ({
-    users : state.app.get('users').toJS(),
-    onlineUsers : state.app.get('onlineUsers').toJS(),
-    offlineUsers : state.app.get('offlineUsers').toJS()
+    users : state.app.get('users') ?
+        state.app.get('users').toJS() :
+        [],
+    onlineUsers : state.app.get('onlineUsers') ?
+        state.app.get('onlineUsers').toJS() :
+        [],
+    offlineUsers : state.app.get('offlineUsers') ?
+        state.app.get('offlineUsers').toJS() :
+        []
 }), {getUsers})(Administrators);
 
 
