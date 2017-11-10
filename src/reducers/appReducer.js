@@ -11,26 +11,27 @@ const AppReducer = (state = Map(), action) => {
 					status: action.status
 				}
 			}));
-        case Types.SET_USERS :
-            return state.merge(fromJS({
-                users: action.users,
-                onlineUsers: action.users.filter(user => { return +user.user_status == 1 }),
-                offlineUsers: action.users.filter(user => { return +user.user_status == 0 })
-            }));
+    case Types.SET_USERS :
+      return state.merge(fromJS({
+          users: action.users,
+          onlineUsers: action.users.filter(user => { return +user.user_status == 1 }),
+          offlineUsers: action.users.filter(user => { return +user.user_status == 0 })
+      }));
 		case Types.LOGIN : 
 			return state.mergeDeep(fromJS({
 				user: {
 					email: action.email,
 					password: action.password
 				}
-			}))
+			}));
 		case Types.UPDATE_USER : 
 			return state.set('user', fromJS({
 				email: action.email,
 				password: action.password,
 				name: action.name,
 				status: action.status == 0 ? false : true,
-				id: action.id
+				id: action.id,
+				organization_id: action.organization_id
 			}));
 		case Types.SET_VIEW_SESSION :
 			return state.mergeDeep(fromJS({
@@ -103,6 +104,9 @@ const AppReducer = (state = Map(), action) => {
 								filterKey.push(filters.indexOf("today"));
 							}
 							break;
+						case 'empty':
+						case 'employed':
+							var filterKey = filters.indexOf(action.filter == 'empty' ? 'employed' : 'empty');
 					}
 					if(typeof filterKey != "object" && filterKey > -1){
 						filters = filters.delete(filterKey);
@@ -159,6 +163,20 @@ const AppReducer = (state = Map(), action) => {
 			return state.mergeDeep(fromJS({
 				client: action.client[0]
 			}));
+		case Types.SET_ORGANIZATIONS :
+			return state.set('organizations', fromJS(action.organizations));
+		case Types.SET_VIEW_ORGANIZATION :
+			return state.mergeDeep(fromJS({
+				organization: {
+					organization_id: action.organization_id
+				}
+			}));
+		case Types.SET_ORGANIZATION :
+			return state.mergeDeep(fromJS({
+				organization: action.organization[0]
+			}));
+		case Types.SET_USER_ORGANIZATION :
+			return state.set('userOrganization', fromJS(action.userOrganization));
 		default: 
 			return state;
 	}

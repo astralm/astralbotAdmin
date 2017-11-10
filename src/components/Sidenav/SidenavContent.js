@@ -2,10 +2,9 @@ import React from 'react';
 import { Link, hashHistory } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import 'jquery-slimscroll/jquery.slimscroll.min';
-
-
+import {connect} from 'react-redux';
+import {getUserOrganization} from './../../actions/index.js';
 class SidebarContent extends React.Component {
-
   componentDidMount() {
     const nav = this.nav;
     const $nav = $(nav);
@@ -105,7 +104,7 @@ class SidebarContent extends React.Component {
       };
     return (
         <ul className="nav" ref={(c) => { this.nav = c; }}>
-          <li className="open">
+          <li>
             <FlatButton href="/" >
               <div style={tac}>
                 <i style={tac} className="nav-icon material-icons">folder_open</i>
@@ -114,7 +113,7 @@ class SidebarContent extends React.Component {
                 <span className="nav-text">Сессии</span>
               </div>
             </FlatButton>
-            <ul style={DisplayBlock}>
+            <ul>
                 <li><FlatButton  href="#/app">
                   <span>Все сессии</span></FlatButton></li>
                 <li><FlatButton href="#/app/dialog"><span>Последняя</span></FlatButton></li>
@@ -129,12 +128,32 @@ class SidebarContent extends React.Component {
                 <span className="nav-text">Клиенты</span>
               </div>
             </FlatButton>
-            <ul style={DisplayBlock}>
+            <ul>
                 <li><FlatButton  href="#/app/clients">
                   <span>Все клиенты</span></FlatButton></li>
                 <li><FlatButton href="#/app/client"><span>Последний</span></FlatButton></li>
             </ul>
           </li>
+          {
+            this.props.organization_root ?
+              <li >
+                <FlatButton href="#/app/organizations" >
+                  <div style={tac}>
+                    <i style={tac} className="nav-icon material-icons">work</i>
+                  </div>
+                  <div style={FlatStyle}>
+                    <span className="nav-text">Организации</span>
+                  </div>
+                </FlatButton>
+                <ul>
+                    <li><FlatButton  href="#/app/organizations">
+                      <span>Все организации</span></FlatButton></li>
+                    <li><FlatButton href="#/app/organization"><span>Последняя</span></FlatButton></li>
+                    <li><FlatButton href="#/app/neworganization"><span>Новая</span></FlatButton></li>
+                </ul>
+              </li>
+              : ""
+          }
           <li>
             <FlatButton href="#/app/administrators" >
               <div style={tac}>
@@ -167,9 +186,11 @@ class SidebarContent extends React.Component {
             </FlatButton>
           </li>
         </ul>
-
   );
   }
 }
 
-module.exports = SidebarContent;
+module.exports = connect(state => ({
+  user_id: state.app.getIn(['user', 'id']),
+  organization_root: state.app.getIn(['userOrganization', 'organization_root'])
+}), {getUserOrganization})(SidebarContent);

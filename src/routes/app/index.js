@@ -12,7 +12,12 @@ module.exports = {
         require('./routes/dispatch/'),
         require('./routes/clients/'),
         require('./routes/client/'),
-        require('./routes/editclient/')
+        require('./routes/editclient/'),
+        require('./routes/newclient/'),
+        require('./routes/organizations/'),
+        require('./routes/organization/'),
+        require('./routes/editorganization/'),
+        require('./routes/neworganization/')
       ]);
     });
   },

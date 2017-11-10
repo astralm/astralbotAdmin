@@ -10,6 +10,9 @@ import sendEmail from './events/SEND_EMAIL.js';
 import setDispatches from './events/SET_DISPATCHES.js';
 import setClients from './events/SET_CLIENTS.js';
 import setClient from './events/SET_CLIENT.js';
+import setOrganizations from './events/SET_ORGANIZATIONS.js';
+import setOrganization from './events/SET_ORGANIZATION.js';
+import setUserOrganization from './events/SET_USER_ORGANIZATION.js';
 const initEventListeners = (socket, store) => {
 	socket.on(Types.LOGIN, setStatus(store));
 	socket.on(Types.LOGOUT, setStatus(store));
@@ -23,5 +26,8 @@ const initEventListeners = (socket, store) => {
 	socket.on(Types.GET_DISPATCHES, setDispatches(store));
 	socket.on(Types.GET_CLIENTS, setClients(store));
 	socket.on(Types.GET_CLIENT, setClient(store));
+	socket.on(Types.GET_ORGANIZATIONS, setOrganizations(store));
+	socket.on(Types.GET_ORGANIZATION, setOrganization(store));
+	socket.on(Types.GET_USER_ORGANIZATION, setUserOrganization(store));
 }
 module.exports = initEventListeners;

@@ -5,7 +5,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Login from '../routes/login/components/Login.js';
-
+import {push} from 'react-router-redux';
 // = styles =
 // 3rd
 import 'styles/bootstrap.scss';
@@ -25,7 +25,6 @@ injectTapEventPlugin(); // Needed for onTouchTap for Material UI
 
 class App extends Component {
   componentDidMount() {}
-
   render() {
     const { layoutBoxed, navCollapsed, navBehind, fixedHeader, sidebarWidth, theme } = this.props;
     let materialUITheme;
@@ -79,7 +78,8 @@ const mapStateToProps = (state, ownProps) => ({
   fixedHeader: state.settings.fixedHeader,
   sidebarWidth: state.settings.sidebarWidth,
   theme: state.settings.theme,
-  userStatus: state.app.getIn(['user', 'status']) || false
+  userStatus: state.app.getIn(['user', 'status']) || false,
+  organization_root: state.app.getIn(['userOrganization', 'organization_root'])
 });
 
 module.exports = connect(
