@@ -16,7 +16,8 @@ module.exports = {
         require('./routes/organizations/'),
         require('./routes/organization/'),
         require('./routes/editorganization/'),
-        require('./routes/neworganization/')
+        require('./routes/neworganization/'),
+        require('./routes/widget/')
       ]);
     });
   },
