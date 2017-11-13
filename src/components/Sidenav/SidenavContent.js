@@ -185,6 +185,16 @@ class SidebarContent extends React.Component {
               </div>
             </FlatButton>
           </li>
+          <li>
+            <FlatButton href="#/app/widget">
+              <div style={tac}>
+                <i style={tac} className="nav-icon material-icons">content_copy</i>
+              </div>
+              <div style={FlatStyle}>
+                <span className="nav-text">Виджет</span>
+              </div>
+            </FlatButton>
+          </li>
         </ul>
   );
   }
