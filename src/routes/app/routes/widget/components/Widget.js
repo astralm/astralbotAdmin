@@ -32,7 +32,7 @@ class Widget extends React.Component {
                                         type="text" 
                                         style={{width: "100%", marginTop: "10px", border: '1px solid #000', padding: "10px 15px"}} 
                                         onClick={this.copy.bind(this)}
-                                        defaultValue={"<script src=\"widget.js\" id=\"widgetScript\" data-type=\"faq\" data-id=\""+this.props.organization_id+"\"></script>"}
+                                        defaultValue={"<script src=\"https://astralbot.ru/widget/widget.js\" id=\"widgetScript\" data-type=\"faq\" data-id=\""+this.props.organization_id+"\"></script>"}
                                         readOnly={true}
                                     />
                                     <h5>Продажа</h5>
@@ -40,7 +40,7 @@ class Widget extends React.Component {
                                         type="text" 
                                         style={{width: "100%", marginTop: "10px", border: '1px solid #000', padding: "10px 15px"}} 
                                         onClick={this.copy.bind(this)}
-                                        defaultValue={"<script src=\"widget.js\" id=\"widgetScript\" data-type=\"sale\" data-id=\""+this.props.organization_id+"\"></script>"}
+                                        defaultValue={"<script src=\"https://astralbot.ru/widget/widget.js\" id=\"widgetScript\" data-type=\"sale\" data-id=\""+this.props.organization_id+"\"></script>"}
                                         readOnly={true}
                                     />
                                     <h5>Партнеры</h5>
@@ -48,7 +48,7 @@ class Widget extends React.Component {
                                         type="text" 
                                         style={{width: "100%", marginTop: "10px", border: '1px solid #000', padding: "10px 15px"}} 
                                         onClick={this.copy.bind(this)}
-                                        defaultValue={"<script src=\"widget.js\" id=\"widgetScript\" data-type=\"partner\" data-id=\""+this.props.organization_id+"\"></script>"}
+                                        defaultValue={"<script src=\"https://astralbot.ru/widget/widget.js\" id=\"widgetScript\" data-type=\"partner\" data-id=\""+this.props.organization_id+"\"></script>"}
                                         readOnly={true}
                                     />
                                 </div>
