@@ -14,6 +14,9 @@ export default socket => store => next => action => {
     case types.GET_USERS :
       socket.emit(types.GET_USERS, state.getIn(['user', 'organization_id']));
       break;
+    case types.GET_USER :
+      socket.emit(types.GET_USER, action.user_email);
+      break;
     case types.SET_USER :
       socket.emit(types.SET_USER, {
         email: action.email,
