@@ -29,9 +29,10 @@ export const login = (email, password) => ({ type: types.LOGIN, email, password 
 export const setStatus = status => ({ type: types.SET_STATUS, status });
 export const logout = () => ({ type: types.LOGOUT });
 export const getUsers = () => ({ type: types.GET_USERS });
+export const getUser = user_email => ({type: types.GET_USER, user_email});
 export const setUsers = users => ({ type: types.SET_USERS, users });
 export const setUser = (email, password, name, organization_id) => ({ type: types.SET_USER, email, password, name, organization_id });
-export const updateUser = (email, password, name, status, id, organization_id) => ({ type: types.UPDATE_USER, email, password, name, status, id, organization_id });
+export const updateUser = (email, password, name, status, id, organization_id, user_notification_hash, user_notification) => ({ type: types.UPDATE_USER, email, password, name, status, id, organization_id, user_notification_hash, user_notification});
 export const bindSession = (user_id, session_id) => ({ type: types.BIND_SESSION, user_id, session_id });
 export const unbindSession = (user_id, session_id) => ({ type: types.UNBIND_SESSION, user_id, session_id });
 export const setViewSession = session_id => ({ type: types.SET_VIEW_SESSION, session_id });
