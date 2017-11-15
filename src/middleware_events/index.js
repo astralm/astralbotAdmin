@@ -29,5 +29,6 @@ const initEventListeners = (socket, store) => {
 	socket.on(Types.GET_ORGANIZATIONS, setOrganizations(store));
 	socket.on(Types.GET_ORGANIZATION, setOrganization(store));
 	socket.on(Types.GET_USER_ORGANIZATION, setUserOrganization(store));
+	socket.on(Types.GET_USER, updateUser(store));
 }
 module.exports = initEventListeners;
