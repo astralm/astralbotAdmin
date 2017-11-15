@@ -4,8 +4,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import QueueAnim from 'rc-queue-anim';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import {setViewOrganization} from './../../../../../actions/index.js';
+import {setViewOrganization, getUser} from './../../../../../actions/index.js';
 class MainProfile extends React.Component {
+    componentWillMount(){
+        this.props.getUser(this.props.user.user_email);
+    }
     organizationLink(){
         this.props.setViewOrganization(this.props.organization.organization_id);
         this.props.push('app/organization');
@@ -34,7 +37,9 @@ class MainProfile extends React.Component {
                                                     : this.props.organization.organization_name
                                             }
                                             <br />
-                                            <strong>Сайт организации:</strong> <a href={this.props.organization.organization_site} target="_blank">{this.props.organization.organization_site}</a>
+                                            <strong>Сайт организации:</strong> <a href={this.props.organization.organization_site} target="_blank">{this.props.organization.organization_site}</a><br/>
+                                            <strong>Ключ для подписки на оповещения в telegram:</strong> {this.state.user.user_notification_hash}<br />
+                                            <strong>Оповещения в телеграм:</strong> {this.state.user.user_notification ? "Включены" : "Выключены"}
                                         </p>
                                         <RaisedButton label="Редактировать" href='#/app/edituser'  secondary />
                                     </div>
@@ -50,5 +55,5 @@ class MainProfile extends React.Component {
 module.exports = connect(state => ({
     user: state.app.get('user').toJS(),
     organization: state.app.get('userOrganization').toJS()
-}), {push, setViewOrganization})(MainProfile);
+}), {push, setViewOrganization, getUser})(MainProfile);
 
