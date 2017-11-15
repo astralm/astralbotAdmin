@@ -31,7 +31,9 @@ const AppReducer = (state = Map(), action) => {
 				name: action.name,
 				status: action.status == 0 ? false : true,
 				id: action.id,
-				organization_id: action.organization_id
+				organization_id: action.organization_id,
+				user_notification_hash: action.user_notification_hash,
+				user_notification: action.user_notification
 			}));
 		case Types.SET_VIEW_SESSION :
 			return state.mergeDeep(fromJS({
