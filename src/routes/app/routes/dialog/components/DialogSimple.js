@@ -24,7 +24,7 @@ class DialogItem extends React.Component{
                         <h4 className="tl-tile text-warning">{ 
                             this.props.question ?
                                 this.props.client_name || "Клиент" : 
-                                "Система" 
+                                this.props.user_name || "Система" 
                         }</h4>
                         <p>{ this.props.message }</p>
                     </div>
@@ -134,7 +134,7 @@ class DialogSimple extends React.Component {
                                 if (item.question_message)
                                     result.push(<DialogItem question = {true} time = {item.question_date_formated} message = {item.question_message} client_name = {this.props.session.client_name} />);
                                 if (item.answer_message)
-                                    result.push(<DialogItem question = {false} time = {item.answer_date_formated} message = {item.answer_message} />);
+                                    result.push(<DialogItem question = {false} time = {item.answer_date_formated} message = {item.answer_message} user_name = {item.user_name} />);
                                 return result;
                             }) : null
                         }
