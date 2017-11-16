@@ -49,7 +49,8 @@ export default socket => store => next => action => {
       socket.emit(types.SET_ANSWER, {
         hash: action.hash,
         message: action.message,
-        session_id: action.session_id
+        session_id: action.session_id,
+        user_name: state.getIn(['user', 'name'])
       });
       break;
     case types.START_BOT :
