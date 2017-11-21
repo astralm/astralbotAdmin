@@ -1,5 +1,5 @@
 module.exports = {
-  path: 'client',
+  path: 'client(:id)',
   getComponent(nextState, cb) {
     require.ensure([], (require) => {
       cb(null, require('./components/Client'));
