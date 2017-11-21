@@ -11,12 +11,19 @@ import {} from '../../../../../actions/index.js';
 import Paper from 'material-ui/Paper';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
-import {getClient, setViewSession} from './../../../../../actions/index.js';
+import {getClient, setViewSession, setViewClient} from './../../../../../actions/index.js';
 import {push} from 'react-router-redux';
 class TableSession extends React.Component {
     componentWillMount(){
-        if(this.props.client){
-            this.props.getClient(this.props.client.client_id);
+        if(this.props.client || this.props.params.id){
+            let client_id = this.props.client.client_id;
+            if(this.props.params.id){
+                if(/\:([0-9]*)/.test(this.props.params.id)){
+                    client_id = this.props.params.id.match(/\:([0-9]*)/)[1];
+                    this.props.setViewClient(client_id);
+                }
+            }
+            this.props.getClient(client_id);
         }
     }
     session(){
@@ -74,4 +81,4 @@ module.exports = connect(state => ({
     client: state.app.get("client") ?
         state.app.get("client").toJS() :
         false
-}), {getClient, setViewSession, push})(TableSession);
+}), {getClient, setViewSession, push, setViewClient})(TableSession);
