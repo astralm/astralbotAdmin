@@ -11,7 +11,8 @@ import {
     stopBot, 
     getBotStatus, 
     removeErrorSession,
-    setViewClient 
+    setViewClient,
+    setViewSession
 } from '../../../../../actions/index.js';
 import {push} from 'react-router-redux';
 class DialogItem extends React.Component{
@@ -35,9 +36,16 @@ class DialogItem extends React.Component{
 }
 class DialogSimple extends React.Component {
     componentWillMount(){
-        this.props.getBotStatus(this.props.session.session_id);
-        this.props.getSessionInfo(this.props.session.session_id);
-        this.props.getSessionDialog(this.props.session.session_id);
+        let session_id = this.props.session.session_id;
+        if(this.props.params.id){
+            if(/\:([0-9]*)/.test(this.props.params.id)){
+                session_id = this.props.params.id.match(/\:([0-9]*)/)[1];
+                this.props.setViewSession(session_id);
+            } 
+        }
+        this.props.getBotStatus(session_id);
+        this.props.getSessionInfo(session_id);
+        this.props.getSessionDialog(session_id);
     }
     componentDidMount(){
         document.querySelector("html").scrollTop = document.querySelector("html").scrollHeight;
@@ -185,6 +193,7 @@ module.exports = connect(state => ({
     getBotStatus, 
     removeErrorSession,
     setViewClient,
-    push
+    push,
+    setViewSession
 })(DialogSimple);
 
