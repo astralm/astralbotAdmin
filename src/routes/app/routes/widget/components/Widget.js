@@ -11,12 +11,15 @@ import {} from '../../../../../actions/index.js';
 import Paper from 'material-ui/Paper';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
-import {getClient, setViewSession} from './../../../../../actions/index.js';
+import {getClient, setViewSession, changeWidgets} from './../../../../../actions/index.js';
 import {push} from 'react-router-redux';
 class Widget extends React.Component {
     copy(e){
         e.target.select();
         document.execCommand('copy');
+    }
+    widgets(){
+        this.props.changeWidgets(this.props.organization_id, this.props.organization_close_widget == 1 ? 0 : 1);
     }
     render() {
         return <div>
@@ -51,6 +54,7 @@ class Widget extends React.Component {
                                         defaultValue={"<script src=\"https://astralbot.ru/widget/widget.js\" id=\"widgetScript\" data-type=\"partner\" data-id=\""+this.props.organization_id+"\"></script>"}
                                         readOnly={true}
                                     />
+                                    <RaisedButton label={(this.props.organization_close_widget == 1 && "включить" || "выключить") + " виджеты"} style={{marginTop: "20px"}} primary={this.props.organization_close_widget == 1 ? false : true} secondary={this.props.organization_close_widget == 1 ? true : false} onClick = {this.widgets.bind(this)}/>
                                 </div>
                             </div>
                         </div>
@@ -61,5 +65,6 @@ class Widget extends React.Component {
     }
 }
 module.exports = connect(state => ({
-    organization_id: state.app.getIn(['userOrganization', 'organization_id'])
-}), {getClient, setViewSession, push})(Widget);
+    organization_id: state.app.getIn(['userOrganization', 'organization_id']),
+    organization_close_widget: state.app.getIn(['userOrganization', 'organization_close_widget'])
+}), {getClient, setViewSession, push, changeWidgets})(Widget);
