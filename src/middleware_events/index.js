@@ -14,6 +14,7 @@ import setOrganizations from './events/SET_ORGANIZATIONS.js';
 import setOrganization from './events/SET_ORGANIZATION.js';
 import setUserOrganization from './events/SET_USER_ORGANIZATION.js';
 import notification from './events/NOTIFICATION.js';
+import changeWidgets from './events/CHANGE_WIDGETS.js';
 const initEventListeners = (socket, store) => {
 	socket.on(Types.LOGIN, setStatus(store));
 	socket.on(Types.LOGOUT, setStatus(store));
@@ -32,5 +33,6 @@ const initEventListeners = (socket, store) => {
 	socket.on(Types.GET_USER_ORGANIZATION, setUserOrganization(store));
 	socket.on(Types.GET_USER, updateUser(store));
 	socket.on(Types.NOTIFICATION, notification(store));
+	socket.on("CLOSE_WIDGETS", changeWidgets(store));
 }
 module.exports = initEventListeners;

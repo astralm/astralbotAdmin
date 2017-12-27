@@ -77,3 +77,4 @@ export const updateOrganizationInformation = result => ({type: types.UPDATE_ORGA
 export const createOrganization = (organization_name, organization_site, organization_root) => ({type: types.CREATE_ORGANIZATION, organization_name, organization_site, organization_root});
 export const getUserOrganization = user_id => ({type: types.GET_USER_ORGANIZATION, user_id});
 export const setUserOrganization = userOrganization => ({type: types.SET_USER_ORGANIZATION, userOrganization});
+export const changeWidgets = (organization_id, param) => ({type: types.CHANGE_WIDGETS, organization_id, param});

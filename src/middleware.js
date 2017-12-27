@@ -145,6 +145,12 @@ export default socket => store => next => action => {
     case types.GET_USER_ORGANIZATION :
       socket.emit(types.GET_USER_ORGANIZATION, action.user_id);
       break;
+    case types.CHANGE_WIDGETS :
+      socket.emit("CLOSE_WIDGETS", {
+        organization_id: action.organization_id,
+        param: action.param
+      });
+      break;
 	}
 	return next(action);
 }

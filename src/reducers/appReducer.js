@@ -179,6 +179,12 @@ const AppReducer = (state = Map(), action) => {
 			}));
 		case Types.SET_USER_ORGANIZATION :
 			return state.set('userOrganization', fromJS(action.userOrganization));
+		case "UPDATE_WIDGETS_STATUS":
+			return state.mergeDeep(fromJS({
+				userOrganization: {
+					organization_close_widget: state.getIn(["userOrganization", "organization_close_widget"]) == 1 ? 0 : 1
+				}
+			}));
 		default: 
 			return state;
 	}
