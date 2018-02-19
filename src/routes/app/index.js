@@ -17,7 +17,23 @@ module.exports = {
         require('./routes/organization/'),
         require('./routes/editorganization/'),
         require('./routes/neworganization/'),
-        require('./routes/widget/')
+        require('./routes/widget/'),
+        require('./routes/bots/'),
+        require('./routes/bot/'),
+        require('./routes/editbot/'),
+        require('./routes/newbot/'),
+        require('./routes/intents/'),
+        require('./routes/newintent/'),
+        require('./routes/intent'),
+        require('./routes/editintent'),
+        require('./routes/groups'),
+        require("./routes/newgroup"),
+        require("./routes/group"),
+        require("./routes/editgroup"),
+        require("./routes/entities"),
+        require("./routes/newentities"),
+        require("./routes/entity"),
+        require("./routes/editentities/")
       ]);
     });
   },

@@ -4,89 +4,34 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import QueueAnim from 'rc-queue-anim';
 import { connect } from 'react-redux';
-import { updateClientInformation, getClient } from '../../../../../actions/index.js';
 import { push } from 'react-router-redux';
-class EditClient extends React.Component {
+class EditClient extends React.Component { 
     constructor(props){
         super(props);
         this.state = {
-            email: this.props.client.client_email || "",
-            phone: this.props.client.client_phone || "",
-            name: this.props.client.client_name || "",
-            username: this.props.client.client_username || ""
-        };
-    }
-    componentWillMount(){
-        if(this.props.client){
-            this.props.getClient(this.props.client.client_id);
+            email: this.props.state.client && this.props.state.client.client_email || "",
+            phone: this.props.state.client && this.props.state.client.client_phone || "",
+            name: this.props.state.client && this.props.state.client.client_name || "",
+            username: this.props.state.client && this.props.state.client.client_username || ""
         }
     }
-    inputEmail(e){
-        this.setState({
-            email: e.target.value
+    save(){
+        this.props.dispatch({
+            type: "Query",
+            middleware: true,
+            data: {
+                query: "updateClientInfo",
+                values: [
+                    this.props.state.user.hash,
+                    this.props.state.socket.hash,
+                    this.state.email || null,
+                    this.state.phone || null,
+                    this.state.name || null,
+                    this.state.username || null,
+                    this.props.state.client.client_id || 0
+                ]
+            }
         });
-    }
-    inputPhone(e){
-        if(e.target.value.length > 11){
-            e.target.value = e.target.value.substr(0,11);
-        }
-        if(!/[0-9]/.test(e.target.value[e.target.value.length - 1])){
-            e.target.value = e.target.value.substr(0, e.target.value.length - 1);
-        }
-        this.setState({
-            phone: e.target.value
-        });
-    }
-    inputName(e){
-        this.setState({
-            name: e.target.value
-        });
-    }
-    inputUsername(e){
-        this.setState({
-            username: e.target.value
-        });
-    }
-    send(){
-        let [email, phone, name, username] = [this.state.email, this.state.phone, this.state.name, this.state.username];
-        let result = {
-            session_id: this.props.client.session_id,
-            client_id: this.props.client.client_id
-        };
-        if(email && email != this.props.client.client_email){
-            result.client_email = email;
-        }
-        if(phone && phone != this.props.client.client_phone){
-            result.client_phone = phone;
-        }
-        if(name && name != this.props.client.client_name){
-            result.client_name = name;
-        }
-        if(username && username != this.props.client.client_username){
-            result.client_username = username;
-        }
-        if(Object.keys(result).length > 2 && (phone.length == 11 || !phone) && (/.*@.*\..*/.test(email) || !email)){
-            this.props.updateClientInformation(result);
-            this.props.push("/app/client");
-        }
-        if(phone.length != 11){
-            this.setState({
-                phoneError: true
-            })
-        } else {
-            this.setState({
-                phoneError: false
-            })  
-        }
-        if(!/.*@.*\..*/.test(email)){
-            this.setState({
-                emailError: true
-            })
-        } else {
-            this.setState({
-                emailError: false
-            })
-        }
     }
     render() {
         return (
@@ -101,9 +46,9 @@ class EditClient extends React.Component {
                                             floatingLabelText="Почта"
                                             type="email"
                                             fullWidth
-                                            defaultValue = {this.props.client.client_email || ""}
-                                            errorText = {this.state.emailError ? "Email должен быть вида: simple@mail.ru" : ""}
-                                            onInput = {this.inputEmail.bind(this)}
+                                            defaultValue = {this.props.state.client && this.props.state.client.client_email || ""}
+                                            errorText = {!/.*@.*\.[aA-zZ].*/.test(this.state.email) ? "Email должен быть вида: simple@mail.ru" : ""}
+                                            onInput = {e => {this.setState({email: e.target.value})}}
                                         />
                                     </div>
                                     <div className="form-group">
@@ -111,9 +56,9 @@ class EditClient extends React.Component {
                                             floatingLabelText="Телефон"
                                             type="tel"
                                             fullWidth
-                                            errorText = {this.state.phoneError ? "Номер телефона должен содержать 11 символов" : ""}
-                                            defaultValue={this.props.client.client_phone || ""}
-                                            onInput = {this.inputPhone.bind(this)}
+                                            errorText = {!/^[0-9]{11}$/.test(this.state.phone) ? "Номер телефона должен содержать 11 символов" : ""}
+                                            defaultValue={this.props.state.client && this.props.state.client.client_phone || ""}
+                                            onInput = {e => {this.setState({phone: e.target.value})}}
                                         />
                                     </div>
                                     <div className="form-group">
@@ -121,8 +66,8 @@ class EditClient extends React.Component {
                                             floatingLabelText="Имя"
                                             type="text"
                                             fullWidth
-                                            defaultValue={this.props.client.client_name || ""}
-                                            onInput = {this.inputName.bind(this)}
+                                            defaultValue={this.props.state.client && this.props.state.client.client_name || ""}
+                                            onInput = {e => {this.setState({name: e.target.value})}}
                                         />
                                     </div>
                                     <div className="form-group">
@@ -130,15 +75,17 @@ class EditClient extends React.Component {
                                             floatingLabelText="Username"
                                             type="text"
                                             fullWidth
-                                            defaultValue={this.props.client.client_username || ""}
-                                            onInput = {this.inputUsername.bind(this)}
+                                            defaultValue={this.props.state.client && this.props.state.client.client_username || ""}
+                                            onInput = {e => {this.setState({username: e.target.value})}}
                                         />
                                     </div>
                                 </fieldset>
                             </form>
                         </div>
                         <div className="card-action no-border text-center">
-                            <RaisedButton label="Сохранить" onClick = {this.send.bind(this)} secondary />
+                            {
+                                this.props.state.client && /.*@.*\.[aA-zZ].*/.test(this.state.email) && /^[0-9]{11}$/.test(this.state.phone) && <RaisedButton label="Сохранить" onClick = {this.save.bind(this)} secondary />
+                            }
                         </div>
                     </div>
                 </div>
@@ -147,8 +94,5 @@ class EditClient extends React.Component {
     }
 }
 module.exports = connect(state => ({
-    client: state.app.get("client") ?
-        state.app.get("client").toJS() :
-        false
-}), {updateClientInformation, getClient, push})(EditClient);
-
+    state: state.app.toJS()
+}))(EditClient);

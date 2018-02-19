@@ -1,5 +1,5 @@
 module.exports = {
-  path: 'organization',
+  path: 'organization(:id)',
   getComponent(nextState, cb) {
     require.ensure([], (require) => {
       cb(null, require('./components/Organization.js'));

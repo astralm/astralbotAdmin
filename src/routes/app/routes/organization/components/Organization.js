@@ -1,19 +1,22 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
-import {getOrganization, setViewOrganization} from './../../../../../actions/index.js';
 import {push} from 'react-router-redux';
 class Organization extends React.Component {
-    componentWillMount(){
-        if(this.props.organization){
-            this.props.getOrganization(this.props.organization.organization_id);
-            console.log(this.props.organization.organization_root);
-            if(!this.props.organization.organization_root)
-                this.props.push('404');
-        }
-    }
-    edit(){
-        this.props.push("/app/editOrganization");
+    goTo(props){
+        this.props.dispatch({
+            type: "Query",
+            middleware: true,
+            data: {
+                query: "changePage",
+                values: [
+                    this.props.state.user.hash,
+                    this.props.state.socket.hash,
+                    props.page_id,
+                    props.item_id || 0
+                ]
+            }
+        });
     }
     render() {
         return <div>
@@ -25,12 +28,12 @@ class Organization extends React.Component {
                                 <div className="box-body padding-lg-h">
                                     <h4>Организация</h4>
                                     <p>
-                                        <strong>ID: </strong> {this.props.organization.organization_id} <br/>
-                                        <strong>Название: </strong> {this.props.organization.organization_name} <br/>
-                                        <strong>Сайт: </strong> <a href={this.props.organization.organization_site} target="_blank">{this.props.organization.organization_site}</a> <br/>
-                                        <strong>Все права: </strong> {this.props.organization.organization_root ? "Да" : "Нет"} <br/>
+                                        <strong>ID: </strong> {this.props.state.viewOrganization && this.props.state.viewOrganization.organization_id || "—"} <br/>
+                                        <strong>Название: </strong> {this.props.state.viewOrganization && this.props.state.viewOrganization.organization_name || "—"} <br/>
+                                        <strong>Сайт: </strong> <a href={this.props.state.viewOrganization && this.props.state.viewOrganization.organization_site} target="_blank">{this.props.state.viewOrganization && this.props.state.viewOrganization.organization_site}</a> <br/>
+                                        <strong>Все права: </strong> {this.props.state.viewOrganization && this.props.state.viewOrganization.type_id == 3 ? "Да" : "Нет"} <br/>
                                     </p>
-                                    <RaisedButton label="Редактировать" onClick = {this.edit.bind(this)}  secondary />
+                                    <RaisedButton label="Редактировать" onClick = {this.goTo.bind(this, {page_id: 21, item_id: this.props.state.viewOrganization && this.props.state.viewOrganization.organization_id})}  secondary />
                                 </div>
                             </div>
                         </div>
@@ -41,7 +44,5 @@ class Organization extends React.Component {
     }
 }
 module.exports = connect(state => ({
-    organization: state.app.get("userOrganization") ?
-        state.app.get("userOrganization").toJS() :
-        false
-}), {getOrganization, setViewOrganization, push})(Organization);
+    state: state.app.toJS()
+}))(Organization);

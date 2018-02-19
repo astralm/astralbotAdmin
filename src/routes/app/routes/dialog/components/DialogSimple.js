@@ -1,134 +1,112 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
-import { 
-    getSessionDialog, 
-    getSessionInfo, 
-    bindSession, 
-    unbindSession, 
-    setAnswer, 
-    startBot, 
-    stopBot, 
-    getBotStatus, 
-    removeErrorSession,
-    setViewClient,
-    setViewSession
-} from '../../../../../actions/index.js';
-import {push} from 'react-router-redux';
-class DialogItem extends React.Component{
-    render(){
-        return (<article className={"tl-item" + (this.props.question ? " alt" : "")}>
-            <div className="tl-body">
-                <div className="tl-entry">
-                    <div className="tl-time" style={{fontSize: '10px'}}>{ this.props.time.match(/(.*):/)[1] }</div>
-                    <div className="tl-content">
-                        <h4 className="tl-tile text-warning">{ 
-                            this.props.question ?
-                                this.props.client_name || "Клиент" : 
-                                this.props.user_name || "Система" 
-                        }</h4>
-                        <p>{ this.props.message }</p>
-                    </div>
-                </div>
-            </div>
-        </article>);
-    }
-}
+import { push } from 'react-router-redux';
+
 class DialogSimple extends React.Component {
-    componentWillMount(){
-        let session_id = this.props.session.session_id;
-        if(this.props.params.id){
-            if(/\:([0-9]*)/.test(this.props.params.id)){
-                session_id = this.props.params.id.match(/\:([0-9]*)/)[1];
-                this.props.setViewSession(session_id);
-            } 
-        }
-        this.props.getBotStatus(session_id);
-        this.props.getSessionInfo(session_id);
-        this.props.getSessionDialog(session_id);
+    constructor(props){
+        super(props);
+        this.state = {};
     }
-    componentDidMount(){
-        document.querySelector("html").scrollTop = document.querySelector("html").scrollHeight;
+    bindDialog(dialog_id){
+        this.props.dispatch({
+            type: "Query",
+            middleware: true,
+            data: {
+                query: "bindDialog",
+                values: [
+                    this.props.state.user.hash,
+                    this.props.state.socket.hash,
+                    dialog_id
+                ]
+            }
+        });
+    }
+    onOffBot(){
+        this.props.dispatch({
+            type: "Query",
+            middleware: true,
+            data: {
+                query: "onOffBotInDialog",
+                values: [
+                    this.props.state.user.hash,
+                    this.props.state.socket.hash,
+                    this.props.state.dialog.dialog_id
+                ]
+            }
+        });
+    }
+    sendMessage(){
+        this.props.dispatch({
+            type: "Query",
+            middleware: true,
+            data: {
+                query: "userMessage",
+                values: [
+                    this.props.state.user.hash,
+                    this.props.state.socket.hash,
+                    this.props.state.dialog.dialog_id,
+                    this.state.message
+                ]
+            }
+        });
+        this.setState({message: ""});
+    }
+    goTo(props){
+        this.props.dispatch({
+            type: "Query",
+            middleware: true,
+            data: {
+                query: "changePage",
+                values: [
+                    this.props.state.user.hash,
+                    this.props.state.socket.hash,
+                    props.page_id,
+                    props.item_id || 0
+                ]
+            }
+
+        });
+    }
+    removeError(){
+        this.props.dispatch({
+            type: "Query",
+            middleware: true,
+            data: {
+                query: "removeError",
+                values: [
+                    this.props.state.user.hash,
+                    this.props.state.socket.hash,
+                    this.props.state.dialog.dialog_id
+                ]
+            }
+        });
     }
     componentDidUpdate(){
-        document.querySelector("html").scrollTop = document.querySelector("html").scrollHeight;
-    }
-    bindSession(){
-        this.props.bindSession(this.state.user_id, this.state.session.session_id);
-    }
-    unbindSession(){
-        this.props.unbindSession(this.state.user_id, this.state.session.session_id);
-    }
-    setAnswer(){
-        this.props.setAnswer(this.state.session.session_hash, this.state.session.session_id, this.state.message);
-        document.getElementById("exampleInputEmail1").value = "";
-    }
-    startBot(){
-        this.props.startBot(this.state.session.session_id);
-    }
-    stopBot(){
-        this.props.stopBot(this.state.session.session_id);
-    }
-    saveAnswer(e){
-        this.state.message = e.target.value;
-    }
-    keyPress(e){
-        if(e.key == 'Enter')
-            this.setAnswer();
-    }
-    removeErrorSession(){
-        this.props.removeErrorSession(this.props.session.session_id, this.props.session.session_hash);
-    }
-    client(client_id){
-        this.props.setViewClient(client_id);
-        this.props.push('app/client');
+        window.scrollTo(0, document.body.scrollHeight);
     }
     render() {
-        this.state = {
-            session: this.props.session,
-            user_id: this.props.user_id
-        };
-        this.state.session.dialog ? 
-            this.state.session.dialog.map(item => (item.question_id))
-            .filter((item, key, self) => (self.indexOf(item) != key))
-            .filter((item, key, self) => (self.indexOf(item) == key))
-            .forEach(item => {
-                this.state.session.dialog.filter(dialog => (dialog.question_id == item))
-                .filter((item, key) => ( key > 0 ))
-                .map(item => (item.answer_id))
-                .forEach(item => { 
-                    this.state.session.dialog.filter(obj => (obj.answer_id == item))
-                    .forEach(item => { 
-                        item.question_message = null }) 
-                    })
-                }) 
-            : null;
         return (
             <div>
                 <div className="box box-default table-box table-responsive mdl-shadow--2dp" style={{position:'fixed', zIndex:'999'}}>
                     <table className="mdl-data-table" style={{width:'72%', background: 'inherit', border: 'none'}}>
                         <thead>
                         <tr>
-                            <th className="numeric" style={{width:'20%'}}>ID SESSION : { this.state.session.session_id }</th>
-                            <th className="numeric" style={{width:'20%'}}>Администратор : { !this.state.session.user_name ? "-" : this.state.session.user_name }</th>
-                            <th className="numeric" style={{width:'20%'}}>Ошибка : { this.state.session.session_error ? "true" : "false" }</th>
-                            <th className="numeric" style={{width:'20%'}}>Статус : { this.state.session.session_status ? "true" : "false" } </th>
-                            <th className="numeric" style={{width:'20%'}}>Тип : {
-                                this.state.session.session_partner ?
-                                    "Партнеры" :
-                                    this.state.session.session_sale ?
-                                        "Продажа" :
-                                        this.state.session.session_faq ?
-                                            "Фак" :
-                                            ""
-                            }</th>
-                            <th className="numeric" style={{width:'20%'}}>Клиент : <span onClick = {this.client.bind(this, this.state.session.client_id)} style={{borderBottom: "1px solid #000", cursor: "pointer"}}>{ this.state.session.client_id }</span></th>
+                            <th className="numeric" style={{width:'20%'}}>ID SESSION : { this.props.state.dialog && this.props.state.dialog.dialog_id }</th>
+                            <th className="numeric" style={{width:'20%'}}>Администратор : { this.props.state.dialog && this.props.state.dialog.user_name || "-" }</th>
+                            <th className="numeric" style={{width:'20%'}}>Ошибка : { this.props.state.dialog && this.props.state.dialog.dialog_error ? "Да" : "Нет" }</th>
+                            <th className="numeric" style={{width:'20%'}}>Статус : { this.props.state.dialog && this.props.state.dialog.dialog_active ? "В сети" : "Отключён" } </th>
+                            <th className="numeric" style={{width:'20%'}}>Тип : { this.props.state.dialog && this.props.state.dialog.type_id == 1 ? "Виджет" : "Telegram" }</th>
+                            <th className="numeric" style={{width:'20%'}}>Клиент : <span style={{borderBottom: "1px solid #000", cursor: "pointer"}} onClick = {this.goTo.bind(this, {page_id: 11, item_id: this.props.state.dialog && this.props.state.dialog.client_id})}>{ this.props.state.dialog && this.props.state.dialog.client_name }</span></th>
                             {
-                                this.state.session.user_id == 0 ?
-                                    <th className="numeric" style={{width:'20%'}}><RaisedButton label="Взять" onClick = { this.bindSession.bind(this) } secondary /></th> :
-                                    this.state.session.user_id == this.state.user_id ?
-                                        <th className="numeric" style={{width:'20%'}}><RaisedButton label="Отказаться" onClick = { this.unbindSession.bind(this) } secondary /></th> :
-                                        null
+                                this.props.state.dialog && !this.props.state.dialog.user_id &&
+                                <th className="numeric" style={{width:'20%'}}>
+                                    <RaisedButton label="Взять" onClick = {this.bindDialog.bind(this, this.props.state.dialog.dialog_id)} secondary />
+                                </th> ||
+                                this.props.state.dialog && this.props.state.dialog.user_id == this.props.state.user.id &&
+                                <th className="numeric" style={{width:'20%'}}>
+                                    <RaisedButton label="Отказаться" onClick = {this.bindDialog.bind(this, this.props.state.dialog.dialog_id)} secondary />
+                                </th>
                             }
                         </tr>
                         </thead>
@@ -137,63 +115,55 @@ class DialogSimple extends React.Component {
                 <div className="ui-timline-container">
                     <section className="ui-timeline">
                         {
-                            this.state.session.dialog ? this.state.session.dialog.map((item, key) => {
-                                let result = [];
-                                if (item.question_message)
-                                    result.push(<DialogItem question = {true} time = {item.question_date_formated} message = {item.question_message} client_name = {this.props.session.client_name} />);
-                                if (item.answer_message)
-                                    result.push(<DialogItem question = {false} time = {item.answer_date_formated} message = {item.answer_message} user_name = {item.user_name} />);
-                                return result;
-                            }) : null
+                            this.props.state.dialog && this.props.state.dialog.messages.map((message, key) => (
+                                <article className={"tl-item" + (message.message_client ? " alt" : "")} key = {key}>
+                                    <div className="tl-body">
+                                        <div className="tl-entry">
+                                            <div className="tl-time" style={{fontSize: '10px'}}>{ message.message_date_create }</div>
+                                            <div className="tl-content">
+                                                <h4 className="tl-tile text-warning">
+                                                    { 
+                                                        message.message_client && (message.client_name || message.client_username) ||
+                                                        message.user_name || "Бот"
+                                                    }
+                                                </h4>
+                                                <p>{ message.message_text }</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            ))
                         }
                     </section>
                 </div>
                 {
-                    this.state.session.user_id == this.state.user_id ?
+                    this.props.state.dialog && this.props.state.dialog.user_id == this.props.state.user.id &&
                         <div className="box box-default table-box table-responsive mdl-shadow--2dp" style={{bottom: '0', padding: '10px 0', position: 'fixed', zIndex: '999'}}>
                             <form role="form">
                                 <div className="form-group">
                                     <div className="col-md-12">
-                                        <RaisedButton label="Включить бота" primary = {this.props.bot ? true : false} className="btn-w-md" onClick = {this.startBot.bind(this)}/>
-                                        <RaisedButton label="Выключить бота" primary = {this.props.bot ? false : true} className="btn-w-md" onClick = {this.stopBot.bind(this)}/>
+                                        <RaisedButton onClick = {this.onOffBot.bind(this)} label={this.props.state.dialog.dialog_bot_work ? "Выключить бота" : "Включить бота"} primary = {!this.props.state.dialog.dialog_bot_work ? true : false} className="btn-w-md"/>
                                         {
-                                            this.props.session.session_error ?
-                                                <RaisedButton label="Сессия больше не имеет ошибки" onClick={this.removeErrorSession.bind(this)} style={{marginLeft: "20px"}} className="btn-w-md"/> :
-                                                null
+                                            this.props.state.dialog.dialog_error &&
+                                            <RaisedButton label="Сессия больше не имеет ошибки" style={{marginLeft: "20px"}} className="btn-w-md" onClick={this.removeError.bind(this)}/> || ""
                                         }
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <input type="text" disabled={this.props.bot ? true : false} className="form-control" id="exampleInputEmail1" placeholder={this.props.bot ? "Выключите бота чтобы ввести сообщение" : "Введите ваше сообщение"} onKeyPress = {this.keyPress.bind(this)} onInput = {this.saveAnswer.bind(this)} style={{margin: '0 14px', fontSize: '14px', display: 'inline-block', width: 'calc(100% - 360px)', varticalAlign: 'middle' }} />
+                                    <input type="text" value = {this.state.message} disabled={this.props.state.dialog.dialog_bot_work ? true : false} className="form-control" placeholder={this.props.state.dialog.dialog_bot_work ? "Выключите бота чтобы ввести сообщение" : "Введите ваше сообщение"} onKeyPress = {e => {e.key == "Enter" && this.sendMessage.call(this)}} onInput = {e => {this.setState({message: e.target.value})}} style={{margin: '0 14px', fontSize: '14px', display: 'inline-block', width: 'calc(100% - 360px)', varticalAlign: 'middle' }} />
                                     {
-                                        !this.props.bot ?
-                                           <i className="material-icons" style={{verticalAlign: 'top', cursor: 'pointer'}} onClick = {this.setAnswer.bind(this)}>send</i> :
-                                           null 
+                                        !this.props.state.dialog.dialog_bot_work &&
+                                           <i className="material-icons" style={{verticalAlign: 'top', cursor: 'pointer'}} onClick = {this.sendMessage.bind(this)}>send</i>
                                     }
                                 </div>
                             </form>
-                        </div> : null
+                        </div>
                 }
             </div>
         );
     }
 }
 module.exports = connect(state => ({
-    session: state.app.get('session') ? state.app.get('session').toJS() : {},
-    user_id: state.app.getIn(['user', 'id']),
-    bot: state.app.getIn(['session', 'bot'])
-}), {
-    getSessionInfo, 
-    getSessionDialog, 
-    bindSession, 
-    unbindSession, 
-    setAnswer, 
-    startBot, 
-    stopBot, 
-    getBotStatus, 
-    removeErrorSession,
-    setViewClient,
-    push,
-    setViewSession
-})(DialogSimple);
+    state: state.app.toJS()
+}))(DialogSimple);
 

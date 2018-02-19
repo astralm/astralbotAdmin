@@ -12,20 +12,16 @@ import { updateState, login, logout, initNotification, validate } from './action
 import io from 'socket.io-client';
 import ENV from './constants/env.js';
 
-const socket = io(`${ENV.ws.location}:${ENV.ws.port}`);
+const socket = io(`${ENV.ws.location}:${ENV.ws.port}`, {
+  query: {
+    type: "admin"
+  }
+});
 const middleware = routerMiddleware(hashHistory);
 const store = createStore(
   reducers,
   applyMiddleware(middleware, appMiddleware(socket))
 );
-
-store.subscribe(() => {
-  localStorage.setItem('state', JSON.stringify(store.getState().app.toJS()));
-});
-
-if(localStorage.state){
-  store.dispatch(updateState(localStorage.state));
-}
 
 initMiddlewareEvents(socket, store);
 
@@ -34,22 +30,7 @@ const history = syncHistoryWithStore(hashHistory, store);
 function scrollToTop() {
   window.scrollTo(0, 0);
 }
-{
-  let state = store.getState().app;
-  let user = state.get('user') ? state.get('user').toJS() : false;
-  let valid = state.get('validate');
-  if(user){
-    if(user.email && user.password){
-      store.dispatch(login(user.email, user.password));
-    } else {
-      store.dispatch(validate(undefined));
-    }
-  } else{
-    store.dispatch(validate(undefined));
-  }
-}
-store.dispatch(initNotification());
-store.dispatch(validate(true));
+
 const rootRoute = {
   childRoutes: [{
     path: '/',

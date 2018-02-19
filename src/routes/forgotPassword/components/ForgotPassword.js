@@ -3,27 +3,27 @@ import APPCONFIG from 'constants/Config';
 import TextField from 'material-ui/TextField';
 import QueueAnim from 'rc-queue-anim';
 import {connect} from 'react-redux';
-import {sendEmail} from './../../../actions/index.js';
 
 class ForgotPassowrd extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      email: "",
-      error: ""
+      email: this.props.state.user ? this.props.state.user.email : ""
     }
-  }
-  change(obj, value){
-    this.setState({email: value});
   }
   send(){
-    if(/.*@[aA-zZ]*\.[aA-zZ]*/.test(this.state.email)){
-      this.setState({error: ""});
-      this.props.sendEmail(this.state.email);
-    } else {
-      this.setState({error: "Неправильный формат email"});
-    }
-  } 
+    this.props.dispatch({
+      type: "Query",
+      middleware: true,
+      data: {
+        query: "forgotPassword",
+        values: [
+          this.props.state.socket.hash,
+          this.state.email
+        ]
+      }
+    });
+  }
   render() {
     return (
       <div className="body-inner">
@@ -38,9 +38,10 @@ class ForgotPassowrd extends React.Component {
                   <TextField
                     floatingLabelText="Email"
                     type="email"
+                    value={this.state.email}
                     fullWidth
-                    onChange = {this.change.bind(this)}
-                    errorText = {this.state.error}
+                    onChange = {(e, value) => {this.setState({email: value})}}
+                    errorText = {!/..*@..*.\...*/.test(this.state.email) && "email должен быть формата simple@mail.ru"}
                   />
                   <div className="additional-info text-center text-small">
                     Введите ваш email для оправки сообщения с вашими персональными данными по аккаунту. 
@@ -50,7 +51,10 @@ class ForgotPassowrd extends React.Component {
             </form>
           </div>
           <div className="card-action no-border text-right">
+          {
+            /..*@..*.\...*/.test(this.state.email) &&
             <span className="color-primary" onClick = {this.send.bind(this)} style={{cursor: "pointer", textTransform: "uppercase"}}>Reset</span>
+          }
           </div>
         </div>
       </div>
@@ -58,8 +62,8 @@ class ForgotPassowrd extends React.Component {
   }
 }
 const ForgotPasswordRedux = connect(state => ({
-  validate: state.app.get('validate')
-}), {sendEmail})(ForgotPassowrd);
+  state: state.app.toJS()
+}))(ForgotPassowrd);
 const Page = () => (
   <div className="page-forgot">
     <div className="main-body">

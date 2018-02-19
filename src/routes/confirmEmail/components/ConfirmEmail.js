@@ -1,6 +1,7 @@
 import React from 'react';
 import QueueAnim from 'rc-queue-anim';
 import {connect} from 'react-redux';
+import {push} from 'react-router-redux';
 class ConfirmEmail extends React.Component {
   render(){
     return <div className="body-inner">
@@ -14,9 +15,7 @@ class ConfirmEmail extends React.Component {
             <p className="confirm-mail-icon"><span className="material-icons">mail_outline</span></p>
             <p className="text-center text-small no-margin" style={{color: this.props.mail ? "inherit" : "red"}}>
               {
-                this.props.mail ? 
-                  "Сообщение было отправлено" : 
-                  "Пользователь с таким email не зарегестрирован"
+                this.props.state.forgotPasswordMessage || "Команда обрабатывается"
               }
             </p>
           </div>
@@ -24,14 +23,14 @@ class ConfirmEmail extends React.Component {
         </div>
       </div>
       <div className="additional-info">
-        <span>Вернуться на страницу <a href="#/login">Авторизации</a></span>
+        <span>Вернуться на страницу <span style={{color: "#fefefe", cursor: "pointer", "borderBottom": "1px solid #fefefe"}} onClick={this.props.dispatch.bind(this, push('/login'))}>Авторизации</span></span>
       </div>
     </div>
   }
 }
 
 var ConfirmEmailRedux = connect(state => ({
-  mail: state.app.get('mail')
+  state: state.app.toJS()
 }))(ConfirmEmail);
 
 const Page = () => (
