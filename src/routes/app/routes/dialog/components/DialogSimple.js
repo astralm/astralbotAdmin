@@ -127,7 +127,7 @@ class DialogSimple extends React.Component {
                                                         message.user_name || "Бот"
                                                     }
                                                 </h4>
-                                                <p>{ message.message_text }</p>
+                                                <p style = {{whiteSpace: "pre"}}>{ message.message_text }</p>
                                             </div>
                                         </div>
                                     </div>
