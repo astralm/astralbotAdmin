@@ -37,7 +37,7 @@ class MainProfile extends React.Component {
                                             <br />
                                             <strong>Организация:</strong> {
                                                 this.props.state.organization && this.props.state.organization.type_id == 3 ?
-                                                    <span onClick={this.goTo.bind(this, {})} style={{borderBottom: "1px dashed #000", cursor: "pointer"}}>{this.props.state.organization.organization_name}</span>
+                                                    <span onClick={this.goTo.bind(this, {page_id: 20, item_id: this.props.state.organization && this.props.state.organization.organization_id})} style={{borderBottom: "1px dashed #000", cursor: "pointer"}}>{this.props.state.organization.organization_name}</span>
                                                     : this.props.state.organization.organization_name
                                             }
                                             <br />
@@ -49,7 +49,7 @@ class MainProfile extends React.Component {
                                                     defaultValue={this.props.state.user && this.props.state.user.hash || "—"}
                                                     style={{width: "280px", textAlign: "center"}}
                                                 /><br />
-                                            <strong>Оповещения в телеграм:</strong> {this.props.state.user && this.props.state.user.user_telegram_notification ? "Включены" : "Выключены" || "—"}
+                                            <strong>Оповещения в телеграм:</strong> {this.props.state.user && this.props.state.user.telegram_notification ? "Включены" : "Выключены" || "—"}
                                         </p>
                                         <RaisedButton label="Редактировать" onClick={this.goTo.bind(this, {page_id: 14})}  secondary />
                                     </div>
