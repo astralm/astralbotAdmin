@@ -1,10 +1,10 @@
 import React from 'react';
 import APPCONFIG from 'constants/Config';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import QueueAnim from 'rc-queue-anim';
 import { connect } from 'react-redux';
-import { login } from '../../../actions/index.js';
+import { push } from 'react-router-redux';
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -19,6 +19,23 @@ class Login extends React.Component {
     if(window.location.hash != "#/login")
       window.location.hash = "#/login";
   }
+  componentWillMount(){
+    if(localStorage.getItem("user") && localStorage.getItem("socket") && !this.props.state.user){
+      this.props.dispatch({
+        type: "Query",
+        middleware: true,
+        data: {
+          query: "loginWithHash",
+          values: [
+            localStorage.getItem("user"),
+            localStorage.getItem("socket"),
+            localStorage.getItem("page_id"),
+            localStorage.getItem("item_id")
+          ]
+        }
+      });
+    }
+  }
   inputEmail(event){
     this.setState({
       email: event.target.value
@@ -30,7 +47,21 @@ class Login extends React.Component {
     });
   }
   click(event){
-    this.props.login(this.state.email, this.state.password);
+    this.props.dispatch({
+      type: "Query",
+      middleware: true,
+      data: {
+        query: "login",
+        values: [
+          this.state.email,
+          this.state.password,
+          this.props.state.socket.hash
+        ]
+      }
+    });
+  }
+  goTo(){
+    this.props.dispatch(push("/forgot-password"));
   }
   render() {
     return (
@@ -40,11 +71,7 @@ class Login extends React.Component {
 
             <section className="logo text-center" style={{color: "#ca5555", fontSize: "15px"}}>
               <h1><a href="#/">{this.state.brand}</a></h1>
-              {
-                this.props.validate == false && this.props.validate != undefined ? 
-                  "Неверный email или пароль!" :
-                  null
-              }
+              {this.props.state.loginMessage || ""}
             </section>
 
             <form className="form-horizontal">
@@ -68,11 +95,11 @@ class Login extends React.Component {
             </form>
           </div>
           <div className="card-action no-border text-right">
-            <a href="#/" className="color-primary" onClick = {this.click}>Войти</a>
+            <FlatButton onClick = {this.click} label="Войти" labelStyle={{color: "#2196F3"}}/>
           </div>
         </div>
         <div className="additional-info">
-          <a href="#/forgot-password">Восстановить пароль</a>
+          <span style = {{color: "#fafafa", borderBottom: "1px solid #fafafa", cursor: "pointer"}} onClick={this.goTo.bind(this)}>Восстановить пароль</span>
         </div>
       </div>
     );
@@ -81,8 +108,8 @@ class Login extends React.Component {
 
 
 const LoginContainer = connect(state => ({
-  validate: state.app.get('validate')
-}), {login})(Login);
+  state: state.app.toJS()
+}))(Login);
 
 const Page = () => (
   <div className="page-login">

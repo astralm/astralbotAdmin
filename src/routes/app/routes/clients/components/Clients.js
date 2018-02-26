@@ -7,87 +7,198 @@ import ContentSend from 'material-ui/svg-icons/content/send';
 import IconButton from 'material-ui/IconButton';
 import ContentDrafts from 'material-ui/svg-icons/content/drafts';
 import { connect } from 'react-redux';
-import {} from '../../../../../actions/index.js';
+import DatePicker from 'material-ui/DatePicker';
 import Paper from 'material-ui/Paper';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import Checkbox from 'material-ui/Checkbox';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
-import {getClients, setViewSession, setViewClient} from './../../../../../actions/index.js';
 import {push} from 'react-router-redux';
-class TableSession extends React.Component {
-    componentWillMount(){
-        this.props.getClients();
+class TableClients extends React.Component {    
+    setFilter(options){
+        this.props.dispatch({
+            type: "Query",
+            middleware: true,
+            data: {
+                query: "setClientsFilter",
+                values: [
+                    this.props.state.user.hash,
+                    this.props.state.socket.hash,
+                    JSON.stringify(options)
+                ] 
+            }
+        });
     }
-    session(session_id){
-        this.props.setViewSession(session_id);
-        this.props.push("/app/dialog");
-    }
-    client(client_id){
-        this.props.setViewClient(client_id);
-        this.props.push("/app/client");
+    goTo(props){
+        this.props.dispatch({
+            type: "Query",
+            middleware: true,
+            data: {
+                query: "changePage",
+                values: [
+                    this.props.state.user.hash,
+                    this.props.state.socket.hash,
+                    props.page_id,
+                    props.item_id || 0
+                ]
+            }
+        });
     }
     render() {
         return <Paper className="col-md-12" style={{paddingTop: "10px", paddingBottom: "10px"}}>
+            <Card style={{marginBottom: "10px"}}>
+                <CardHeader title="Фильтрация" actAsExpander={true} showExpandableButton={true}/>
+                <CardText expandable={true} style={{overflow: "auto"}}>
+                    <div style={{display: "inline-block", width: "20%", verticalAlign: "top"}}>
+                        <Checkbox label="В сети" 
+                            checked = {
+                                this.props.state.clientsFilters && 
+                                this.props.state.clientsFilters.filters && 
+                                this.props.state.clientsFilters.filters.indexOf("active") > -1
+                            }
+                            onCheck = {this.setFilter.bind(this, {name: "active"})}
+                        />
+                        <Checkbox label="Не в сети" 
+                            checked = {
+                                this.props.state.clientsFilters && 
+                                this.props.state.clientsFilters.filters && 
+                                this.props.state.clientsFilters.filters.indexOf("inactive") > -1 &&
+                                true || false
+                            }
+                            onCheck = {this.setFilter.bind(this, {name: "inactive"})}
+                        />
+                        <Checkbox label="Все" 
+                            checked = {
+                                this.props.state.clientsFilters && 
+                                this.props.state.clientsFilters.filters && 
+                                this.props.state.clientsFilters.filters.indexOf("all") > -1 &&
+                                true || false
+                            }
+                            onCheck = {this.setFilter.bind(this, {name: "all"})}
+                        />
+                    </div>
+                </CardText>
+            </Card>
             <div className="box box-default table-box table-responsive mdl-shadow--2dp">
                 <table className="mdl-data-table table-bordered table-striped cf no-margin">
                     <thead className="cf">
                         <tr>
                             <th>
-                                ID
+                                <div style={{cursor: "pointer"}} onClick = {this.setFilter.bind(this, {order: "client_id", desc: this.props.state.clientsFilters && this.props.state.clientsFilters.order != "client_id" && 1 || this.props.state.clientsFilters && this.props.state.clientsFilters.desc == 1 ? 0 : 1})}>
+                                    <span style={{borderBottom: "1px dashed"}}>ID</span>
+                                    {
+                                        this.props.state.clientsFilters && this.props.state.clientsFilters.order == "client_id" ?
+                                            this.props.state.clientsFilters.desc ?
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> :
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> :
+                                            null
+                                    }
+                                </div>
                             </th>
                             <th>
-                                ИМЯ
-                            </th>
-                            <th>    
-                                ПОЧТА
-                            </th>
-                            <th>
-                                ТЕЛЕФОН
-                            </th>
-                            <th>
-                                USERNAME
-                            </th>
-                            <th>
-                                СЕССИЯ
+                                <div style={{cursor: "pointer"}} onClick = {this.setFilter.bind(this, {order: "client_name", desc: this.props.state.clientsFilters && this.props.state.clientsFilters.order != "client_name" && 1 || this.props.state.clientsFilters && this.props.state.clientsFilters.desc == 1 ? 0 : 1})}>
+                                    <span style={{borderBottom: "1px dashed"}}>ИМЯ</span>
+                                    {
+                                        this.props.state.clientsFilters && this.props.state.clientsFilters.order == "client_name" ?
+                                            this.props.state.clientsFilters.desc ?
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> :
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> :
+                                            null 
+                                    }
+                                </div>
                             </th>
                             <th>
-                                ПОДРОБНЕЕ
+                                <div style={{cursor: "pointer"}} onClick = {this.setFilter.bind(this, {order: "client_email", desc: this.props.state.clientsFilters && this.props.state.clientsFilters.order != "client_email" && 1 || this.props.state.clientsFilters && this.props.state.clientsFilters.desc == 1 ? 0 : 1})}>    
+                                    <span style={{borderBottom: "1px dashed"}}>ПОЧТА</span>
+                                    {
+                                        this.props.state.clientsFilters && this.props.state.clientsFilters.order == "client_email" ?
+                                            this.props.state.clientsFilters.desc ?
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> :
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> :
+                                            null 
+                                    }
+                                </div>
                             </th>
-                        </tr>
+                            <th>
+                                <div style={{cursor: "pointer"}} onClick = {this.setFilter.bind(this, {order: "client_phone", desc: this.props.state.clientsFilters && this.props.state.clientsFilters.order != "client_phone" && 1 || this.props.state.clientsFilters && this.props.state.clientsFilters.desc == 1 ? 0 : 1})}>    
+                                    <span style={{borderBottom: "1px dashed"}}>ТЕЛЕФОН</span>
+                                    {
+                                        this.props.state.clientsFilters && this.props.state.clientsFilters.order == "client_phone" ?
+                                            this.props.state.clientsFilters.desc ?
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> :
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> :
+                                            null 
+                                    }
+                                </div>
+                            </th>
+                            <th>
+                                <div style={{cursor: "pointer"}} onClick = {this.setFilter.bind(this, {order: "client_username", desc: this.props.state.clientsFilters && this.props.state.clientsFilters.order != "client_username" && 1 || this.props.state.clientsFilters && this.props.state.clientsFilters.desc == 1 ? 0 : 1})}>    
+                                    <span style={{borderBottom: "1px dashed"}}>USERNAME</span>
+                                    {
+                                        this.props.state.clientsFilters && this.props.state.clientsFilters.order == "client_username" ?
+                                            this.props.state.clientsFilters.desc ?
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> :
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> :
+                                            null 
+                                    }
+                                </div>
+                            </th>
+                            <th>
+                                <div style={{cursor: "pointer"}} onClick = {this.setFilter.bind(this, {order: "dialog_id", desc: this.props.state.clientsFilters && this.props.state.clientsFilters.order != "dialog_id" && 1 || this.props.state.clientsFilters && this.props.state.clientsFilters.desc == 1 ? 0 : 1})}>    
+                                    <span style={{borderBottom: "1px dashed"}}>ДИАЛОГ</span>
+                                    {
+                                        this.props.state.clientsFilters && this.props.state.clientsFilters.order == "dialog_id" ?
+                                            this.props.state.clientsFilters.desc ?
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_up</i> :
+                                                <i className="material-icons" style={{verticalAlign: "middle"}}>keyboard_arrow_down</i> :
+                                            null 
+                                    }
+                                </div>
+                            </th>
+                            <th>
+                                <div>
+                                    <span>ПОДРОБНЕЕ</span>
+                                </div>
+                            </th>
+                        </tr> 
                     </thead>
                     <tbody>
                         {
-                            this.props.clients.map((client, key) => (
-                                <tr key={key}>
-                                    <td>{client.client_id}</td>
-                                    <td>{client.client_name}</td>
-                                    <td>{client.client_email}</td>
-                                    <td>{client.client_phone}</td>
-                                    <td>{client.client_username}</td>
-                                    <td>
-                                        <i className="material-icons" 
-                                            style={{
-                                                color: client.session_id != this.props.session_id ? 
-                                                    "#9E9E9E" : 
-                                                    "#4CAF50", 
-                                                cursor: "pointer"
-                                            }}
-                                            onClick={this.session.bind(this, client.session_id)}
-                                        >remove_red_eye</i>
+                            this.props.state.clients && this.props.state.clients.map((client, clientKey) => (
+                                <tr key = {clientKey}>
+                                    <td className="numeric">{ client.client_id }</td>
+                                    <td className="numeric">{ client.client_name || "—" }</td>
+                                    <td className="numeric">{ client.client_email || "—"}</td>
+                                    <td className="numeric">{ client.client_phone || "—"}</td>
+                                    <td className="numeric">{ client.client_username || "—"}</td>
+                                    <td className="numeric">
+                                        <i className="material-icons" onClick = {this.goTo.bind(this, {page_id: 9, item_id: client.dialog_id})} style={{color: client.dialog_id != (this.props.state.dialog && this.props.state.dialog.dialog_id || 0) ? "#9E9E9E" : "#4CAF50", cursor: "pointer"}}>remove_red_eye</i>
                                     </td>
-                                    <td>
-                                        <i className="material-icons" 
-                                            style={{
-                                                color: client.client_id != this.props.client_id ? 
-                                                    "#9E9E9E" : 
-                                                    "#4CAF50", 
-                                                cursor: "pointer"
-                                            }}
-                                            onClick={this.client.bind(this, client.client_id)}
-                                        >person</i>
+                                    <td className="numeric">
+                                        <i className="material-icons" onClick = {this.goTo.bind(this, {page_id: 11, item_id: client.client_id})} style={{color: client.client_id != (this.props.state.client && this.props.state.client.client_id || 0) ? "#9E9E9E" : "#4CAF50", cursor: "pointer", width: "24px"}}>persona</i>
                                     </td>
                                 </tr>
                             ))
                         }
+                        <tr style={{verticalAlign:"middle"}}>
+                            <td colSpan = "11">
+                                {
+                                   (this.props.state.clientsFilters && this.props.state.clientsFilters.offset) >= (this.props.state.clientsFilters && this.props.state.clientsFilters.limit) ? 
+                                        <IconButton onClick = {this.setFilter.bind(this, {offset: (this.props.state.clientsFilters && +this.props.state.clientsFilters.offset) - (this.props.state.clientsFilters && +this.props.state.clientsFilters.limit)})}>
+                                            <i className="material-icons">keyboard_arrow_left</i>
+                                        </IconButton> : 
+                                        null
+                                }
+                                <span style={{display: 'inline-block', height: '48px', lineHeight: '48px', verticalAlign: 'top'}}>записи с {(this.props.state.clientsFilters && this.props.state.clientsFilters.offset) || 0} по {(this.props.state.clientsFilters && +this.props.state.clientsFilters.offset) || 0 + (this.props.state.clients && +this.props.state.clients.length) || 0}</span>
+                                {
+                                    (this.props.state.clients && this.props.state.clients.length) < (this.props.state.clientsFilters && this.props.state.clientsFilters.limit) ? 
+                                        null : 
+                                        <IconButton onClick = {this.setFilter.bind(this, {offset: (this.props.state.clientsFilters && +this.props.state.clientsFilters.offset) + (this.props.state.clientsFilters && +this.props.state.clientsFilters.limit)})}>
+                                            <i className="material-icons">keyboard_arrow_right</i>
+                                        </IconButton>
+                                }
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -95,9 +206,5 @@ class TableSession extends React.Component {
     }
 }
 module.exports = connect(state => ({
-    clients : state.app.get("clients") ?
-        state.app.get("clients").toJS() :
-        [],
-    session_id: state.app.getIn(['session','session_id']),
-    client_id: state.app.getIn(['client', 'client_id'])
-}), {getClients, setViewSession, setViewClient, push})(TableSession);
+    state: state.app.toJS()
+}))(TableClients);

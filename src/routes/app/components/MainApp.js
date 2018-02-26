@@ -3,7 +3,6 @@ import Header from 'components/Header';
 import Sidenav from 'components/Sidenav';
 import Footer from 'components/Footer';
 
-
 class MainApp extends React.Component {
   render() {
     const { children, location } = this.props;

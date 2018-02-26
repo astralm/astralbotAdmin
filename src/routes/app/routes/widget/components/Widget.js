@@ -7,19 +7,33 @@ import ContentSend from 'material-ui/svg-icons/content/send';
 import IconButton from 'material-ui/IconButton';
 import ContentDrafts from 'material-ui/svg-icons/content/drafts';
 import { connect } from 'react-redux';
-import {} from '../../../../../actions/index.js';
 import Paper from 'material-ui/Paper';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
-import {getClient, setViewSession, changeWidgets} from './../../../../../actions/index.js';
 import {push} from 'react-router-redux';
 class Widget extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            bot_id: 0
+        }
+    }
     copy(e){
         e.target.select();
         document.execCommand('copy');
     }
     widgets(){
-        this.props.changeWidgets(this.props.organization_id, this.props.organization_close_widget == 1 ? 0 : 1);
+        this.props.dispatch({
+            type: "Query",
+            middleware: true,
+            data: {
+                query: "setWidgetsState",
+                values: [
+                    this.props.state.user.hash,
+                    this.props.state.socket.hash
+                ]
+            }
+        })
     }
     render() {
         return <div>
@@ -29,32 +43,44 @@ class Widget extends React.Component {
                         <div className="col-xl-12">
                             <div className="box box-transparent">
                                 <div className="box-body padding-lg-h">
-                                    <h4>Коды виджета для вставки</h4>
-                                    <h5>Фак</h5>
-                                    <input 
-                                        type="text" 
-                                        style={{width: "100%", marginTop: "10px", border: '1px solid #000', padding: "10px 15px"}} 
-                                        onClick={this.copy.bind(this)}
-                                        defaultValue={"<script src=\"https://astralbot.ru/widget/widget.js\" id=\"widgetScript\" data-type=\"faq\" data-id=\""+this.props.organization_id+"\"></script>"}
-                                        readOnly={true}
-                                    />
-                                    <h5>Продажа</h5>
-                                    <input 
-                                        type="text" 
-                                        style={{width: "100%", marginTop: "10px", border: '1px solid #000', padding: "10px 15px"}} 
-                                        onClick={this.copy.bind(this)}
-                                        defaultValue={"<script src=\"https://astralbot.ru/widget/widget.js\" id=\"widgetScript\" data-type=\"sale\" data-id=\""+this.props.organization_id+"\"></script>"}
-                                        readOnly={true}
-                                    />
-                                    <h5>Партнеры</h5>
-                                    <input 
-                                        type="text" 
-                                        style={{width: "100%", marginTop: "10px", border: '1px solid #000', padding: "10px 15px"}} 
-                                        onClick={this.copy.bind(this)}
-                                        defaultValue={"<script src=\"https://astralbot.ru/widget/widget.js\" id=\"widgetScript\" data-type=\"partner\" data-id=\""+this.props.organization_id+"\"></script>"}
-                                        readOnly={true}
-                                    />
-                                    <RaisedButton label={(this.props.organization_close_widget == 1 && "включить" || "выключить") + " виджеты"} style={{marginTop: "20px"}} primary={this.props.organization_close_widget == 1 ? false : true} secondary={this.props.organization_close_widget == 1 ? true : false} onClick = {this.widgets.bind(this)}/>
+                                    <h4>Код виджета для вставки</h4>
+                                    {
+                                        this.props.state.bots && 
+                                        <SelectField
+                                            floatingLabelText = "выберите бота"
+                                            value = {this.state.bot_id}
+                                            onChange = {(e,i,bot_id) => {this.setState({bot_id})}}
+                                        >
+                                            {
+                                                this.props.state.bots.map((bot, key) => (
+                                                    <MenuItem 
+                                                        value = {key}
+                                                        key = {key}
+                                                        primaryText = {bot.bot_name}
+                                                    />
+                                                ))
+                                            }
+                                        </SelectField>
+                                    }
+                                    {
+                                        this.props.state.bots && this.props.state.bots[this.state.bot_id] &&
+                                        <input 
+                                            type="text" 
+                                            style={{width: "100%", marginTop: "10px", border: '1px solid #000', padding: "10px 15px"}} 
+                                            onClick={this.copy.bind(this)}
+                                            value={`<script src="https://astralbot.ru/widget/widget.js" id="widgetScript" data-b="${this.props.state.bots[this.state.bot_id].bot_hash}" data-o="${this.props.state.organization.organization_hash}"></script>`}
+                                            readOnly={true}
+                                        />
+                                    }
+                                    {
+                                       this.props.state.bots && this.props.state.bots[this.state.bot_id] &&
+                                       <RaisedButton 
+                                        style={{marginTop: "30px"}} 
+                                        secondary = {!this.props.state.organization.organization_widgets_work} 
+                                        label = {this.props.state.organization.organization_widgets_work ? "Выключить виджеты" : "Включить виджеты"} 
+                                        onClick = {this.widgets.bind(this)}
+                                        /> 
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -65,6 +91,5 @@ class Widget extends React.Component {
     }
 }
 module.exports = connect(state => ({
-    organization_id: state.app.getIn(['userOrganization', 'organization_id']),
-    organization_close_widget: state.app.getIn(['userOrganization', 'organization_close_widget'])
-}), {getClient, setViewSession, push, changeWidgets})(Widget);
+    state: state.app.toJS()
+}))(Widget);

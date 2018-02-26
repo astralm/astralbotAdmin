@@ -29,3 +29,5 @@ documentation/*.html
 
 # misc
 .env
+
+package-lock.json

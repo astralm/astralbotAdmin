@@ -4,8 +4,7 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton/IconButton';
 import { hashHistory } from 'react-router';
 import { connect } from 'react-redux';
-import { logout } from '../../actions/index.js';
-
+import Exit from 'material-ui/svg-icons/action/exit-to-app';
 const ImgIconButtonStyle = {
   width: '60px',
   height: '60px'
@@ -21,13 +20,27 @@ class NavRightList extends React.Component {
     hashHistory.push(value);
   }
 
+  logout(){
+    this.props.dispatch({
+      type: "Query",
+      middleware: true,
+      data: {
+        query: "logout",
+        values: [
+          this.props.state.user.hash,
+          this.props.state.socket.hash
+        ]
+      }
+    });
+  }
+
   render() {
     return (
         <div>
           <ul className="list-unstyled float-right">
             <li style={{marginRight: '10px'}}>
               <IconMenu
-                iconButtonElement={<IconButton style={ImgIconButtonStyle}><img src="assets/images/g1.jpg" alt="" className="rounded-circle img30_30" /></IconButton>}
+                iconButtonElement={<IconButton><Exit/></IconButton>}
                 onChange={this.handleChange}
                 anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
                 targetOrigin={{horizontal: 'right', vertical: 'top'}}
@@ -38,7 +51,7 @@ class NavRightList extends React.Component {
                   innerDivStyle={listItemStyle}
                   style={{fontSize: '14px', lineHeight: '48px'}}
                   leftIcon={<i className="material-icons">forward</i>}
-                  onClick={this.props.logout}
+                  onClick={this.logout.bind(this)}
                             />
               </IconMenu>
             </li>
@@ -49,5 +62,5 @@ class NavRightList extends React.Component {
 }
 
 module.exports = connect(state => ({
-  status : state.app.getIn(['user', 'status']) || false
-}), {logout})(NavRightList);
+  state : state.app.toJS()
+}))(NavRightList);

@@ -4,37 +4,41 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import QueueAnim from 'rc-queue-anim';
 import { connect } from 'react-redux';
-import { updateUserInformation } from '../../../../../actions/index.js';
+import { push } from 'react-router-redux';
 class EditUser extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            email: null,
+            email: this.props.state.user.email || "",
             password: null,
-            name: null
+            name: this.props.state.user.name || ""
         };
     }
-    inputEmail(e){
-        this.setState({
-            email: e.target.value
-        });
-    }
-    inputPassword(e){
-        this.setState({
-            password: e.target.value
-        });
-    }
-    inputName(e){
-        this.setState({
-            name: e.target.value
-        });
-    }
     send(){
-        let [email, password, name] = [this.state.email, this.state.password, this.state.name];
-        let result = [email, password, name].filter(item => (item));
-        if (result.length > 0) {
-            this.props.updateUserInformation(email, password, name);
-        }
+        this.props.dispatch({
+            type: "Query",
+            middleware: true,
+            data: {
+                query: "updateProfile",
+                values: [
+                    this.props.state.user.hash,
+                    this.props.state.socket.hash,
+                    this.state.email,
+                    this.state.password,
+                    this.state.name
+                ]
+            }
+        });
+    }
+    componentDidUpdate(){
+        !this.state.email &&
+        this.setState({
+            email: this.props.state.user.email
+        });
+        !this.state.name &&
+        this.setState({
+            name: this.props.state.user.name
+        });
     }
     render() {
         return (
@@ -48,7 +52,9 @@ class EditUser extends React.Component {
                                         <TextField
                                             floatingLabelText="Email"
                                             fullWidth
-                                            onInput = {this.inputEmail.bind(this)}
+                                            value = {this.state.email}
+                                            onInput = {e => {this.setState({email: e.target.value})}}
+                                            errorText = {!/.*@.*\.[aA-zZ]{1}.*/.test(this.state.email) ? "Email должен быть вида 'simple@email.ru'" : ""}
                                         />
                                     </div>
                                     <div className="form-group">
@@ -56,7 +62,8 @@ class EditUser extends React.Component {
                                             floatingLabelText="Password"
                                             type="password"
                                             fullWidth
-                                            onInput = {this.inputPassword.bind(this)}
+                                            defaultValue = {"*".repeat(6)}
+                                            onInput = {e => {this.setState({password: e.target.value})}}
                                         />
                                     </div>
                                     <div className="form-group">
@@ -64,14 +71,17 @@ class EditUser extends React.Component {
                                             floatingLabelText="Name"
                                             type="text"
                                             fullWidth
-                                            onInput = {this.inputName.bind(this)}
+                                            value = {this.state.name}
+                                            onInput = {e => {this.setState({name: e.target.value})}}
                                         />
                                     </div>
                                 </fieldset>
                             </form>
                         </div>
                         <div className="card-action no-border text-center">
-                            <RaisedButton label="Сохранить" href='#/app/profile' onClick = {this.send.bind(this)} secondary />
+                            {
+                                this.props.state.user && /.*@.*\.[aA-zZ]{1}.*/.test(this.state.email) && <RaisedButton label="Сохранить" onClick = {this.send.bind(this)} secondary />
+                            }
                         </div>
                     </div>
                 </div>
@@ -79,5 +89,7 @@ class EditUser extends React.Component {
         );
     }
 }
-module.exports = connect(null, {updateUserInformation})(EditUser);
+module.exports = connect(state => ({
+    state: state.app.toJS()
+}))(EditUser);
 
