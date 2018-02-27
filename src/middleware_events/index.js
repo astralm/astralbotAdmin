@@ -8,7 +8,6 @@ const initEventListeners = (socket, store) => {
 					data: data[key].data
 				});
 			} else {
-				console.log(`#/${data[key].data.page}`);
 				window.location.hash = `#/${data[key].data.page}`;
 			}
 		}

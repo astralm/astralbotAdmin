@@ -8,7 +8,6 @@ import reducers from './reducers';
 import { fromJS, Map } from 'immutable';
 import appMiddleware from './middleware.js';
 import initMiddlewareEvents from './middleware_events/index.js';
-import { updateState, login, logout, initNotification, validate } from './actions';
 import io from 'socket.io-client';
 import ENV from './constants/env.js';
 
@@ -22,6 +21,8 @@ const store = createStore(
   reducers,
   applyMiddleware(middleware, appMiddleware(socket))
 );
+const notification = Notification || window.Notification;
+notification.requestPermission(state => {});
 
 initMiddlewareEvents(socket, store);
 
@@ -30,6 +31,7 @@ const history = syncHistoryWithStore(hashHistory, store);
 function scrollToTop() {
   window.scrollTo(0, 0);
 }
+requestPermission
 
 const rootRoute = {
   childRoutes: [{
