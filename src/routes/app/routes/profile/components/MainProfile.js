@@ -4,6 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import QueueAnim from 'rc-queue-anim';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
+import Toggle from 'material-ui/Toggle';
 class MainProfile extends React.Component {
     goTo(props){
         this.props.dispatch({
@@ -16,6 +17,24 @@ class MainProfile extends React.Component {
                     this.props.state.socket.hash,
                     props.page_id,
                     props.item_id || 0
+                ]
+            }
+        })
+    }
+    toggle(event, e, bool){
+        if (event == "changeWebState") {
+            let notification = Notification || window.Notification;
+            notification.requestPermission(state => {});
+        }
+        this.props.dispatch({
+            type: "Query",
+            middleware: true,
+            data: {
+                query: event,
+                values: [
+                    this.props.state.user.hash,
+                    this.props.state.socket.hash,
+                    bool
                 ]
             }
         })
@@ -49,7 +68,28 @@ class MainProfile extends React.Component {
                                                     defaultValue={this.props.state.user && this.props.state.user.hash || "—"}
                                                     style={{width: "280px", textAlign: "center"}}
                                                 /><br />
-                                            <strong>Оповещения в телеграм:</strong> {this.props.state.user && this.props.state.user.telegram_notification ? "Включены" : "Выключены" || "—"}
+                                            <strong>Оповещения в телеграм:</strong> 
+                                                <Toggle
+                                                  label = {this.props.state.user && this.props.state.user.telegram_notification && "Включены" || "Выключены"}
+                                                  toggled={(this.props.state.user && this.props.state.user.telegram_notification) ? true : false}
+                                                  style = {{
+                                                    display: "inline-block",
+                                                    width: "128px",
+                                                    marginLeft: "10px"
+                                                  }}
+                                                  onToggle = {this.toggle.bind(this, "changeTelegramState")}
+                                                /><br />
+                                            <strong>Оповещения в браузере:</strong> 
+                                                <Toggle
+                                                  label = {this.props.state.user && this.props.state.user.web_notification && "Включены" || "Выключены"}
+                                                  toggled={(this.props.state.user && this.props.state.user.web_notification) ? true : false}
+                                                  style = {{
+                                                    display: "inline-block",
+                                                    width: "128px",
+                                                    marginLeft: "10px"
+                                                  }}
+                                                  onToggle = {this.toggle.bind(this, "changeWebState")}
+                                                />
                                         </p>
                                         <RaisedButton label="Редактировать" onClick={this.goTo.bind(this, {page_id: 14})}  secondary />
                                     </div>
