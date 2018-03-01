@@ -12,3 +12,4 @@ export const SET_LOCAL = 'setLocal';
 export const DELETE_LOCAL = 'deleteLocal';
 export const MERGE = "merge";
 export const PUSH = "push";
+export const NOTIFICATION = "notification";

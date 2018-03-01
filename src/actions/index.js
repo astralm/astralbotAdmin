@@ -27,3 +27,4 @@ export function changeTheme(themeOption) {
 export const setState = data => ({type: types.SET_STATE, data});
 export const mergeDeep = data => ({type: types.MERGE_DEEP, data});
 export const merge = data => ({type: types.MERGE, data});
+export const notification = data => ({type: types.NOTIFICATION, data});

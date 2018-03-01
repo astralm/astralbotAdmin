@@ -31,7 +31,6 @@ const history = syncHistoryWithStore(hashHistory, store);
 function scrollToTop() {
   window.scrollTo(0, 0);
 }
-requestPermission
 
 const rootRoute = {
   childRoutes: [{

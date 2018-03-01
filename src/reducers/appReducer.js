@@ -17,34 +17,6 @@ const AppReducer = (state = Map(), action) => {
 			return state;
 		case Types.PUSH:
 			return state.setIn(action.data.keys, state.getIn(action.data.keys).push(fromJS(action.data.value)));
-		case Types.NOTIFICATION:
-				let notification = Notification || window.Notification;
-				if(notification.permission == "granted"){
-					let data = action.data;
-					let message = new notification(data.title, {
-						body: data.body,
-						requireInteraction: data.requireInteraction
-					});
-					if(data.session_id){
-						message.onclick = () => {
-							store.dispatch({
-								type: "Query",
-								middleware: true,
-								data: {
-									query: "changePage",
-									values: [
-										state.getIn(["user", "hash"]),
-										state.getIn(["socket", "hash"]),
-										data.page_id,
-										data.item_id
-									]
-								}
-							});
-							window.alert(data.title + ": " + data.body);
-						};
-					}
-				}
-			return state;
 		default: 
 			return state;
 	}
